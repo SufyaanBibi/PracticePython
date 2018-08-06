@@ -2,17 +2,17 @@
 def horizontal_lines(board_size):
     if board_size is None:
         return None
-    return ' --- ' * board_size
+    return '\n' + ' ---' * board_size
 
 
 def vertical_lines(board_size):
     if board_size is None:
         return None
-    return '|    ' * (board_size + 1)
+    return '|   ' * (board_size + 1)
 
 
 def draw_a_line(board_size):
-    return horizontal_lines(board_size) + '\n' + vertical_lines(board_size) + '\n'
+    return horizontal_lines(board_size) + '\n' + vertical_lines(board_size)
 
 
 def draw_a_board(bs):
