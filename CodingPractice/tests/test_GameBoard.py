@@ -6,12 +6,12 @@ class GameBoardTests(unittest.TestCase):
 
     def test_horizontal_lines(self):
         board_size = 1
-        expected_result = ' --- '
+        expected_result = '\n ---'
         self.assertEqual(expected_result, horizontal_lines(board_size))
 
     def test_vertical_lines(self):
         board_size = 1
-        expected_result = '|    |    '
+        expected_result = '|   |   '
         self.assertEqual(expected_result, vertical_lines(board_size))
 
     def test_none_vertical_lines(self):
@@ -24,11 +24,22 @@ class GameBoardTests(unittest.TestCase):
 
     def test_draw_a_line(self):
         board_size = 3
-        print(draw_a_line(board_size))
+        self.assertEqual(
+'''
+ --- --- ---
+|   |   |   |   ''', draw_a_line(board_size))
 
     def test_three_board(self):
         board_size = 3
-        print(draw_a_board(board_size))
+        self.assertEqual(
+'''
+ --- --- ---
+|   |   |   |   
+ --- --- ---
+|   |   |   |   
+ --- --- ---
+|   |   |   |   
+ --- --- ---''', draw_a_board(board_size))
 
 
 if __name__ == '__main__':
