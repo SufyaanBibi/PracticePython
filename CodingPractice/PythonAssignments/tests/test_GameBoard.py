@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.GameBoard import horizontal_lines, vertical_lines, draw_a_line, draw_a_board
+from CodingPractice.PythonAssignments.excercises.GameBoard import horizontal_lines, vertical_lines, draw_a_line, draw_a_board
 
 
 class GameBoardTests(unittest.TestCase):

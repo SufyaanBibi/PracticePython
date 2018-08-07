@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.ListConversions import comprehension_conversion, map_conversion
+from CodingPractice.PythonAssignments.excercises.ListConversions import comprehension_conversion, map_conversion
 
 
 a = ['1', '2', '3']

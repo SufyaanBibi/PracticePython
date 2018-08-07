@@ -1,4 +1,4 @@
-from CodingPractice.excercises.OddorEven import is_even
+from CodingPractice.PythonAssignments.excercises.OddorEven import is_even
 
 
 def finding_less_than(list_of_numbers, number):

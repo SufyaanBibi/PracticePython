@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.ListComprehension import even_list_comp, odd_list_comp
+from CodingPractice.PythonAssignments.excercises.ListComprehension import even_list_comp, odd_list_comp
 
 list_of_numbers = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 

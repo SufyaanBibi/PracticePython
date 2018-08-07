@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.RockPaperScissors import player_1_rock, player_1_paper, player_1_scissors, \
+from CodingPractice.PythonAssignments.excercises.RockPaperScissors import player_1_rock, player_1_paper, player_1_scissors, \
     is_valid_input
 
 

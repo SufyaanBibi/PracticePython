@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.Hangman import is_letter
+from CodingPractice.PythonAssignments.excercises.Hangman import is_letter
 
 
 class HangmanTests(unittest.TestCase):

@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.SecondLargestNumber import second_largest_element
+from CodingPractice.PythonAssignments.excercises.SecondLargestNumber import second_largest_element
 
 
 class SecondLargestElementTests(unittest.TestCase):

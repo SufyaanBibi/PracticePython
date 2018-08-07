@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.PickWord import random_word
+from CodingPractice.PythonAssignments.excercises.PickWord import random_word
 
 
 def get_file_path(file_name):
