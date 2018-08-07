@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.OddorEven import is_even
+from CodingPractice.PythonAssignments.excercises.OddorEven import is_even
 
 
 class IsEvenTests(unittest.TestCase):

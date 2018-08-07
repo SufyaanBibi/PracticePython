@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.ListEnds import *
+from CodingPractice.PythonAssignments.excercises.ListEnds import *
 
 
 class HeadsAndTails(unittest.TestCase):
