@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.LessThanLists import finding_less_than, list_comp
+from CodingPractice.PythonAssignments.excercises.LessThanLists import finding_less_than, list_comp
 
 
 class LessThanTests(unittest.TestCase):

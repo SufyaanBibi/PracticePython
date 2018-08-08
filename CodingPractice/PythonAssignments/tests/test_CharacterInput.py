@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.CharacterInput import centenary_calculator
+from CodingPractice.PythonAssignments.excercises.CharacterInput import centenary_calculator
 
 
 class CharacterInputTests(unittest.TestCase):

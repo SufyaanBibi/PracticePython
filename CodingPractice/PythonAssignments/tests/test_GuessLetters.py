@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.GuessLetters import matching_letter, is_game_over
+from CodingPractice.PythonAssignments.excercises.GuessLetters import matching_letter, is_game_over
 
 
 class LetterGuessTests(unittest.TestCase):

@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.RemovingDuplicates import set_removal, for_loop_removal
+from CodingPractice.PythonAssignments.excercises.RemovingDuplicates import set_removal, for_loop_removal
 
 
 class DuplicateRemovalTests(unittest.TestCase):

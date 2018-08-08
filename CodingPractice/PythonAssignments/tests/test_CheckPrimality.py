@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.CheckPrimality import *
+from CodingPractice.PythonAssignments.excercises.CheckPrimality import *
 
 
 class IsPrimeTests(unittest.TestCase):
