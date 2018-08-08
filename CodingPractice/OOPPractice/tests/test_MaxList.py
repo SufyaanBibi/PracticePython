@@ -22,10 +22,8 @@ class TestMaxListClass(unittest.TestCase):
     def test_copy_is_made(self):
         a = MaxSizeList(1)
         a.push('hello')
-        print(a.get_list())
 
         b = a.get_list()
         b.append('world')
-        print(b)
 
         self.assertNotEqual(a, b)
