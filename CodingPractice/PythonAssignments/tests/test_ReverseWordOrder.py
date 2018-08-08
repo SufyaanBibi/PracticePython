@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.ReverseWordOrder import reverse_order
+from CodingPractice.PythonAssignments.excercises.ReverseWordOrder import reverse_order
 
 
 class TestReverseWordOrder(unittest.TestCase):

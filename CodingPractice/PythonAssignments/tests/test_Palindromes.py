@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.excercises.Palindromes import palindrome_sniffer
+from CodingPractice.PythonAssignments.excercises.Palindromes import palindrome_sniffer
 
 
 class IsPalindromeTests(unittest.TestCase):
