@@ -27,3 +27,7 @@ class TestMaxListClass(unittest.TestCase):
         b.append('world')
 
         self.assertNotEqual(a, b)
+
+
+if __name__ == '__main__':
+    unittest.main()
