@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.OOPPractice.assignments.MaxList import MaxSizeList
+from CodingPractice.OOPPractice.assignments.MaxSizeList import MaxSizeList
 
 
 class TestMaxListClass(unittest.TestCase):
