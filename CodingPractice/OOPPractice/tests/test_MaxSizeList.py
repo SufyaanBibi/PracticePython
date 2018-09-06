@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.OOPPractice.assignments.MaxList import MaxSizeList
+from CodingPractice.OOPPractice.assignments.MaxSizeList import MaxSizeList
 
 
 class TestMaxListClass(unittest.TestCase):
@@ -27,3 +27,7 @@ class TestMaxListClass(unittest.TestCase):
         b.append('world')
 
         self.assertNotEqual(a, b)
+
+
+if __name__ == '__main__':
+    unittest.main()
