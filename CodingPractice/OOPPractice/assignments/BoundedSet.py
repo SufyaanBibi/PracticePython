@@ -1,15 +1,16 @@
 class BoundedSet:
 
-    def __init__(self, limit_1, limit_2):
-        self.limit_1 = limit_1
-        self.limit_2 = limit_2
+    def __init__(self, lower_bound, upper_bound):
+        self.lower_bound = lower_bound
+        self.upper_bound = upper_bound
         self.inner_set = set()
 
     def put(self, element):
-        if element >= self.limit_1 and element <= self.limit_2:
+        if self.filter_condition(element):
             self.inner_set.add(element)
-        else:
-            print('Number is out of bounds.')
+
+    def filter_condition(self, element):
+        return element >= self.lower_bound and element <= self.upper_bound
 
     def get(self):
         return self.inner_set
