@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.OOPPractice.assignments.WrappedSet import *
+from CodingPractice.OOPPractice.assignments.FilteredSet import *
 
 
 class TestWrappedSet(unittest.TestCase):
@@ -59,6 +59,39 @@ class TestWrappedSet(unittest.TestCase):
         a.put(10)
 
         self.assertEqual({10}, a.get())
+
+    def test_bounded_set(self):
+        def limit_boundries(e):
+            return e >= 1 and e <= 10
+
+        a = WrappedSet(limit_boundries)
+
+        a.put(5)
+
+        self.assertEqual({5}, a.get())
+
+
+    def test_out_of_bounds(self):
+        def limit_boundries(e):
+            return e >= 1 and e <= 10
+
+        a = WrappedSet(limit_boundries)
+
+        a.put(0)
+
+        self.assertEqual(set(), a.get())
+
+    def test_equal_to_bound(self):
+        def limit_boundries(e):
+            return e >= 1 and e <= 10
+
+        a = WrappedSet(limit_boundries)
+
+        a.put(1)
+
+        a.put(1)
+
+        self.assertEqual({1}, a.get())
 
 
 if __name__ == '__main__':
