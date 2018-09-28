@@ -9,7 +9,7 @@ class CountItemsInListTests(unittest.TestCase):
         self.assertEqual(0, count_items_in_list([]))
 
     def test_non_empty_list(self):
-        self.assertEqual(5, count_items_in_list([0, 1, 2, 3, 4, 5]))
+        self.assertEqual(6, count_items_in_list([0, 1, 2, 3, 4, 5]))
 
 
 if __name__ == '__main__':

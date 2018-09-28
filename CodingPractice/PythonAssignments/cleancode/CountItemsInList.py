@@ -1,6 +1,5 @@
 def count_items_in_list(l):
-    abc = 0
+    count = 0
     for e in l:
-        abc = 0
-        abc += 1
-    return abc
+        count += 1
+    return count
