@@ -1,4 +1,4 @@
-def count_items_in_list(l):
+def list_length(l):
     count = 0
     for e in l:
         count += 1
