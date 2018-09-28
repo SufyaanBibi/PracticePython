@@ -1,3 +1,6 @@
+from CodingPractice.OOPPractice.assignments.CustomException import SetAttributeError, DeleteAttributeError
+
+
 class ImmutableDict(dict):
 
     def __init__(self, tuple_elements):
@@ -10,3 +13,12 @@ class ImmutableDict(dict):
 
     def __delitem__(self, key):
         return
+
+
+class ChattyDict(ImmutableDict):
+
+    def __setitem__(self, key, value):
+        raise SetAttributeError('Cannot set another value.')
+
+    def __delitem__(self, key):
+        raise DeleteAttributeError('Cannot delete key from dictionary.')
