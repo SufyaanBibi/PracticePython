@@ -18,9 +18,9 @@ class TestLocalDictionary(unittest.TestCase):
     def test_01_get_file_path(self):
         a = LocalDictionary.get_file_path('LocalDictionary.csv')
 
-        self.assertEqual('/Users/hannah/Documents/Dev/source/PracticePython'
-                         '/CodingPractice/PythonAssignments/excercises'
-                         '/LocalDictionary.csv', a)
+        self.assertTrue(
+            a.endswith('PracticePython/CodingPractice/PythonAssignments/excercises/LocalDictionary.csv')
+        )
 
     def test_02_make_list_of_word_definitions(self):
         a = LocalDictionary.make_list_of_word_definitions('LocalDictionary.csv')
