@@ -1,3 +1,7 @@
+class MalformedEmailAddress(Exception):
+    pass
+
+
 class EmailDetails:
     def __init__(self, id, domain):
         self.id = id
