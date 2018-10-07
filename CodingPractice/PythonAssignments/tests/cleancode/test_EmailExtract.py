@@ -5,10 +5,14 @@ from CodingPractice.PythonAssignments.cleancode.EmailExtract \
 
 class EmailExtractTests(unittest.TestCase):
 
-    def test_can_extract_name(self):
+    def test_can_extract_id(self):
         expected = EmailDetails('basil', '5yp.com')
         actual = extract_details_from_email_address( 'basil@5yp.com' )
         self.assertEqual(expected, actual)
+
+    def test_is_id_valid(self):
+        actual = extract_details_from_email_address( 'basil@5yp.com' )
+        self.assertEqual('basil', actual.id)
 
     def test_can_extract_address(self):
         expected = EmailDetails('basil', '5yp.com')
