@@ -30,6 +30,7 @@ class MalformedEmailAddress_Exception(Exception):
 
 # The EmailDetails class.
 # This is a class that holds details about an email address
+# e.g. id@domain.com
 class EmailDetails:
     def __init__(self, id, domain):
         self.id = id
