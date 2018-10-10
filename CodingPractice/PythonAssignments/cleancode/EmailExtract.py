@@ -1,5 +1,3 @@
-
-
 class MalformedEmailAddressException(Exception):
     pass
 
@@ -12,6 +10,9 @@ class EmailDetails:
 
 def extract_email_address_details(email_addr):
     try:
-        return EmailDetails('basil', '5yp.com')
+        id_name = email_addr.split('@')[1]
+        domain_name = email_addr.split('@')[0]
+        return id_name, domain_name
     except:
         raise MalformedEmailAddressException
+
