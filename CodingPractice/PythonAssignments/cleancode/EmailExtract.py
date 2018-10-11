@@ -7,6 +7,9 @@ class EmailDetails:
         self.id = id
         self.domain = domain
 
+    def __eq__(self, other):
+        return self.id == other.id and self.domain == other.domain
+
 
 def extract_email_address_details(email_addr):
     try:

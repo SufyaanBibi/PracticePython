@@ -3,6 +3,7 @@ from CodingPractice.PythonAssignments.cleancode.EmailExtract \
     import EmailDetails, extract_email_address_details, MalformedEmailAddressException
 
 
+
 class EmailExtractTests(unittest.TestCase):
 
     def test_00_is_id_valid(self):
