@@ -6,9 +6,9 @@ class MalformedEmailAddressException(Exception):
 
 
 class EmailDetails:
-    def __init__(self, _id, _domain):
-        self.id = _id
-        self.domain = _domain
+    def __init__(self, id, domain):
+        self.id = id
+        self.domain = domain
 
     def __eq__(self, other):
         return self.id == other.id and self.domain == other.domain
@@ -22,9 +22,10 @@ class EmailDetails:
 
 def extract_email_address_details(email_addr):
     try:
-        if not re.match(r'[^@]+@[^@]+\.[^@]+', email_addr):
-            raise MalformedEmailAddressException('This is an invalid email address')
+        if not re.match(r'[^@,\s+]+@[^@,\s+]+\.[^@,\s+]+', email_addr):
+            raise MalformedEmailAddressException(email_addr)
         email_details = email_addr.split('@')
-        return EmailDetails(email_details[0], email_details[1])
+        email_id, domain = email_details
+        return EmailDetails(email_id, domain)
     except:
-        raise MalformedEmailAddressException('This is an invalid email address.')
+        raise MalformedEmailAddressException(email_addr)
