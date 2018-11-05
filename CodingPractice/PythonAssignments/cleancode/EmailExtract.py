@@ -21,7 +21,11 @@ class EmailDetails:
 
 
 def extract_email_address_details(email_addr):
-    pattern = re.compile('[^@,]+@[^@,]+\.[^@,]+')
+    pattern = re.compile('[^@,]+'
+                         '@'
+                         '[^@,.]+'
+                         '\.'
+                         '[^@,.]+')
     try:
         if re.match(pattern, email_addr):
             email_id, domain = email_addr.split('@')
