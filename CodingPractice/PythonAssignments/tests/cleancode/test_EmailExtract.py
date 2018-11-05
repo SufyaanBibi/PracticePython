@@ -1,6 +1,7 @@
 import unittest
 from CodingPractice.PythonAssignments.cleancode.EmailExtract \
-    import EmailDetails, extract_email_address_details, MalformedEmailAddressException
+    import (EmailDetails, extract_email_address_details, MalformedEmailAddressException,
+            is_invalid_single_quote)
 
 
 class EmailExtractTests(unittest.TestCase):
@@ -143,6 +144,12 @@ class EmailExtractTests(unittest.TestCase):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('john..doe@example.com')
         self.assertEqual('john..doe@example.com', e.exception.message)
+
+    def test_27_invalid_single_quote(self):
+        self.assertTrue(is_invalid_single_quote('this is"not\allowed@example.com'))
+
+    def test_28_is_valid_single_quote(self):
+        self.assertFalse(is_invalid_single_quote('this is"notallowed"@example.com'))
 
 
 if __name__ == '__main__':

@@ -26,10 +26,13 @@ def email_length_constraint(local_part):
         raise MalformedEmailAddressException(f'{local_part} exceeds length constraint: 64 characters.')
 
 
-def invalid_single_quote(local_part):
-    single_quote_pattern = re.compile('"[^"]*$')
-    if re.match(single_quote_pattern, local_part):
-        raise MalformedEmailAddressException(f'{local_part} invalid single quote used.')
+def is_invalid_single_quote(local_part):
+    r = re.search(r'"[^"]*$', local_part)
+    print(r)
+    if r:
+        return True
+    else:
+        return False
 
 
 def extract_email_address_details(email_addr):
