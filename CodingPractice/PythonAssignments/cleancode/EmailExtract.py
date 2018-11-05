@@ -2,7 +2,8 @@ import re
 
 
 class MalformedEmailAddressException(Exception):
-    pass
+    def __init__(self, message):
+        self.message = message
 
 
 class EmailDetails:
@@ -20,6 +21,17 @@ class EmailDetails:
         return self._domain
 
 
+def email_length_constraint(local_part):
+    if len(local_part) > 64:
+        raise MalformedEmailAddressException(f'{local_part} exceeds length constraint: 64 characters.')
+
+
+def invalid_single_quote(local_part):
+    single_quote_pattern = re.compile('"[^"]*$')
+    if re.match(single_quote_pattern, local_part):
+        raise MalformedEmailAddressException(f'{local_part} invalid single quote used.')
+
+
 def extract_email_address_details(email_addr):
     pattern = re.compile('[^@,]+'
                          '@'
@@ -28,8 +40,10 @@ def extract_email_address_details(email_addr):
                          '[^@,.]+')
     try:
         if re.match(pattern, email_addr):
-            email_id, domain = email_addr.split('@')
-            return EmailDetails(email_id, domain)
+            local_part, domain = email_addr.split('@')
+            email_length_constraint(local_part)
+            invalid_single_quote(local_part)
+            return EmailDetails(local_part, domain)
 
         raise MalformedEmailAddressException(email_addr)
 
