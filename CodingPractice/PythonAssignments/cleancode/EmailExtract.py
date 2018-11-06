@@ -21,7 +21,7 @@ class EmailDetails:
         return self._domain
 
 
-def email_length_constraint(local_part):
+def local_part_length_constraint(local_part):
     if len(local_part) > 64:
         raise MalformedEmailAddressException(f'{local_part} exceeds length constraint: 64 characters.')
 
@@ -53,7 +53,7 @@ def extract_email_address_details(email_addr):
     try:
         if re.match(pattern, email_addr):
             local_part, domain = email_addr.split('@')
-            email_length_constraint(local_part)
+            local_part_length_constraint(local_part)
             double_quotes_validation(local_part)
             multiple_dot_character_constraint(local_part)
             return EmailDetails(local_part, domain)
