@@ -1,7 +1,6 @@
 import unittest
 from CodingPractice.PythonAssignments.cleancode.EmailExtract \
-    import (EmailDetails, extract_email_address_details, MalformedEmailAddressException,
-            is_invalid_single_quote)
+    import (EmailDetails, extract_email_address_details, MalformedEmailAddressException)
 
 
 class EmailExtractTests(unittest.TestCase):
@@ -90,12 +89,7 @@ class EmailExtractTests(unittest.TestCase):
             extract_email_address_details('bbb@xyz,com@')
         self.assertEqual('bbb@xyz,com@', e.exception.message)
 
-    def test_17_malformed_email(self):
-        with self.assertRaises(MalformedEmailAddressException) as e:
-            extract_email_address_details('@@@')
-        self.assertEqual('@@@', e.exception.message)
-
-    def test_18_malformed_email(self):
+    def test_18_malformed_email_multiple_dots_in_domain(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('abc @ 123 .... abc .... com')
         self.assertEqual('abc @ 123 .... abc .... com', e.exception.message)
@@ -118,17 +112,17 @@ class EmailExtractTests(unittest.TestCase):
     def test_22_invalid_email_quoted_strings_not_dot_separated(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('just"not"right@example.com')
-        self.assertEqual('just"not"right@example.com', e.exception.message)
+        self.assertEqual('just"not"right contains invalid double quotes.', e.exception.message)
 
     def test_23_invalid_email_unquoted_invalid_characters(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('this is"not\allowed@example.com')
-        self.assertEqual('this is"not\allowed@example.com', e.exception.message)
+        self.assertEqual('this is"not\allowed contains invalid double quotes.', e.exception.message)
 
     def test_24_invalid_email_invalid_characters(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('this\ still\"not\\allowed@example.com')
-        self.assertEqual('this\ still\"not\\allowed@example.com', e.exception.message)
+        self.assertEqual('this\ still\"not\\allowed contains invalid double quotes.', e.exception.message)
 
     def test_25_invalid_email_local_part_exceeds_limit(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
@@ -143,13 +137,7 @@ class EmailExtractTests(unittest.TestCase):
     def test_26_invalid_email_double_dot_before_at_symbol(self):
         with self.assertRaises(MalformedEmailAddressException) as e:
             extract_email_address_details('john..doe@example.com')
-        self.assertEqual('john..doe@example.com', e.exception.message)
-
-    def test_27_invalid_single_quote(self):
-        self.assertTrue(is_invalid_single_quote('this is"not\allowed@example.com'))
-
-    def test_28_is_valid_single_quote(self):
-        self.assertFalse(is_invalid_single_quote('this is"notallowed"@example.com'))
+        self.assertEqual('john..doe contains multiple dot characters adjacent to each other.', e.exception.message)
 
 
 if __name__ == '__main__':

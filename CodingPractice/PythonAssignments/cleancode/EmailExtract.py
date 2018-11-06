@@ -26,13 +26,22 @@ def email_length_constraint(local_part):
         raise MalformedEmailAddressException(f'{local_part} exceeds length constraint: 64 characters.')
 
 
-def is_invalid_single_quote(local_part):
-    r = re.search(r'"[^"]*$', local_part)
-    print(r)
-    if r:
-        return True
+def double_quotes_validation(local_part):
+    double_quotes = [e for e in local_part if e == '"']
+    if len(double_quotes) == 0:
+        return
+    if len(double_quotes) == 2:
+        if local_part[0] and local_part[-1] == '"':
+            return
+        else:
+            raise MalformedEmailAddressException(f'{local_part} contains invalid double quotes.')
     else:
-        return False
+        raise MalformedEmailAddressException(f'{local_part} contains invalid double quotes.')
+
+
+def multiple_dot_character_constraint(local_part):
+    if re.search(r'.*[.]{2,}.*', local_part):
+        raise MalformedEmailAddressException(f'{local_part} contains multiple dot characters adjacent to each other.')
 
 
 def extract_email_address_details(email_addr):
@@ -45,7 +54,8 @@ def extract_email_address_details(email_addr):
         if re.match(pattern, email_addr):
             local_part, domain = email_addr.split('@')
             email_length_constraint(local_part)
-            invalid_single_quote(local_part)
+            double_quotes_validation(local_part)
+            multiple_dot_character_constraint(local_part)
             return EmailDetails(local_part, domain)
 
         raise MalformedEmailAddressException(email_addr)
