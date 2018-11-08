@@ -27,7 +27,7 @@ class BankAccountTests(unittest.TestCase):
     def test_04_can_add_0_5(self):
         a = BankAccount('basil', 0.25)
         b = BankAccount('sufi', 0.25)
-        self.assertEqual(0.5, a + b)
+        self.assertEqual(0.50, a + b)
 
 
 if __name__ == '__main__':
