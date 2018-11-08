@@ -14,7 +14,7 @@ class EmailDetails:
     def __eq__(self, other):
         return self._local_part == other._local_part and self._domain == other._domain
 
-    def get_id(self):
+    def get_local_part(self):
         return self._local_part
 
     def get_domain(self):
