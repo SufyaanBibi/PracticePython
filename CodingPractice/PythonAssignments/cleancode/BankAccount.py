@@ -3,26 +3,23 @@ from decimal import *
 
 class BankAccount:
 
-    def __init__(self, acct_num, balance):
+    def __init__(self, acct_num, acct_balance):
         self.acct_num = acct_num
-        self.balance = balance
+        self.balance = acct_balance
 
     pence = Decimal('.01')
 
-    def __add__(self, other):
-        account_balance = Decimal(self.balance)
-        other_balance = Decimal(other.balance)
-        new_balance = account_balance + other_balance
-        return new_balance.quantize(self.pence, rounding=ROUND_HALF_UP)
+    def __add__(self, other_acct):
+        acct_balance, other_acct_balance = Decimal(self.balance), Decimal(other_acct.balance)
+        new_acct_balance = acct_balance + other_acct_balance
+        return new_acct_balance.quantize(self.pence, rounding=ROUND_HALF_UP)
 
-    def __sub__(self, other):
-        account_balance = Decimal(self.balance)
-        other_balance = Decimal(other.balance)
-        new_balance = account_balance - other_balance
+    def __sub__(self, other_acct):
+        acct_balance, other_acct_balance = Decimal(self.balance), Decimal(other_acct.balance)
+        new_balance = acct_balance - other_acct_balance
         return new_balance.quantize(self.pence, rounding=ROUND_HALF_UP)
 
     def __mul__(self, multiple):
-        balance = Decimal(self.balance)
-        multiplier = Decimal(multiple)
-        new_balance = balance * multiplier
+        acct_balance, multiplier = Decimal(self.balance), Decimal(multiple)
+        new_balance = acct_balance * multiplier
         return new_balance.quantize(self.pence, rounding=ROUND_HALF_UP)
