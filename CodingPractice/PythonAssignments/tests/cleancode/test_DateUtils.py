@@ -24,7 +24,7 @@ class DateCalculatorTests(unittest.TestCase):
         end = '2018/11/09'
         self.assertEqual(0, number_of_days_between(start, end))
 
-    def test_04_future_day_count(self):
+    def test_04_past_day_count(self):
         start = '2018/12/25'
         end = '2018/11/09'
         self.assertEqual(-46, number_of_days_between(start, end))
