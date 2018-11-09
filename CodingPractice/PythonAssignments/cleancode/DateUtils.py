@@ -1,17 +1,12 @@
-import re
-
-get_day_pattern = re.compile('[0-9]{2,}')
+from datetime import datetime
 
 
 def number_of_days_between(start_date_str, end_date_str):
-    '''This function takes two date strings and works out the
-    number of days between the two dates'''
-    start_day = get_day_pattern.findall(start_date_str)
-    end_day = get_day_pattern.findall(end_date_str)
+    s_year, s_month, s_day = start_date_str.split('/')
+    e_year, e_month, e_day = end_date_str.split('/')
+    start_date = datetime(int(s_year), int(s_month), int(s_day))
+    end_date = datetime(int(e_year), int(e_month), int(e_day))
 
-    s = int(start_day[2])
-    e = int(end_day[2])
+    difference = end_date - start_date
 
-    diff = e - s
-    print(diff)
-    return diff
+    return difference.days
