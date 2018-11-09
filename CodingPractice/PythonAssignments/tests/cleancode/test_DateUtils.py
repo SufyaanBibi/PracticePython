@@ -10,6 +10,11 @@ class DateCalculatorTests(unittest.TestCase):
         end = "2018/11/30"
         self.assertEqual( 21, number_of_days_between(start, end))
 
+    def test_number_of_datys_between(self):
+        start = "1999/11/09"
+        end = "2018/11/30"
+        self.assertEqual(6961, number_of_days_between(start, end))
+
 
 if __name__ == '__main__':
     unittest.main()
