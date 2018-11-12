@@ -1,11 +1,9 @@
 
 
-def remove_vowel(word):
+def remove_vowels(word):
     vowels = ['a', 'e', 'i', 'o', 'u']
-    word.split()
     abbreviation = []
-    for w in word[0]:
-        abbreviation.append(w)
+    abbreviation.append(word[0])
     for w in word[1:]:
         if w not in vowels:
             abbreviation.append(w)
