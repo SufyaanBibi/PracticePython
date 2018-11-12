@@ -8,6 +8,10 @@ class UniqueFirstNameTests(unittest.TestCase):
         name_list = [ ('Alice', 'Wonderlund') , ('Sadie', 'Frost'), ('Sam', 'Antha'), ('Sadie', 'Lady') ]
         self.assertEqual(3, unique_customer_name(name_list))
 
+    def test_01_unique_names_with_lower_and_upper_cases(self):
+        name_list = [('Alice', 'Wonderlund'), ('Sadie', 'Frost'), ('Sam', 'Antha'), ('Sadie', 'Lady'), ('alice', 'Joy')]
+        self.assertEqual(3, unique_customer_name(name_list))
+
 
 if __name__ == '__main__':
     unittest.main()
