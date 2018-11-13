@@ -19,7 +19,10 @@ class DateCalculatorTests(unittest.TestCase):
         end = '2018/11/19'
         self.assertEqual(5, workdays_in_range(start, end))
 
-    
+    def test_03_week_and_extra_days(self):
+        start = '2018/11/12'
+        end = '2018/11/20'
+        self.assertEqual(6, workdays_in_range(start, end))
 
 
 if __name__ == '__main__':
