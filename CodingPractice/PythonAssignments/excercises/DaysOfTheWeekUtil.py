@@ -9,4 +9,4 @@ def number_of_weekdays_between(start_date_str, end_date_str):
 
     difference = end_date - start_date
 
-    return difference.days
+    
