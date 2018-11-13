@@ -22,12 +22,14 @@ def workdays_in_range(start_date_str, end_date_str):
     start = datetime_days(start_date_str)
     end = datetime_days(end_date_str)
 
-    s = start.weekday()
-    e = end.weekday()
+    s = start.isoweekday()
+    e = end.isoweekday()
+
+    r = range(s, e)
 
     if difference % 7 == 0:
         weeks = difference / 7
         weekend_days = weeks * 2
         return difference - weekend_days
     else:
-        pass
+        
