@@ -1,6 +1,8 @@
 from datetime import datetime
 
 secs_in_day = 24 * 60 * 60
+hrs_in_day = 24
+secs_in_hour = 60 * 60
 
 
 def get_date_time(date_time_str):
@@ -14,7 +16,7 @@ def hours_between_util(start_time, end_time):
     start = get_date_time(start_time)
     end = get_date_time(end_time)
     difference = end - start
-    return (difference.days * 24) + (difference.seconds // 3600)
+    return (difference.days * hrs_in_day) + (difference.seconds // secs_in_hour)
 
 
 def seconds_between_util(start_time, end_time):
