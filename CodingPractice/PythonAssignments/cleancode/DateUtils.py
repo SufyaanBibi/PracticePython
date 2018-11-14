@@ -15,7 +15,7 @@ def number_of_days_between(start_date_str, end_date_str):
     return difference.days
 
 
-def workdays_in_range(start_date_str, end_date_str):
+def weekdays_in_range(start_date_str, end_date_str):
 
     difference = number_of_days_between(start_date_str, end_date_str)
 
