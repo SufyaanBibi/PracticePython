@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.excercises.RemoveVowels import remove_vowels
+from CodingPractice.PythonAssignments.cleancode.RemoveVowels import remove_vowels
 
 
 class RemoveVowelTest(unittest.TestCase):
