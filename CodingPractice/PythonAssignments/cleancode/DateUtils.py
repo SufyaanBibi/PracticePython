@@ -16,20 +16,17 @@ def number_of_days_between(start_date_str, end_date_str):
 
 
 def weekdays_in_range(start_date_str, end_date_str):
-
     difference = number_of_days_between(start_date_str, end_date_str)
-
     isoweek_days = [1, 2, 3, 4, 5, 6, 7]
 
-    qu = difference // 7
-    rem = difference % 7
+    num_of_weeks = difference // 7
+    num_of_extra_days = difference % 7
+    days_list = isoweek_days * num_of_weeks
 
-    days = isoweek_days * qu
+    extra_days = list(range(1, num_of_extra_days+1))
+    days_list.extend(extra_days)
 
-    extra_days = list(range(1, rem+1))
-    days.extend(extra_days)
-
-    days_without_weekends = [d for d in days
+    days_without_weekends = [d for d in days_list
                              if d != 6 and d != 7]
 
     return len(days_without_weekends)
