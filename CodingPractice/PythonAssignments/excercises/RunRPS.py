@@ -1,4 +1,4 @@
-from excercises.PracticePython_RockPaperScissors import rock_paper_scissors, result_of_rps, is_valid_input
+from CodingPractice.PythonAssignments.excercises.RockPaperScissors import rock_paper_scissors, result_of_rps, is_valid_input
 
 print('Welcome to Rock Paper Scissors, Sufyaan and Basil!')
 

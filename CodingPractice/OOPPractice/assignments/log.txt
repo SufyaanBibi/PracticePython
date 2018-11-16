@@ -1,0 +1,4 @@
+2018-59-08/28/18 18:59    this is a log message
+2018-59-08/28/18 18:59    this is another log message
+2018-41-08/29/18 09:41    this is a log message
+2018-41-08/29/18 09:41    this is another log message

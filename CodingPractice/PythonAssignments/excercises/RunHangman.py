@@ -1,6 +1,6 @@
-from excercises.PracticePython_Hangman import is_letter
-from excercises.PracticePython_PickWord import random_word
-from excercises.PracticePython_GuessLetters import matching_letter, is_game_over
+from CodingPractice.PythonAssignments.excercises.Hangman import *
+from CodingPractice.PythonAssignments.excercises.PickWord import *
+from CodingPractice.PythonAssignments.excercises.GuessLetters import *
 
 print('Welcome to Hangman! You have 15 attempts to guess the word.')
 
