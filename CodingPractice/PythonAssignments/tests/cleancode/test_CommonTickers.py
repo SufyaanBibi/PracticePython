@@ -29,6 +29,11 @@ class CommonTickersTests(unittest.TestCase):
         LON = set()
         self.assertEqual(set(), common_tickers(NYSE, LON))
 
+    def test_05_both_equal(self):
+        NYSE = {'APPL', 'IBM', 'ORCL', 'AAC', 'AAD'}
+        LON = {'APPL', 'IBM', 'LXE', 'AAC'}
+        self.assertEqual(common_tickers(LON, NYSE), common_tickers(NYSE, LON))
+
 
 if __name__ == '__main__':
     unittest.main()
