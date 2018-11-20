@@ -20,7 +20,7 @@ def isoweek_day_list(start, num_of_elements):
         if count > max_day_num:
             count = min_day_num
         lst.append(count)
-        if len(lst) == num_of_elements:
+        if len(lst) >= num_of_elements:
             break
 
     return lst
@@ -36,15 +36,10 @@ def number_of_days_between(start_date_str, end_date_str):
 
 
 def weekdays_in_range(start_date_str, end_date_str):
+    start_date = isoweek_datetime(start_date_str)
     difference = number_of_days_between(start_date_str, end_date_str)
-    isoweek_days = [1, 2, 3, 4, 5, 6, 7]
 
-    num_of_weeks = difference // 7
-    num_of_extra_days = difference % 7
-    days_list = isoweek_days * num_of_weeks
-
-    extra_days = list(range(1, num_of_extra_days+1))
-    days_list.extend(extra_days)
+    days_list = isoweek_day_list(start_date, difference)
 
     days_without_weekends = [d for d in days_list
                              if d != 6 and d != 7]
