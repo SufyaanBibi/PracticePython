@@ -6,6 +6,26 @@ def datetime_days(date_str):
     return datetime(int(year), int(month), int(day))
 
 
+def isoweek_datetime(date):
+    return datetime_days(date).isoweekday()
+
+
+def isoweek_day_list(start, num_of_elements):
+    min_day_num, max_day_num = 1, 7
+
+    count = start
+    lst = [count]
+    while True:
+        count += 1
+        if count > max_day_num:
+            count = min_day_num
+        lst.append(count)
+        if len(lst) == num_of_elements:
+            break
+
+    return lst
+
+
 def number_of_days_between(start_date_str, end_date_str):
     start_date = datetime_days(start_date_str)
     end_date = datetime_days(end_date_str)

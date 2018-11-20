@@ -34,6 +34,16 @@ class DateCalculatorTests(unittest.TestCase):
         end = '2018/11/13'
         self.assertEqual(6, weekdays_in_range(start, end))
 
+    def test_06_isoweekday_func(self):
+        expected = [1, 2, 3, 4, 5, 6, 7]
+        actual = isoweek_day_list(1, 7)
+        self.assertEqual(expected, actual)
+
+    def test_07_isoweekday_func(self):
+        expected = [6, 7, 1, 2, 3, 4, 5, 6, 7]
+        actual = isoweek_day_list(6, 9)
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
