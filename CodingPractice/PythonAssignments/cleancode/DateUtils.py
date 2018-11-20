@@ -10,18 +10,16 @@ def isoweek_datetime(date):
     return datetime_days(date).isoweekday()
 
 
-def isoweek_day_list(iso_weekday_num, num_of_days):
+def isoweek_day_list(starting_isoweekday_num, num_of_days):
     min_day_num, max_day_num = 1, 7
+    lst = [starting_isoweekday_num]
 
-    count = iso_weekday_num
-    lst = [count]
-    while True:
+    count = starting_isoweekday_num
+    while len(lst) < num_of_days:
         count += 1
         if count > max_day_num:
             count = min_day_num
         lst.append(count)
-        if len(lst) >= num_of_days:
-            break
 
     return lst
 
