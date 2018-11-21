@@ -15,6 +15,11 @@ class TestCountCharacters(unittest.TestCase):
         actual = count_characters('b', 'abc')
         self.assertEqual(expected, actual)
 
+    def test_02_no_letters(self):
+        expected = 0
+        actual = count_characters('a', 'bcd')
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
