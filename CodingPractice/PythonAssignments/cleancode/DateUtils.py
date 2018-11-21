@@ -12,7 +12,7 @@ def isoweek_datetime(date):
 
 def isoweek_day_list(starting_isoweekday_num, num_of_days):
     min_day_num, max_day_num = 1, 7
-    lst = [starting_isoweekday_num]
+    lst = []
 
     count = starting_isoweekday_num
     while len(lst) < num_of_days:
