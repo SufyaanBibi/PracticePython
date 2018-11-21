@@ -6,3 +6,7 @@ def factorial_util(n):
         facto = facto*x
 
     return facto
+
+
+def positive_numbers(list_of_numbers):
+    return [n for n in list_of_numbers if n > 0]
