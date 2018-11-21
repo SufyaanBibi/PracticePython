@@ -20,6 +20,11 @@ class TestCountCharacters(unittest.TestCase):
         actual = count_characters('a', 'bcd')
         self.assertEqual(expected, actual)
 
+    def test_03_letter_capitalised(self):
+        expected = 1
+        actual = count_characters('A', 'abc')
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
