@@ -4,11 +4,11 @@
     "first_name": "Spooky",
     "last_name": "Dogg",
     "sex": "M",
-    "Age_years": "10",
+    "age": "10",
     "birthday": "2008-04-02",
     "email_address": "spooky.dogg@burbage.rd.com",
     "mail_shot_date": "11/25",
-    "country": "UK",
+    "iso_country_code": "UK",
     "__type__": "Customer"
   },
   {
@@ -16,11 +16,11 @@
     "first_name": "Charlie",
     "last_name": "Dogg",
     "sex": "M",
-    "Age_years": "4",
+    "age": "4",
     "birthday": "2015-06-19",
     "email_address": "snarly.dogg@burbage.rd.com",
     "mail_shot_date": "11/30",
-    "country": "UK",
+    "iso_country_code": "UK",
     "__type__": "Customer"
   },
   {
@@ -28,11 +28,11 @@
     "first_name": "Lulu",
     "last_name": "Catz",
     "sex": "M",
-    "Age_years": "13",
+    "age": "13",
     "birthday": "2005-01-23",
     "email_address": "lulu@whats-in-the-bag.com",
     "mail_shot_date": "11/20",
-    "country": "USA",
+    "iso_country_code": "USA",
     "__type__": "Customer"
   }
 ]
