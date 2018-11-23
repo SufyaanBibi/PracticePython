@@ -10,7 +10,7 @@ before_install:
   - conda update conda
   - conda config --add channels conda-forge --force
   - conda create --name BUILD python=3.6 phantomjs
-  - conda activate BUILD
+  - source activate BUILD
   - pip install --upgrade jsonpath-ng
   - pip install tweepy
 
