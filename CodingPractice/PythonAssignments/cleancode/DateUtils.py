@@ -16,10 +16,10 @@ def isoweek_day_list(starting_isoweekday_num, num_of_days):
 
     count = starting_isoweekday_num
     while len(lst) < num_of_days:
-        count += 1
         if count > max_day_num:
             count = min_day_num
         lst.append(count)
+        count += 1
 
     return lst
 

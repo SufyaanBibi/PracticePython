@@ -7,3 +7,4 @@ def remove_vowels(word):
         if w not in vowels:
             abbreviation.append(w)
     return ''.join(abbreviation)
+

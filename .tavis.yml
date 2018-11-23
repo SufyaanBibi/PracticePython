@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.6"
+
+before_install:
+  - wget http://bit.ly/miniconda -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda config --set always_yes yes --set changeps1 no --set show_channel_urls true
+  - conda update conda
+  - conda config --add channels conda-forge --force
+  - conda create --name BUILD python=3.6 phantomjs
+  - conda activate BUILD
+  - pip install --upgrade jsonpath-ng
+  - pip install tweepy
+
+script:
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then python -m unittest discover; fi
