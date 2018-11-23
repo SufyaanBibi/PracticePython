@@ -13,6 +13,7 @@ before_install:
   - source activate BUILD
   - pip install --upgrade jsonpath-ng
   - pip install tweepy
+  - pip install requests
 
 script:
   - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then python -m unittest discover; fi

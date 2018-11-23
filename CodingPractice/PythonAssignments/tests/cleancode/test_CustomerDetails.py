@@ -1,11 +1,16 @@
 import unittest
 import json
-from CodingPractice.PythonAssignments.cleancode.CustomerDetails import CustomerDetails
 from CodingPractice.PythonAssignments.cleancode.CustomerDetailsDao import *
 
 
+def get_file_path(fn):
+    import os
+    return os.path.join(os.path.dirname(__file__), fn)
+
+
 def json_file(file_name):
-    with open(file_name, 'r') as f:
+    fn = get_file_path(file_name)
+    with open(fn, 'r') as f:
         return json.load(f)
 
 
