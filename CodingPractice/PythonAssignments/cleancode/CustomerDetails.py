@@ -1,7 +1,8 @@
 
 class CustomerDetails:
 
-    def __init__(self, customer_id, first_name, last_name, sex, age,  birthday, email_address, mail_shot_date, iso_country_code):
+    def __init__(self, customer_id, first_name, last_name, sex, age,  birthday, email_address,
+                 mail_shot_date, iso_country_code):
         self._customer_id = customer_id
         self._first_name = first_name
         self._last_name = last_name
