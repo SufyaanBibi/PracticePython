@@ -9,6 +9,6 @@ def create_cust(c):
 
 def make_customers_from_json(j):
     custs = []
-    for cust in j:
+    for cust in j["customers"]:
         custs.append(create_cust(cust))
     return custs
