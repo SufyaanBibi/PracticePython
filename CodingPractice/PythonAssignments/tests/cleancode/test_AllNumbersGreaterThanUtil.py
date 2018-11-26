@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.cleancode.AllNumbersGreaterThanUtil import *
+from CodingPractice.PythonAssignments.cleancode.MathsUtils import *
 
 
 class GreaterThanNumberUtilTest(unittest.TestCase):
