@@ -8,3 +8,7 @@ def remove_vowels(word):
             abbreviation.append(w)
     return ''.join(abbreviation)
 
+
+def num_of_strings_greater_than_n(n, list_of_str):
+    num = [s for s in list_of_str if len(s) > n]
+    return len(num)
