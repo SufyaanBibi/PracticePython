@@ -10,5 +10,4 @@ def remove_vowels(word):
 
 
 def num_of_strings_greater_than_n(n, list_of_str):
-    num = [s for s in list_of_str if len(s) > n]
-    return len(num)
+    return len([s for s in list_of_str if len(s) > n])
