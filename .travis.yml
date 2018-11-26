@@ -22,5 +22,6 @@ notifications:
   email:
     recipients:
       - sufyaan.bibi@gmail.com
+      - basilbibi@hotmail.com
     on_success: always
     on_failure: always
