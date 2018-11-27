@@ -18,4 +18,4 @@ def has_lower_case(string):
 
 
 def first_and_last_letter(string):
-    return [word[0] + word[-1] for word in string.split(' ')]
+    return [word[0] + word[-1] for word in string.split()]

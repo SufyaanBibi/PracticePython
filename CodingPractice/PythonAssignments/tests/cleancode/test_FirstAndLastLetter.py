@@ -12,6 +12,10 @@ class TestFirstAndLastLetter(unittest.TestCase):
         e = first_and_last_letter('dog')
         self.assertEqual(['dg'], e)
 
+    def test_02_empty_string(self):
+        e = first_and_last_letter('')
+        self.assertEqual([], e)
+
 
 if __name__ == '__main__':
     unittest.main()
