@@ -15,3 +15,6 @@ def positive_numbers(list_of_numbers):
 def all_numbers_greater_than(num, list_of_numbers):
     return all(n > num for n in list_of_numbers)
 
+
+def get_even_num_sum(list_of_numbers):
+    return sum(list_of_numbers[0::2])
