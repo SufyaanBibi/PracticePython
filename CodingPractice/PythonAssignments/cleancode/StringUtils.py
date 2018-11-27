@@ -21,5 +21,5 @@ def first_and_last_letter(string):
     return [word[0] + word[-1] for word in string.split()]
 
 
-def is_even_index_position(string):
+def get_even_index_position(string):
     return ''.join(string[0::2])
