@@ -22,8 +22,4 @@ def first_and_last_letter(string):
 
 
 def is_even_index_position(string):
-    a = []
-    for l in string:
-        if string.index(l) % 2 == 0:
-            a.append(l)
-    return ''.join(a)
+    return ''.join(string[0::2])
