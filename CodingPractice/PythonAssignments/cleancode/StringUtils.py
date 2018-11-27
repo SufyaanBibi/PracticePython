@@ -19,3 +19,11 @@ def has_lower_case(string):
 
 def first_and_last_letter(string):
     return [word[0] + word[-1] for word in string.split()]
+
+
+def is_even_index_position(string):
+    a = []
+    for l in string:
+        if string.index(l) % 2 == 0:
+            a.append(l)
+    return ''.join(a)
