@@ -34,6 +34,26 @@ class CommonTickersTests(unittest.TestCase):
         LON = {'APPL', 'IBM', 'LXE', 'AAC'}
         self.assertEqual(common_tickers(LON, NYSE), common_tickers(NYSE, LON))
 
+    def test_06_has_common_tickers(self):
+        NYSE = {'APPL', 'IBM', 'ORCL', 'AAC', 'AAD'}
+        LON = {'APPL', 'IBM', 'LXE', 'AAC'}
+        self.assertTrue( has_common_tickers(NYSE, LON) )
+
+    def test_07_has_common_tickers(self):
+        NYSE = {'APPL', 'IBM', 'ORCL', 'AAC', 'AAD'}
+        LON = {'LXE', 'IBM', 'LON.SE'}
+        self.assertTrue( has_common_tickers(NYSE, LON) )
+
+    def test_08_has_common_tickers(self):
+        NYSE = {'APPL', 'IBM', 'ORCL', 'AAC', 'AAD'}
+        LON = {'LXE', 'LON.SE'}
+        self.assertFalse( has_common_tickers(NYSE, LON) )
+
+    def test_09_has_common_tickers(self):
+        NYSE = {}
+        LON = {'LXE', 'LON.SE'}
+        self.assertFalse( has_common_tickers(NYSE, LON) )
+
 
 if __name__ == '__main__':
     unittest.main()
