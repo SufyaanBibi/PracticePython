@@ -26,5 +26,5 @@ def get_even_index_position(string):
 
 
 def sorted_string(string):
-    s = sorted(sorted(string), key=str.islower, reverse=True)
+    s = sorted(sorted(string), key=str.isupper)
     return ''.join(s)
