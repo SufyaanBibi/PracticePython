@@ -30,8 +30,13 @@ class TestCustomerJsonDao(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_03_get_cust_by_iso_code(self):
-        expected = CustomerDetails(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
-                                   '11/25', 'UK')
+        c1 = CustomerDetails(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
+                            '11/25', 'UK')
+        c2 = CustomerDetails(102, 'Charlie', 'Dogg', 'M', '4', '2015-06-19', 'snarly.dogg@burbage.rd.com',
+                            '11/30', 'UK')
+        c3 = CustomerDetails(104, 'Spooky', 'Dogg', 'M', '9', '2010-03-07', 'dodgy-paw@herne.hill.com',
+                            '08/14', 'UK')
+        expected = [c1, c2, c3]
         c = CustomerJsonDao()
         actual = c.get_customers_by_country('UK')
         self.assertEqual(expected, actual)

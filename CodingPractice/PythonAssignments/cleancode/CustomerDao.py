@@ -36,7 +36,7 @@ class CustomerJsonDao(CustomerDao):
             return json.load(f)
 
     @staticmethod
-    def create_cust(c):
+    def _create_cust(c):
         return CustomerDetails(c["customer_id"], c["first_name"], c["last_name"], c["sex"],
                                    c["age"], c["birthday"], c["email_address"], c["mail_shot_date"],
                                    c["iso_country_code"])
@@ -45,7 +45,7 @@ class CustomerJsonDao(CustomerDao):
     def make_customers_from_json(j):
         custs = []
         for cust in j["customers"]:
-            custs.append(create_cust(cust))
+            custs.append(CustomerJsonDao._create_cust(cust))
         return custs
 
     def get_customers(self):
@@ -62,4 +62,4 @@ class CustomerJsonDao(CustomerDao):
 
     def get_customers_by_country(self, iso_country_code):
         custs = self.get_customers()
-        return [cust for cust in custs if iso_country_code == cust.get_iso_country_code()][0]
+        return [cust for cust in custs if iso_country_code == cust.get_iso_country_code()]
