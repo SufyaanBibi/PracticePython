@@ -29,7 +29,7 @@ class TestCustomerJsonDao(unittest.TestCase):
         actual = c.get_customers_by_name('Dogg', 'Spooky')
         self.assertEqual(expected, actual)
 
-    def test_03_get_cust_by_iso_code(self):
+    def test_03_get_cust_by_iso_country_code(self):
         c1 = CustomerDetails(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
                             '11/25', 'UK')
         c2 = CustomerDetails(102, 'Charlie', 'Dogg', 'M', '4', '2015-06-19', 'snarly.dogg@burbage.rd.com',
