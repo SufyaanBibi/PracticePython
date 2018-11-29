@@ -18,7 +18,7 @@ class CustomerDao(ABC):
         return
 
     @abstractmethod
-    def get_customers_by_country(self, iso_country_code):
+    def get_customers_by_iso_country_code(self, iso_country_code):
         return
 
 
@@ -60,6 +60,6 @@ class CustomerJsonDao(CustomerDao):
         custs = self.get_customers()
         return [cust for cust in custs if last_name == cust.get_last_name() and first_name == cust.get_first_name()]
 
-    def get_customers_by_country(self, iso_country_code):
+    def get_customers_by_iso_country_code(self, iso_country_code):
         custs = self.get_customers()
         return [cust for cust in custs if iso_country_code == cust.get_iso_country_code()]

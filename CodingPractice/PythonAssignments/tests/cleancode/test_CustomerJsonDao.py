@@ -38,7 +38,7 @@ class TestCustomerJsonDao(unittest.TestCase):
                             '08/14', 'UK')
         expected = [c1, c2, c3]
         c = CustomerJsonDao()
-        actual = c.get_customers_by_country('UK')
+        actual = c.get_customers_by_iso_country_code('UK')
         self.assertEqual(expected, actual)
 
     def test_04_idempotency_cust_id_v_iso_code(self):
@@ -55,7 +55,7 @@ class TestCustomerJsonDao(unittest.TestCase):
                              '08/14', 'UK')
         expec = [c1, c2, c3]
         c = CustomerJsonDao()
-        actual = c.get_customers_by_country('UK')
+        actual = c.get_customers_by_iso_country_code('UK')
         self.assertEqual(expec, actual)
         by_id = c.get_customer_by_id(101)
         self.assertEqual(expected, by_id)
