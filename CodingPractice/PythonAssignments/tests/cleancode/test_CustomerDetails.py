@@ -1,6 +1,7 @@
 import unittest
 import json
 from CodingPractice.PythonAssignments.cleancode.CustomerDetailsDao import *
+from CodingPractice.PythonAssignments.cleancode.CustomerDetailsUtils import *
 
 
 def get_file_path(fn):
@@ -51,7 +52,7 @@ class CustomerDetailsTest(unittest.TestCase):
                     "mail_shot_date": "11/25",
                     "iso_country_code": "UK",
                     "__type__": "Customer"
-                  }
+                    }
         a = create_cust(customer)
         self.assertEqual(101, a.get_customer_id())
         self.assertEqual('Spooky', a.get_first_name())
@@ -74,6 +75,15 @@ class CustomerDetailsTest(unittest.TestCase):
         expected = CustomerDetails(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
                             '11/25', 'UK')
         self.assertEqual(expected, custs[0])
+
+    def test_06_sort_customers(self):
+        j = json_file('customers.json')
+        custs = make_customers_from_json(j)
+        expected = CustomerDetails(103, 'Lulu', 'Catz', 'M', '13', '2005-01-23', 'lulu@whats-in-the-bag.com',
+                            '11/20', 'USA')
+        result = sort_customers_by_last_name(custs)
+        actual = result[0]
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
