@@ -23,3 +23,8 @@ def first_and_last_letter(string):
 
 def get_even_index_position(string):
     return ''.join(string[0::2])
+
+
+def sorted_string(string):
+    s = sorted(sorted(string), key=str.isupper)
+    return ''.join(s)
