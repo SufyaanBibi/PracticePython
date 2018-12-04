@@ -3,7 +3,7 @@ import json
 from CodingPractice.PythonAssignments.cleancode.ProductDetails import *
 
 
-class ProductsDao(ABC):
+class ProductDao(ABC):
 
     @abstractmethod
     def get_products(self):
@@ -30,7 +30,7 @@ class ProductsDao(ABC):
         return
 
 
-class ProductsJsonDao(ProductsDao):
+class ProductJsonDao(ProductDao):
 
     @staticmethod
     def _get_file_path(fn):
@@ -39,7 +39,7 @@ class ProductsJsonDao(ProductsDao):
 
     @staticmethod
     def _get_json(file_name):
-        fn = ProductsJsonDao._get_file_path(file_name)
+        fn = ProductJsonDao._get_file_path(file_name)
         with open(fn, 'r') as f:
             return json.load(f)
 
@@ -51,12 +51,12 @@ class ProductsJsonDao(ProductsDao):
     def make_products_from_json(j):
         prods = []
         for prod in j["products"]:
-            prods.append(ProductsJsonDao._create_product(prod))
+            prods.append(ProductJsonDao._create_product(prod))
         return prods
 
     def get_products(self):
-        jf = ProductsJsonDao._get_json('products.json')
-        return ProductsJsonDao.make_products_from_json(jf)
+        jf = ProductJsonDao._get_json('products.json')
+        return ProductJsonDao.make_products_from_json(jf)
 
     def get_product_by_id(self, product_id):
         prods = self.get_products()
