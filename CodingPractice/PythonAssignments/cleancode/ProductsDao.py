@@ -68,12 +68,12 @@ class ProductsJsonDao(ProductsDao):
 
     def get_products_le_price(self, product_price):
         prods = self.get_products()
-        return [prod for prod in prods if product_price <= prod.get_price()]
+        return [prod for prod in prods if prod.get_price() <= product_price]
 
     def get_products_ge_price(self, product_price):
         prods = self.get_products()
-        return [prod for prod in prods if product_price >= prod.get_price()]
+        return [prod for prod in prods if prod.get_price() >= product_price]
 
     def get_products_le_stock_qty(self, stock_qty):
         prods = self.get_products()
-        return [prod for prod in prods if stock_qty <= prod.get_stock_qty()]
+        return [prod for prod in prods if prod.get_stock_qty() <= stock_qty]
