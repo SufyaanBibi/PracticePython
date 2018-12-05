@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.cleancode.ProductDetails import ProductDetails
+from CodingPractice.PythonAssignments.cleancode.ProductDto import ProductDetails
 
 
 class ProductDetailsTest(unittest.TestCase):

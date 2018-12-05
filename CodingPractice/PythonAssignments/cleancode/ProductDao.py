@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import json
-from CodingPractice.PythonAssignments.cleancode.ProductDetails import *
+from CodingPractice.PythonAssignments.cleancode.ProductDto import *
 
 
 class ProductDao(ABC):
@@ -44,15 +44,15 @@ class ProductJsonDao(ProductDao):
             return json.load(f)
 
     @staticmethod
-    def _create_product(p):
-        return ProductDetails(p["product_id"], p["name"], p["price"], p["weight"], p["stock_qty"])
-
-    @staticmethod
     def make_products_from_json(j):
         prods = []
         for prod in j["products"]:
             prods.append(ProductJsonDao._create_product(prod))
         return prods
+
+    @staticmethod
+    def _create_product(p):
+        return ProductDetails(p["product_id"], p["name"], p["price"], p["weight"], p["stock_qty"])
 
     def get_products(self):
         jf = ProductJsonDao._get_json('products.json')
