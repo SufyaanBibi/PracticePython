@@ -1,5 +1,5 @@
 
-class ProductDetails:
+class ProductDto:
 
     def __init__(self, product_id, name, price, weight, stock_qty):
         self._product_id = product_id

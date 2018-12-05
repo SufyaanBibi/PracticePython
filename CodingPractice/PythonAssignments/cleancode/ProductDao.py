@@ -52,7 +52,7 @@ class ProductJsonDao(ProductDao):
 
     @staticmethod
     def _create_product(p):
-        return ProductDetails(p["product_id"], p["name"], p["price"], p["weight"], p["stock_qty"])
+        return ProductDto(p["product_id"], p["name"], p["price"], p["weight"], p["stock_qty"])
 
     def get_products(self):
         jf = ProductJsonDao._get_json('products.json')

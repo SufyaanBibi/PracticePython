@@ -18,19 +18,19 @@ def json_file(file_name):
 class CustomerDetailsTest(unittest.TestCase):
 
     def test_00_construct_CustomerDetails(self):
-        a = CustomerDetails('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
+        a = CustomerDto('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
                             '11/15', 'UK')
         self.assertEqual('Sufi', a.get_first_name())
 
     def test_01_equality_operator(self):
-        a = CustomerDetails('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
+        a = CustomerDto('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
                             '11/15', 'UK')
-        b = CustomerDetails('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
+        b = CustomerDto('49', 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
                             '11/15', 'UK')
         self.assertEqual(a, b)
 
     def test_02_getter_functions(self):
-        a = CustomerDetails(49, 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
+        a = CustomerDto(49, 'Sufi', 'Bibi', 'M', '23', '1995-10-12', 'sufi.bibi@gmail.com',
                             '11/15', 'UK')
         self.assertEqual(49, a.get_customer_id())
         self.assertEqual('Bibi', a.get_last_name())
@@ -72,14 +72,14 @@ class CustomerDetailsTest(unittest.TestCase):
     def test_05_make_customers_from_json(self):
         j = json_file('customers.json')
         custs = make_customers_from_json(j)
-        expected = CustomerDetails(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
+        expected = CustomerDto(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
                             '11/25', 'UK')
         self.assertEqual(expected, custs[0])
 
     def test_06_sort_customers(self):
         j = json_file('customers.json')
         custs = make_customers_from_json(j)
-        expected = CustomerDetails(103, 'Lulu', 'Catz', 'M', '13', '2005-01-23', 'lulu@whats-in-the-bag.com',
+        expected = CustomerDto(103, 'Lulu', 'Catz', 'M', '13', '2005-01-23', 'lulu@whats-in-the-bag.com',
                             '11/20', 'USA')
         result = sort_customers_by_last_name(custs)
         actual = result[0]
