@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import json
-from CodingPractice.PythonAssignments.cleancode.OrderAndOrderlineDto import OrderDto, OrderLinesDto
+from CodingPractice.PythonAssignments.cleancode.OrderAndOrderlineDto import OrderDto, OrderLineDto
 
 
 class OrderDao(ABC):
@@ -36,19 +36,20 @@ class OrderJsonDao(OrderDao):
             return json.load(f)
 
     @staticmethod
-    def _create_order(o):
-        return OrderDto(o["order_id"], o["customer_id"], o["order_timestamp"], o["order_lines"])
+    def _create_order_line(o):
+        return OrderLineDto(o["order_id"], o["product_id"], o["qty"])
 
     @staticmethod
-    def make_orders_from_json(j):
+    def make_order_lines_from_json(j):
         orders = []
-        for order in j["order_lines"]:
-            orders.append(OrderJsonDao._create_order(order))
+        for order in j["orders"]:
+            for order_line in order["order_lines"]:
+                orders.append(OrderJsonDao._create_order_line(order_line))
         return orders
 
     def get_orders(self):
         jf = OrderJsonDao._get_json('orders.json')
-        return OrderJsonDao.make_orders_from_json(jf)
+        return OrderJsonDao.make_order_lines_from_json(jf)
 
     def get_order_by_order_id(self, order_id):
         orders = self.get_orders()

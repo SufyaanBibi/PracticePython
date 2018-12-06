@@ -24,7 +24,7 @@ class OrderDto:
         return self._order_lines
 
 
-class OrderLinesDto:
+class OrderLineDto:
 
     def __init__(self, order_id, product_id, qty):
         self._order_id = order_id
