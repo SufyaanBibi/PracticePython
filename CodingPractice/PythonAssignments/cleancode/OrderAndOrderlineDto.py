@@ -32,7 +32,7 @@ class OrderLinesDto:
         self._qty = qty
 
     def __eq__(self, other):
-        return self._order_id == other._order_id and self._product_id == self._product_id and self._qty == other._qry
+        return self._order_id == other._order_id and self._product_id == other._product_id and self._qty == other._qty
 
     def get_order_id(self):
         return self._order_id

@@ -55,7 +55,8 @@ class OrderJsonDao(OrderDao):
         return [order for order in orders if order_id == order.get_order_id()][0]
 
     def get_orders_by_customer_id(self, cust_id):
-        return
+        orders = self.get_orders()
+        return [order for order in orders if cust_id == order.get_customer_id()]
 
     def get_orders_by_product_id(self, product_id):
         return

@@ -2,9 +2,9 @@ import unittest
 from CodingPractice.PythonAssignments.cleancode.ProductDto import ProductDto
 
 
-class ProductDetailsTest(unittest.TestCase):
+class ProductDtoTest(unittest.TestCase):
 
-    def test_00_construct_ProductDetails(self):
+    def test_00_construct_ProductDto(self):
         a = ProductDto(1, 'Gromet', 5.1, 100, 1000)
         self.assertEqual(1, a.get_id())
 
