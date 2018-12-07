@@ -44,7 +44,7 @@ class OrderJsonDao(OrderDao):
         return OrderDto(order["order_id"], order["customer_id"], order["order_timestamp"], order_lines)
 
     @staticmethod
-    def make_order_lines_from_json(j):
+    def _make_orders_from_json(j):
         orders = []
         for order in j["orders"]:
             order_lines = []
@@ -55,7 +55,7 @@ class OrderJsonDao(OrderDao):
 
     def get_orders(self):
         jf = OrderJsonDao._get_json('orders.json')
-        return OrderJsonDao.make_order_lines_from_json(jf)
+        return OrderJsonDao._make_orders_from_json(jf)
 
     def get_order_by_order_id(self, order_id):
         orders = self.get_orders()
