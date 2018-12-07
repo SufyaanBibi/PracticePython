@@ -37,9 +37,9 @@ class CustomerJsonDao(CustomerDao):
 
     @staticmethod
     def _create_cust(c):
-        return CustomerDetails(c["customer_id"], c["first_name"], c["last_name"], c["sex"],
-                                   c["age"], c["birthday"], c["email_address"], c["mail_shot_date"],
-                                   c["iso_country_code"])
+        return CustomerDto(c["customer_id"], c["first_name"], c["last_name"], c["sex"],
+                           c["age"], c["birthday"], c["email_address"], c["mail_shot_date"],
+                           c["iso_country_code"])
 
     @staticmethod
     def make_customers_from_json(j):

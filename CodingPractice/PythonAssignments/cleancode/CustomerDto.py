@@ -1,5 +1,5 @@
 
-class CustomerDetails:
+class CustomerDto:
 
     def __init__(self, customer_id, first_name, last_name, sex, age,  birthday, email_address,
                  mail_shot_date, iso_country_code):
