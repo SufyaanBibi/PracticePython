@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.ProductDto import ProductDto
+from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import ProductDto
 
 
 class ProductDtoTest(unittest.TestCase):

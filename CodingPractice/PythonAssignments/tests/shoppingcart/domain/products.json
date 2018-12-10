@@ -1,0 +1,52 @@
+{
+  "products": [
+    {
+      "product_id": 1,
+      "name": "StandardWidget",
+      "price": 5.1,
+      "weight": 100,
+      "stock_qty": 10000,
+      "__type__": "Widget"
+    },
+    {
+      "product_id": 2,
+      "name": "ShinyWidget",
+      "price": 35.1,
+      "weight": 10,
+      "stock_qty": 100,
+      "__type__": "Widget"
+    },
+    {
+      "product_id": 3,
+      "name": "SuperShinyWidget",
+      "price": 135.1,
+      "weight": 15,
+      "stock_qty": 10,
+      "__type__": "Widget"
+    },
+    {
+      "product_id": 4,
+      "name": "StandardGrommet",
+      "price": 5.1,
+      "weight": 34,
+      "stock_qty": 10000,
+      "__type__": "Grommet"
+    },
+    {
+      "product_id": 5,
+      "name": "ShinyGrommet",
+      "price": 35.1,
+      "weight": 78,
+      "stock_qty": 100,
+      "__type__": "Grommet"
+    },
+    {
+      "product_id": 6,
+      "name": "SuperShinyGrommet",
+      "price": 135.1,
+      "weight": 12,
+      "stock_qty": 10,
+      "__type__": "Grommet"
+    }
+  ]
+}

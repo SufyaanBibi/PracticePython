@@ -1,5 +1,5 @@
-from CodingPractice.PythonAssignments.shoppingcart.OrderDao import OrderDao
-from CodingPractice.PythonAssignments.shoppingcart.OrderDto import OrderDto, OrderLineDto
+from CodingPractice.PythonAssignments.shoppingcart.dao.OrderDao import OrderDao
+from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import OrderDto, OrderLineDto
 import json
 
 

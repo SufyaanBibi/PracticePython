@@ -1,6 +1,6 @@
 import json
-from CodingPractice.PythonAssignments.shoppingcart.CustomerDao import *
-from CodingPractice.PythonAssignments.shoppingcart.CustomerDetailsDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDetailsDao import *
 
 
 class CustomerJsonDao(CustomerDao):

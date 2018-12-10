@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.OrderJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
 
 
 class TestOrderJsonDao(unittest.TestCase):

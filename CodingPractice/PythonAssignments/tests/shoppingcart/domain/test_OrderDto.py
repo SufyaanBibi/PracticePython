@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.OrderDto import *
+from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import *
 
 
 class OrderDtoTest(unittest.TestCase):
