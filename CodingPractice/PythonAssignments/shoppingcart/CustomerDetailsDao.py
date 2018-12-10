@@ -1,4 +1,4 @@
-from CodingPractice.PythonAssignments.cleancode.CustomerDto import CustomerDto
+from CodingPractice.PythonAssignments.shoppingcart.CustomerDto import CustomerDto
 
 
 def create_cust(c):

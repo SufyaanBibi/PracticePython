@@ -26,4 +26,3 @@ class ProductDto:
 
     def get_stock_qty(self):
         return self._stock_qty
-

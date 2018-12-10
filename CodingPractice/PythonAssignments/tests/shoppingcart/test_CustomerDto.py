@@ -1,7 +1,7 @@
 import unittest
 import json
-from CodingPractice.PythonAssignments.cleancode.CustomerDetailsDao import *
-from CodingPractice.PythonAssignments.cleancode.CustomerDtoUtils import *
+from CodingPractice.PythonAssignments.shoppingcart.CustomerDetailsDao import *
+from CodingPractice.PythonAssignments.shoppingcart.CustomerDtoUtils import *
 
 
 def get_file_path(fn):
