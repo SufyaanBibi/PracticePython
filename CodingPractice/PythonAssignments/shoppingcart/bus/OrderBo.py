@@ -3,6 +3,11 @@ class OrderIdNonexistent(Exception):
         self.message = message
 
 
+class VatNegative(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
 class OrderBo:
 
     def __init__(self, order_dao, product_dao):
@@ -10,6 +15,8 @@ class OrderBo:
         self._product_dao = product_dao
 
     def get_order_total_by_order_id(self, order_id, vat_rate):
+        if vat_rate < 0:
+            raise VatNegative(f'In order ID {order_id} invalid VAT passed: {vat_rate}')
         order = self._order_dao.get_order_by_order_id(order_id)
         price_before_vat = 0
         if order:
