@@ -40,11 +40,30 @@ class TestOrderBo(unittest.TestCase):
             a.get_order_total_by_order_id(8, -1)
         self.assertEqual('In order ID 8 invalid VAT passed: -1', e.exception.message)
 
-    def test_02_get_order_total_by_cust_id(self):
+    def test_07_get_order_total_by_cust_id(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(1621.2, a.get_order_total_by_customer_id(103, 20))
+
+    def test_08_cust_id_has_no_orders(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(0, a.get_order_total_by_customer_id(70, 20))
+
+    def test_09_cust_has_no_order_lines(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(0, a.get_order_total_by_customer_id(120, 20))
+
+    def test_10_VAT_is_zero(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(1351.0, a.get_order_total_by_customer_id(103, 0))
+
+    def test_11_VAT_is_negative(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        with self.assertRaises(VatNegative) as e:
+            a.get_order_total_by_customer_id(103, -1)
+        self.assertEqual('In customer ID 103 invalid VAT passed: -1', e.exception.message)
+
+    def test_08_get_orders_by_month(self):
         pass
 
-    def test_03_get_orders_by_month(self):
-        pass
-
-    def test_04_get_order_total_by_month(self):
+    def test_09_get_order_total_by_month(self):
         pass

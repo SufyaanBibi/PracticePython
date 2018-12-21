@@ -3,6 +3,11 @@ class OrderIdNonexistent(Exception):
         self.message = message
 
 
+class CustomerIdNonexistent(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
 class VatNegative(Exception):
     def __init__(self, message):
         self.message = message
@@ -31,7 +36,21 @@ class OrderBo:
             raise OrderIdNonexistent(f'Order ID {order_id} does not exist.')
 
     def get_order_total_by_customer_id(self, cust_id, vat_rate):
-        return
+        if vat_rate < 0:
+            raise VatNegative(f'In customer ID {cust_id} invalid VAT passed: {vat_rate}')
+        orders = self._order_dao.get_orders_by_customer_id(cust_id)
+        price_before_vat = 0
+        if orders:
+            for order in orders:
+                for order_line in order.get_order_lines():
+                    prod_dao = self._product_dao.get_product_by_id(order_line.get_product_id())
+                    prod_price = prod_dao.get_price()
+                    quantity = order_line.get_qty()
+                    price_before_vat += (prod_price * quantity)
+                gross = price_before_vat + (price_before_vat*(vat_rate/100))
+                return gross
+        else:
+            return 0
 
     def get_orders_by_month(self, month_number):
         return
