@@ -10,8 +10,8 @@ class TestOrderBo(unittest.TestCase):
         pass
 
     def test_01_get_order_total_by_order_id(self):
-        a = OrderBo(OrderJsonDao, ProductJsonDao)
-        self.assertEqual(162.2, a.get_order_total_by_order_id(7, 20))
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(1621.2, a.get_order_total_by_order_id(7, 20))
 
     def test_02_get_order_total_by_cust_id(self):
         pass
