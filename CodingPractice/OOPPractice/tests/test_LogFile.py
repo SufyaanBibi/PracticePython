@@ -56,6 +56,5 @@ class LogFileTests(unittest.TestCase):
         os.remove(tmp_file)
 
 
-
 if __name__ == '__main__':
     unittest.main()
