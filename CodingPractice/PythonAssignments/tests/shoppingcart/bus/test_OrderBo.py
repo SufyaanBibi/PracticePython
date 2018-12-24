@@ -84,5 +84,30 @@ class TestOrderBo(unittest.TestCase):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
         self.assertEqual([], a.get_orders_by_month(1))
 
-    def test_13_get_order_total_by_month(self):
-        pass
+    def test_16_get_order_total_by_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(0, a.get_order_total_by_month(6, 20))
+
+    def test_17_get_multiple_total_by_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(469.20000000000005, a.get_order_total_by_month(11, 20))
+
+    def test_18_no_orders_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(0, a.get_order_total_by_month(1, 20))
+
+    def test_19_invalid_VAT(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        with self.assertRaises(VatNegative) as e:
+            a.get_order_total_by_month(11, -1)
+        self.assertEqual('VAT rate -1 is invalid.', e.exception.message)
+
+    def test_20_invalid_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        with self.assertRaises(InvalidMonth) as e:
+            a.get_order_total_by_month(45, 20)
+        self.assertEqual('Month number 45 is invalid.', e.exception.message)
+
+
+if __name__ == '__main__':
+    unittest.main()

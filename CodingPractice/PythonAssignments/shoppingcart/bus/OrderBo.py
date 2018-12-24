@@ -63,11 +63,19 @@ class OrderBo:
         if orders:
             for order in orders:
                 timestamp = order.get_order_timestamp()
-                mon, m = timestamp[5], timestamp[6]
-                month = mon+m
+                month = timestamp[5:7]
                 if int(month) == month_number:
                     month_orders.append(order)
         return month_orders
 
     def get_order_total_by_month(self, month_number, vat_rate):
-        return
+        if vat_rate < 0:
+            raise VatNegative(f'VAT rate {vat_rate} is invalid.')
+        elif month_number < 0 or month_number > 12:
+            raise InvalidMonth(f'Month number {month_number} is invalid.')
+        orders = self.get_orders_by_month(month_number)
+        gross_price = 0
+        if orders:
+            for order in orders:
+                gross_price += self.get_gross_for_order(order, vat_rate)
+        return gross_price
