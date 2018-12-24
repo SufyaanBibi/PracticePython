@@ -62,8 +62,9 @@ class TestOrderBo(unittest.TestCase):
             a.get_order_total_by_customer_id(103, -1)
         self.assertEqual('In customer ID 103 invalid VAT passed: -1', e.exception.message)
 
-    def test_08_get_orders_by_month(self):
-        pass
+    def test_12_get_orders_by_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
 
-    def test_09_get_order_total_by_month(self):
+
+    def test_13_get_order_total_by_month(self):
         pass

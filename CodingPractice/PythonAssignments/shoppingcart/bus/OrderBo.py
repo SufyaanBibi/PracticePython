@@ -12,6 +12,10 @@ class VatNegative(Exception):
     def __init__(self, message):
         self.message = message
 
+class InvalidMonth(Exception):
+    def __init__(self, message):
+        self.message = message
+
 
 class OrderBo:
 
@@ -49,7 +53,15 @@ class OrderBo:
         return gross_price
 
     def get_orders_by_month(self, month_number):
-        return
+        if month_number < 0 or month_number > 12:
+            raise InvalidMonth(f'Month {month_number} is invalid.')
+        orders = self._order_dao.get_orders()
+        month_orders = []
+        if orders:
+            for month in orders:
+                if month == month_number:
+                    month_orders.append(orders)
+        return month_orders
 
     def get_order_total_by_month(self, month_number, vat_rate):
         return
