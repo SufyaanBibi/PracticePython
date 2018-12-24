@@ -1,5 +1,6 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.bus.OrderBo import OrderBo, OrderIdNonexistent, VatNegative
+from CodingPractice.PythonAssignments.shoppingcart.bus.OrderBo import OrderBo, OrderIdNonexistent, VatNegative, \
+    InvalidMonth
 from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductJsonDao import *
 
@@ -64,7 +65,24 @@ class TestOrderBo(unittest.TestCase):
 
     def test_12_get_orders_by_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual([OrderDto(8, 120, '2018-06-25 10:55:10', [])], a.get_orders_by_month(6))
 
+    def test_13_get_multiple_orders_by_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual([OrderDto(1, 101, "2018-11-25 11:45:15", [OrderLineDto(1, 1, 1),  OrderLineDto(1, 2, 3)]),
+                          OrderDto(2, 101, "2018-11-30 11:45:15", [OrderLineDto(2, 1, 1), OrderLineDto(2, 2, 3)]),
+                          OrderDto(5, 102, "2018-11-15 10:45:15", [OrderLineDto(5, 5, 1), OrderLineDto(5, 6, 1)])],
+                         a.get_orders_by_month(11))
+
+    def test_14_invalid_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        with self.assertRaises(InvalidMonth) as e:
+            a.get_orders_by_month(45)
+        self.assertEqual('Month number 45 is invalid.', e.exception.message)
+
+    def test_15_no_orders_month(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual([], a.get_orders_by_month(1))
 
     def test_13_get_order_total_by_month(self):
         pass
