@@ -1,7 +1,7 @@
 import unittest
 import json
-from CodingPractice.PythonAssignments.cleancode.CustomerDetailsDao import *
-from CodingPractice.PythonAssignments.cleancode.CustomerDtoUtils import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDetailsDao import *
+from CodingPractice.PythonAssignments.shoppingcart.domain.CustomerDtoUtils import *
 
 
 def get_file_path(fn):
@@ -67,7 +67,7 @@ class CustomerDetailsTest(unittest.TestCase):
     def test_04_json_in_mk_customers_function(self):
         j = json_file('customers.json')
         custs = make_customers_from_json(j)
-        self.assertEqual(3, len(custs))
+        self.assertEqual(4, len(custs))
 
     def test_05_make_customers_from_json(self):
         j = json_file('customers.json')
