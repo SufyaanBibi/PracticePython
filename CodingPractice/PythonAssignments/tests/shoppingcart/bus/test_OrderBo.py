@@ -108,6 +108,10 @@ class TestOrderBo(unittest.TestCase):
             a.get_order_total_by_month(45, 20)
         self.assertEqual('Month number 45 is invalid.', e.exception.message)
 
+    def test_21_get_order_with_no_vatable_objects(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(40.2, a.get_order_total_by_order_id(9, 20))
+
 
 if __name__ == '__main__':
     unittest.main()
