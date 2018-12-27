@@ -1,14 +1,9 @@
+from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.OrderDao import OrderDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import OrderDto, OrderLineDto
-import json
 
 
-class OrderJsonDao(OrderDao):
-
-    @staticmethod
-    def _get_json(json_file_path):
-        with open(json_file_path, 'r') as f:
-            return json.load(f)
+class OrderJsonDao(OrderDao, JsonFileReader):
 
     @staticmethod
     def _create_order_line(order_line):

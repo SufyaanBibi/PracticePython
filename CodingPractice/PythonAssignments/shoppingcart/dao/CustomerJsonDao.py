@@ -1,14 +1,9 @@
-import json
+from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDao import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDetailsDao import *
 
 
-class CustomerJsonDao(CustomerDao):
-
-    @staticmethod
-    def _get_json(json_file_path):
-        with open(json_file_path, 'r') as f:
-            return json.load(f)
+class CustomerJsonDao(CustomerDao, JsonFileReader):
 
     @staticmethod
     def _create_cust(c):
