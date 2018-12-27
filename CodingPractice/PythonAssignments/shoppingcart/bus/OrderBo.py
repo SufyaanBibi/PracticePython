@@ -27,13 +27,16 @@ class OrderBo:
         self._product_dao = product_dao
 
     def get_gross_for_order(self, order, vat_rate):
-        price_before_vat = 0
+        gross = 0
         for order_line in order.get_order_lines():
             prod_dao = self._product_dao.get_product_by_id(order_line.get_product_id())
             prod_price = prod_dao.get_price()
             quantity = order_line.get_qty()
-            price_before_vat += (prod_price * quantity)
-        gross = price_before_vat + (price_before_vat * (vat_rate / 100))
+            price_before_vat = (prod_price * quantity)
+            if prod_dao.is_vatable():
+                gross += price_before_vat + (price_before_vat * (vat_rate / 100))
+            else:
+                gross += price_before_vat
         return gross
 
     def get_order_total_by_order_id(self, order_id, vat_rate):

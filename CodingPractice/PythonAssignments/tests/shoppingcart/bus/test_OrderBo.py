@@ -19,7 +19,7 @@ class TestOrderBo(unittest.TestCase):
 
     def test_02_get_multiple_order_total_by_id(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(204.23999999999998, a.get_order_total_by_order_id(5, 20))
+        self.assertEqual(204.24, a.get_order_total_by_order_id(5, 20))
 
     def test_03_order_id_does_not_exist(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
@@ -90,7 +90,7 @@ class TestOrderBo(unittest.TestCase):
 
     def test_17_get_multiple_total_by_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(469.20000000000005, a.get_order_total_by_month(11, 20))
+        self.assertEqual(427.08000000000004, a.get_order_total_by_month(11, 20))
 
     def test_18_no_orders_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
@@ -107,6 +107,10 @@ class TestOrderBo(unittest.TestCase):
         with self.assertRaises(InvalidMonth) as e:
             a.get_order_total_by_month(45, 20)
         self.assertEqual('Month number 45 is invalid.', e.exception.message)
+
+    def test_21_get_order_with_no_vatable_objects(self):
+        a = OrderBo(OrderJsonDao(), ProductJsonDao())
+        self.assertEqual(40.2, a.get_order_total_by_order_id(9, 20))
 
 
 if __name__ == '__main__':

@@ -69,6 +69,23 @@
       "order_timestamp": "2018-06-25 10:55:10",
       "order_lines": [
       ]
+    },
+    {
+      "order_id": 9,
+      "customer_id": 420,
+      "order_timestamp": "2018-03-25 10:55:10",
+      "order_lines": [
+        {
+          "order_id": 9,
+          "product_id": 4,
+          "qty": 1
+        },
+        {
+          "order_id": 9,
+          "product_id": 2,
+          "qty": 1
+        }
+      ]
     }
   ]
 }

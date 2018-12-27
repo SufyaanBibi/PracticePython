@@ -7,7 +7,7 @@ class TestOrderJsonDao(unittest.TestCase):
     def test_00_get_orders(self):
         odr = OrderJsonDao()
         e = odr.get_orders()
-        self.assertEqual(5, len(e))
+        self.assertEqual(6, len(e))
 
     def test_01_get_order_by_order_id(self):
         order_lines = OrderLineDto(order_id=7, product_id=3, qty=10)
