@@ -70,9 +70,12 @@ class TestOrderBo(unittest.TestCase):
 
     def test_13_get_multiple_orders_by_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual([OrderDto(1, 101, "2018-11-25 11:45:15", [OrderLineDto(1, 1, 1),  OrderLineDto(1, 2, 3)]),
-                          OrderDto(2, 101, "2018-11-30 11:45:15", [OrderLineDto(2, 1, 1), OrderLineDto(2, 2, 3)]),
-                          OrderDto(5, 102, "2018-11-15 10:45:15", [OrderLineDto(5, 5, 1), OrderLineDto(5, 6, 1)])],
+        self.assertEqual([OrderDto(order_id=1, customer_id=101, order_timestamp="2018-11-25 11:45:15",
+                                   order_lines=[OrderLineDto(1, 1, 1),  OrderLineDto(1, 2, 3)]),
+                          OrderDto(order_id=2, customer_id=101, order_timestamp="2018-11-30 11:45:15",
+                                   order_lines=[OrderLineDto(2, 1, 1), OrderLineDto(2, 2, 3)]),
+                          OrderDto(order_id=5, customer_id=102, order_timestamp="2018-11-15 10:45:15",
+                                   order_lines=[OrderLineDto(5, 5, 1), OrderLineDto(5, 6, 1)])],
                          a.get_orders_by_month(11))
 
     def test_14_invalid_month(self):
