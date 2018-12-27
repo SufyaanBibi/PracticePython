@@ -65,19 +65,19 @@ class CustomerDetailsTest(unittest.TestCase):
         self.assertEqual('UK', a.get_iso_country_code())
 
     def test_04_json_in_mk_customers_function(self):
-        j = json_file('customers.json')
+        j = json_file('../resources/customers.json')
         custs = make_customers_from_json(j)
         self.assertEqual(4, len(custs))
 
     def test_05_make_customers_from_json(self):
-        j = json_file('customers.json')
+        j = json_file('../resources/customers.json')
         custs = make_customers_from_json(j)
         expected = CustomerDto(101, 'Spooky', 'Dogg', 'M', '10', '2008-04-02', 'spooky.dogg@burbage.rd.com',
                             '11/25', 'UK')
         self.assertEqual(expected, custs[0])
 
     def test_06_sort_customers(self):
-        j = json_file('customers.json')
+        j = json_file('../resources/customers.json')
         custs = make_customers_from_json(j)
         expected = CustomerDto(103, 'Lulu', 'Catz', 'M', '13', '2005-01-23', 'lulu@whats-in-the-bag.com',
                             '11/20', 'USA')

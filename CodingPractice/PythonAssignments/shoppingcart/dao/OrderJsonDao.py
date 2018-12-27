@@ -6,14 +6,8 @@ import json
 class OrderJsonDao(OrderDao):
 
     @staticmethod
-    def _get_file_path(fn):
-        import os
-        return os.path.join(os.path.dirname(__file__), fn)
-
-    @staticmethod
-    def _get_json(file_name):
-        fn = OrderJsonDao._get_file_path(file_name)
-        with open(fn, 'r') as f:
+    def _get_json(json_file_path):
+        with open(json_file_path, 'r') as f:
             return json.load(f)
 
     @staticmethod
@@ -34,8 +28,11 @@ class OrderJsonDao(OrderDao):
             orders.append(OrderJsonDao._create_order(order, order_lines))
         return orders
 
+    def __init__(self, json_file_path):
+        self._json_file_path = json_file_path
+
     def get_orders(self):
-        jf = OrderJsonDao._get_json('orders.json')
+        jf = OrderJsonDao._get_json(self._json_file_path)
         return OrderJsonDao._make_orders_from_json(jf)
 
     def get_order_by_order_id(self, order_id):

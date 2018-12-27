@@ -6,14 +6,8 @@ from CodingPractice.PythonAssignments.shoppingcart.dao.ProductDao import *
 class ProductJsonDao(ProductDao):
 
     @staticmethod
-    def _get_file_path(fn):
-        import os
-        return os.path.join(os.path.dirname(__file__), fn)
-
-    @staticmethod
-    def _get_json(file_name):
-        fn = ProductJsonDao._get_file_path(file_name)
-        with open(fn, 'r') as f:
+    def _get_json(json_file_path):
+        with open(json_file_path, 'r') as f:
             return json.load(f)
 
     @staticmethod
@@ -27,8 +21,11 @@ class ProductJsonDao(ProductDao):
     def _create_product(p):
         return ProductDto(p["product_id"], p["name"], p["price"], p["weight"], p["stock_qty"], p["vatable"])
 
+    def __init__(self, json_file_path):
+        self._json_file_path = json_file_path
+
     def get_products(self):
-        jf = ProductJsonDao._get_json('products.json')
+        jf = ProductJsonDao._get_json(self._json_file_path)
         return ProductJsonDao.make_products_from_json(jf)
 
     def get_product_by_id(self, product_id):
