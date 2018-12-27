@@ -33,7 +33,7 @@ class OrderBo:
             prod_price = prod_dao.get_price()
             quantity = order_line.get_qty()
             price_before_vat = (prod_price * quantity)
-            if prod_dao.get_vatable():
+            if prod_dao.is_vatable():
                 gross += price_before_vat + (price_before_vat * (vat_rate / 100))
             else:
                 gross += price_before_vat

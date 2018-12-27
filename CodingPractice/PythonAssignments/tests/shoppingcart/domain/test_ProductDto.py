@@ -20,7 +20,7 @@ class ProductDtoTest(unittest.TestCase):
         self.assertEqual(5.1, a.get_price())
         self.assertEqual(100, a.get_weight())
         self.assertEqual(1000, a.get_stock_qty())
-        self.assertEqual(True, a.get_vatable())
+        self.assertEqual(True, a.is_vatable())
 
 
 if __name__ == '__main__':
