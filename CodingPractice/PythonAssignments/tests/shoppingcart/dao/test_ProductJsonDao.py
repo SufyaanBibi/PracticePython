@@ -31,16 +31,16 @@ class TestProductJsonDao(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_04_get_prods_by_ge_price(self):
-        p1 = ProductDto(3, "SuperShinyWidget", 135.1, 15, 10)
-        p2 = ProductDto(6, "SuperShinyGrommet", 135.1, 12, 10)
+        p1 = ProductDto(3, "SuperShinyWidget", 135.1, 150, 10)
+        p2 = ProductDto(6, "SuperShinyGrommet", 135.1, 1200, 10)
         expected = [p1, p2]
         p = ProductJsonDao()
         actual = p.get_products_ge_price(100)
         self.assertEqual(expected, actual)
 
     def test_05_get_prods_by_stock_qty(self):
-        p1 = ProductDto(3, "SuperShinyWidget", 135.1, 15, 10)
-        p2 = ProductDto(6, "SuperShinyGrommet", 135.1, 12, 10)
+        p1 = ProductDto(3, "SuperShinyWidget", 135.1, 150, 10)
+        p2 = ProductDto(6, "SuperShinyGrommet", 135.1, 1200, 10)
         expected = [p1, p2]
         p = ProductJsonDao()
         actual = p.get_products_le_stock_qty(50)
