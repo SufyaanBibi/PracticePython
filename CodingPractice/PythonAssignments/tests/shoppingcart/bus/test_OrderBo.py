@@ -1,4 +1,5 @@
 import unittest
+from decimal import *
 from CodingPractice.PythonAssignments.shoppingcart.bus.OrderBo import OrderBo, OrderIdNonexistent, VatNegative, \
     InvalidMonth
 from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
@@ -15,11 +16,11 @@ class TestOrderBo(unittest.TestCase):
 
     def test_01_get_order_total_by_order_id(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(1621.2, a.get_order_total_by_order_id(7, 20))
+        self.assertEqual(Decimal('1621.20'), a.get_order_total_by_order_id(7, 20))
 
     def test_02_get_multiple_order_total_by_id(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(204.24, a.get_order_total_by_order_id(5, 20))
+        self.assertEqual(Decimal('204.24'), a.get_order_total_by_order_id(5, 20))
 
     def test_03_order_id_does_not_exist(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
@@ -43,7 +44,7 @@ class TestOrderBo(unittest.TestCase):
 
     def test_07_get_order_total_by_cust_id(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(1621.2, a.get_order_total_by_customer_id(103, 20))
+        self.assertEqual(Decimal('1621.20'), a.get_order_total_by_customer_id(103, 20))
 
     def test_08_cust_id_has_no_orders(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
@@ -90,7 +91,7 @@ class TestOrderBo(unittest.TestCase):
 
     def test_17_get_multiple_total_by_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(427.08000000000004, a.get_order_total_by_month(11, 20))
+        self.assertEqual(Decimal('427.08'), a.get_order_total_by_month(11, 20))
 
     def test_18_no_orders_month(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
@@ -110,7 +111,7 @@ class TestOrderBo(unittest.TestCase):
 
     def test_21_get_order_with_no_vatable_objects(self):
         a = OrderBo(OrderJsonDao(), ProductJsonDao())
-        self.assertEqual(40.2, a.get_order_total_by_order_id(9, 20))
+        self.assertEqual(Decimal('40.20'), a.get_order_total_by_order_id(9, 20))
 
 
 if __name__ == '__main__':

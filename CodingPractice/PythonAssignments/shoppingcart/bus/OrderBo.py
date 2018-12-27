@@ -1,3 +1,4 @@
+from decimal import *
 
 
 class OrderIdNonexistent(Exception):
@@ -26,6 +27,13 @@ class OrderBo:
         self._order_dao = order_dao
         self._product_dao = product_dao
 
+    pence = Decimal('.01')
+
+    @staticmethod
+    def quantize(float_number):
+        deci = Decimal(float_number)
+        return deci.quantize(OrderBo.pence, rounding=ROUND_HALF_UP)
+
     def get_gross_for_order(self, order, vat_rate):
         gross = 0
         for order_line in order.get_order_lines():
@@ -37,7 +45,7 @@ class OrderBo:
                 gross += price_before_vat + (price_before_vat * (vat_rate / 100))
             else:
                 gross += price_before_vat
-        return gross
+        return self.quantize(gross)
 
     def get_order_total_by_order_id(self, order_id, vat_rate):
         if vat_rate < 0:
