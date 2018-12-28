@@ -1,20 +1,9 @@
-import json
+from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDao import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDetailsDao import *
 
 
-class CustomerJsonDao(CustomerDao):
-
-    @staticmethod
-    def _get_file_path(fn):
-        import os
-        return os.path.join(os.path.dirname(__file__), fn)
-
-    @staticmethod
-    def _get_json(file_name):
-        fn = CustomerJsonDao._get_file_path(file_name)
-        with open(fn, 'r') as f:
-            return json.load(f)
+class CustomerJsonDao(CustomerDao, JsonFileReader):
 
     @staticmethod
     def _create_cust(c):
@@ -23,14 +12,17 @@ class CustomerJsonDao(CustomerDao):
                            c["iso_country_code"])
 
     @staticmethod
-    def make_customers_from_json(j):
+    def _make_customers_from_json(j):
         custs = []
         for cust in j["customers"]:
             custs.append(CustomerJsonDao._create_cust(cust))
         return custs
 
+    def __init__(self, json_file_path):
+        self._json_file_path = json_file_path
+
     def get_customers(self):
-        jf = CustomerJsonDao._get_json('customers.json')
+        jf = CustomerJsonDao._get_json(self._json_file_path)
         return make_customers_from_json(jf)
 
     def get_customer_by_id(self, customer_id):
