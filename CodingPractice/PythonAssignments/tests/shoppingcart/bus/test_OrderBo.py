@@ -4,6 +4,17 @@ from CodingPractice.PythonAssignments.shoppingcart.bus.OrderBo import OrderBo, O
     InvalidMonth
 from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerJsonDao import *
+
+postage_matrix = [('UK',  '1kg', '1st Class', 3.45),
+                  ('UK',  '1kg', '2nd Class', 2.95),
+                  ('UK',  '2kg', '1st Class', 5.50),
+                  ('UK',  '2kg', '2nd Class', 2.95),
+                  ('USA', '1kg', '1st Class', 8.45),
+                  ('USA', '1kg', '2nd Class', 7.95),
+                  ('USA', '2kg', '1st Class', 15.50),
+                  ('USA', '2kg', '2nd Class', 12.95)
+                  ]
 
 
 class TestOrderBo(unittest.TestCase):
@@ -13,13 +24,16 @@ class TestOrderBo(unittest.TestCase):
         dirname = os.path.dirname(__file__)
         ordFp = os.path.join(dirname, '../resources/orders.json')
         prodFp = os.path.join(dirname, '../resources/products.json')
+        custFp = os.path.join(dirname, '../resources/customers.json')
         orderJsonDao = OrderJsonDao(ordFp)
         prodJsonDao = ProductJsonDao(prodFp)
-        self._orderBo = OrderBo(orderJsonDao, prodJsonDao)
+        custJsonDao = CustomerJsonDao(custFp)
+        self._orderBo = OrderBo(orderJsonDao, prodJsonDao, custJsonDao, postage_matrix)
 
     def test_00_order_bo_instantiates(self):
         try:
-            a = OrderBo(OrderJsonDao('../resources/orders.json'), ProductJsonDao('../resources/products.json'))
+            a = OrderBo(OrderJsonDao('../resources/orders.json'), ProductJsonDao('../resources/products.json'),
+                        CustomerJsonDao('../resources/customers.json'), postage_matrix)
         except Exception:
             self.fail("Insantiation incorrectly raised exception")
 

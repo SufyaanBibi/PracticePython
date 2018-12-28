@@ -23,9 +23,11 @@ class InvalidMonth(Exception):
 
 class OrderBo:
 
-    def __init__(self, order_dao, product_dao):
+    def __init__(self, order_dao, product_dao, cust_dao, postage_matrix):
         self._order_dao = order_dao
         self._product_dao = product_dao
+        self._cust_dao = cust_dao
+        self._postage_matrix = postage_matrix
 
     pence = Decimal('.01')
 
