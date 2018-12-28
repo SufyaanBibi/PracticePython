@@ -11,7 +11,8 @@ class OrderJsonDao(OrderDao, JsonFileReader):
 
     @staticmethod
     def _create_order(order, order_lines):
-        return OrderDto(order["order_id"], order["customer_id"], order["order_timestamp"], order_lines)
+        return OrderDto(order["order_id"], order["customer_id"], order["order_timestamp"], order["postage_class"],
+                        order_lines)
 
     @staticmethod
     def _make_orders_from_json(j):

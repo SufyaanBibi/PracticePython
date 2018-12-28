@@ -63,15 +63,16 @@ class TestOrderBo(unittest.TestCase):
         self.assertEqual('In customer ID 103 invalid VAT passed: -1', e.exception.message)
 
     def test_12_get_orders_by_month(self):
-        self.assertEqual([OrderDto(8, 120, '2018-06-25 10:55:10', [])], self._orderBo.get_orders_by_month(6))
+        self.assertEqual([OrderDto(order_id=8, customer_id=120, order_timestamp='2018-06-25 10:55:10',
+                                   postage=2, order_lines=[])], self._orderBo.get_orders_by_month(6))
 
     def test_13_get_multiple_orders_by_month(self):
         self.assertEqual([OrderDto(order_id=1, customer_id=101, order_timestamp="2018-11-25 11:45:15",
-                                   order_lines=[OrderLineDto(1, 1, 1),  OrderLineDto(1, 2, 3)]),
+                                   postage=1, order_lines=[OrderLineDto(1, 1, 1),  OrderLineDto(1, 2, 3)]),
                           OrderDto(order_id=2, customer_id=101, order_timestamp="2018-11-30 11:45:15",
-                                   order_lines=[OrderLineDto(2, 1, 1), OrderLineDto(2, 2, 3)]),
+                                   postage=2, order_lines=[OrderLineDto(2, 1, 1), OrderLineDto(2, 2, 3)]),
                           OrderDto(order_id=5, customer_id=102, order_timestamp="2018-11-15 10:45:15",
-                                   order_lines=[OrderLineDto(5, 5, 1), OrderLineDto(5, 6, 1)])],
+                                   postage=1, order_lines=[OrderLineDto(5, 5, 1), OrderLineDto(5, 6, 1)])],
                          self._orderBo.get_orders_by_month(11))
 
     def test_14_invalid_month(self):
