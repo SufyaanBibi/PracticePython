@@ -136,8 +136,7 @@ class OrderBo:
             product = self._product_dao.get_product_by_id(p_id)
             product_weight = product.get_weight()
             weight += product_weight * qty
-        postage_rate = self._get_postage_rate(iso_code, weight, postage)
-        return postage_rate
+        return self._get_postage_rate(iso_code, weight, postage)
 
     def _get_postage_rate(self, iso_country_code, weight, postage_class):
         if weight < 1000:
