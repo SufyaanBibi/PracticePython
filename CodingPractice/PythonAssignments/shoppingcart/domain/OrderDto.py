@@ -1,15 +1,16 @@
 
 class OrderDto:
 
-    def __init__(self, order_id, customer_id, order_timestamp, order_lines):
+    def __init__(self, order_id, customer_id, order_timestamp, postage, order_lines):
         self._order_id = order_id
         self._customer_id = customer_id
         self._order_timestamp = order_timestamp
+        self._postage = postage
         self._order_lines = order_lines
 
     def __eq__(self, other):
         return self._order_id == other._order_id and self._customer_id == other._customer_id and self._order_timestamp \
-               == other._order_timestamp and self._order_lines == other._order_lines
+               == other._order_timestamp and self._postage == other._postage and self._order_lines == other._order_lines
 
     def get_order_id(self):
         return self._order_id
@@ -22,6 +23,9 @@ class OrderDto:
 
     def get_order_lines(self):
         return self._order_lines
+
+    def get_postage(self):
+        return self._postage
 
 
 class OrderLineDto:

@@ -23,9 +23,37 @@ class InvalidMonth(Exception):
 
 class OrderBo:
 
-    def __init__(self, order_dao, product_dao):
+    def __init__(self, order_dao, product_dao, cust_dao, postage_matrix):
         self._order_dao = order_dao
         self._product_dao = product_dao
+        self._cust_dao = cust_dao
+        self._postage_matrix = self.convert_postage_matrix(postage_matrix)
+
+    @staticmethod
+    def convert_postage_matrix(postage_matrix):
+        result = []
+        for country, weight, postage_class, price in postage_matrix:
+            if weight == '1kg' and postage_class == '1st Class':
+                new_weight = 1000
+                new_postage_class = 1
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
+            elif weight == '1kg' and postage_class == '2nd Class':
+                new_weight = 1000
+                new_postage_class = 2
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
+            elif weight == '2kg' and postage_class == '1st Class':
+                new_weight = 2000
+                new_postage_class = 1
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
+            elif weight == '2kg' and postage_class == '2nd Class':
+                new_weight = 2000
+                new_postage_class = 2
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
+        return result
 
     pence = Decimal('.01')
 
@@ -34,7 +62,7 @@ class OrderBo:
         deci = Decimal(float_number)
         return deci.quantize(OrderBo.pence, rounding=ROUND_HALF_UP)
 
-    def get_gross_for_order(self, order, vat_rate):
+    def _get_gross_for_order(self, order, vat_rate):
         gross = 0
         for order_line in order.get_order_lines():
             prod_dao = self._product_dao.get_product_by_id(order_line.get_product_id())
@@ -52,7 +80,7 @@ class OrderBo:
             raise VatNegative(f'In order ID {order_id} invalid VAT passed: {vat_rate}')
         order = self._order_dao.get_order_by_order_id(order_id)
         if order:
-            return self.get_gross_for_order(order, vat_rate)
+            return self._get_gross_for_order(order, vat_rate)
         else:
             raise OrderIdNonexistent(f'Order ID {order_id} does not exist.')
 
@@ -63,7 +91,7 @@ class OrderBo:
         gross_price = 0
         if orders:
             for order in orders:
-                gross_price += self.get_gross_for_order(order, vat_rate)
+                gross_price += self._get_gross_for_order(order, vat_rate)
         return gross_price
 
     def get_orders_by_month(self, month_number):
@@ -88,5 +116,34 @@ class OrderBo:
         gross_price = 0
         if orders:
             for order in orders:
-                gross_price += self.get_gross_for_order(order, vat_rate)
+                gross_price += self._get_gross_for_order(order, vat_rate)
         return gross_price
+
+    def get_postage_cost_by_order_id(self, order_id):
+        order = self._order_dao.get_order_by_order_id(order_id)
+        c_id = order.get_customer_id()
+        postage = order.get_postage()
+        cust = self._cust_dao.get_customer_by_id(c_id)
+        iso_code = cust.get_iso_country_code()
+        order_lines = order.get_order_lines()
+        return self._get_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
+
+    def _get_order_weight(self, order_lines):
+        weight = 0
+        for order_line in order_lines:
+            p_id = order_line.get_product_id()
+            qty = order_line.get_qty()
+            product = self._product_dao.get_product_by_id(p_id)
+            product_weight = product.get_weight()
+            weight += product_weight * qty
+        return weight
+
+    def _get_postage_rate(self, iso_country_code, weight, postage_class):
+        if weight < 1000:
+            weight = 1000
+        elif weight > 1000:
+            weight = 2000
+        for c_c, w, p_c, rate in self._postage_matrix:
+            if c_c == iso_country_code and w == weight and p_c == postage_class:
+                return rate
+
