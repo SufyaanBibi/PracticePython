@@ -55,8 +55,6 @@ class OrderBo:
                 result.append(t)
         return result
 
-
-
     pence = Decimal('.01')
 
     @staticmethod
@@ -64,7 +62,7 @@ class OrderBo:
         deci = Decimal(float_number)
         return deci.quantize(OrderBo.pence, rounding=ROUND_HALF_UP)
 
-    def get_gross_for_order(self, order, vat_rate):
+    def _get_gross_for_order(self, order, vat_rate):
         gross = 0
         for order_line in order.get_order_lines():
             prod_dao = self._product_dao.get_product_by_id(order_line.get_product_id())
@@ -82,7 +80,7 @@ class OrderBo:
             raise VatNegative(f'In order ID {order_id} invalid VAT passed: {vat_rate}')
         order = self._order_dao.get_order_by_order_id(order_id)
         if order:
-            return self.get_gross_for_order(order, vat_rate)
+            return self._get_gross_for_order(order, vat_rate)
         else:
             raise OrderIdNonexistent(f'Order ID {order_id} does not exist.')
 
@@ -93,7 +91,7 @@ class OrderBo:
         gross_price = 0
         if orders:
             for order in orders:
-                gross_price += self.get_gross_for_order(order, vat_rate)
+                gross_price += self._get_gross_for_order(order, vat_rate)
         return gross_price
 
     def get_orders_by_month(self, month_number):
@@ -118,7 +116,7 @@ class OrderBo:
         gross_price = 0
         if orders:
             for order in orders:
-                gross_price += self.get_gross_for_order(order, vat_rate)
+                gross_price += self._get_gross_for_order(order, vat_rate)
         return gross_price
 
     def get_postage_cost_by_order_id(self, order_id):
@@ -128,6 +126,9 @@ class OrderBo:
         cust = self._cust_dao.get_customer_by_id(c_id)
         iso_code = cust.get_iso_country_code()
         order_lines = order.get_order_lines()
+        return self._get_weight_and_postage_rate(postage, iso_code, order_lines)
+
+    def _get_weight_and_postage_rate(self, postage, iso_code, order_lines):
         weight = 0
         for order_line in order_lines:
             p_id = order_line.get_product_id()
