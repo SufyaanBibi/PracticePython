@@ -126,9 +126,9 @@ class OrderBo:
         cust = self._cust_dao.get_customer_by_id(c_id)
         iso_code = cust.get_iso_country_code()
         order_lines = order.get_order_lines()
-        return self._get_weight_and_postage_rate(postage, iso_code, order_lines)
+        return self._get_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
 
-    def _get_weight_and_postage_rate(self, postage, iso_code, order_lines):
+    def _get_order_weight(self, order_lines):
         weight = 0
         for order_line in order_lines:
             p_id = order_line.get_product_id()
@@ -136,7 +136,7 @@ class OrderBo:
             product = self._product_dao.get_product_by_id(p_id)
             product_weight = product.get_weight()
             weight += product_weight * qty
-        return self._get_postage_rate(iso_code, weight, postage)
+        return weight
 
     def _get_postage_rate(self, iso_country_code, weight, postage_class):
         if weight < 1000:
