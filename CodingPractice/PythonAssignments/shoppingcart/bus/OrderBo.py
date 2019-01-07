@@ -36,25 +36,18 @@ class OrderBo:
             if weight == '1kg' and postage_class == '1st Class':
                 new_weight = 1000
                 new_postage_class = 1
-                t = (country, new_weight, new_postage_class)
-                postage_dict[t] = price
             elif weight == '1kg' and postage_class == '2nd Class':
                 new_weight = 1000
                 new_postage_class = 2
-                t = (country, new_weight, new_postage_class)
-                postage_dict[t] = price
             elif weight == '2kg' and postage_class == '1st Class':
                 new_weight = 2000
                 new_postage_class = 1
-                t = (country, new_weight, new_postage_class)
-                postage_dict[t] = price
             elif weight == '2kg' and postage_class == '2nd Class':
                 new_weight = 2000
                 new_postage_class = 2
-                t = (country, new_weight, new_postage_class)
-                postage_dict[t] = price
+            t = (country, new_weight, new_postage_class)
+            postage_dict[t] = price
         return postage_dict
-
 
     pence = Decimal('.01')
 
