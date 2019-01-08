@@ -27,10 +27,10 @@ class OrderBo:
         self._order_dao = order_dao
         self._product_dao = product_dao
         self._cust_dao = cust_dao
-        self._postage_matrix = self._new_postage_matrix(postage_matrix)
+        self._postage_matrix = self._make_dict_from_postage_matrix(postage_matrix)
 
     @staticmethod
-    def _new_postage_matrix(postage_matrix):
+    def _make_dict_from_postage_matrix(postage_matrix):
         postage_dict = {}
         for country, weight, postage_class, price in postage_matrix:
             if weight == '1kg' and postage_class == '1st Class':

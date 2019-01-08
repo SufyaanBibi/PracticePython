@@ -145,7 +145,7 @@ class TestOrderBo(unittest.TestCase):
                     ('USA', 2000, 1): 15.5,
                     ('USA', 2000, 2): 12.95
                     }
-        self.assertEqual(expected, self._orderBo._new_postage_matrix(postage_matrix))
+        self.assertEqual(expected, self._orderBo._make_dict_from_postage_matrix(postage_matrix))
 
 
 if __name__ == '__main__':
