@@ -36,24 +36,18 @@ class OrderBo:
             if weight == '1kg' and postage_class == '1st Class':
                 new_weight = 1000
                 new_postage_class = 1
-                t = (country, new_weight, new_postage_class, price)
-                result.append(t)
             elif weight == '1kg' and postage_class == '2nd Class':
                 new_weight = 1000
                 new_postage_class = 2
-                t = (country, new_weight, new_postage_class, price)
-                result.append(t)
             elif weight == '2kg' and postage_class == '1st Class':
                 new_weight = 2000
                 new_postage_class = 1
-                t = (country, new_weight, new_postage_class, price)
-                result.append(t)
             elif weight == '2kg' and postage_class == '2nd Class':
                 new_weight = 2000
                 new_postage_class = 2
-                t = (country, new_weight, new_postage_class, price)
-                result.append(t)
-        return result
+            t = (country, new_weight, new_postage_class)
+            postage_dict[t] = price
+        return postage_dict
 
     pence = Decimal('.01')
 
@@ -143,7 +137,5 @@ class OrderBo:
             weight = 1000
         elif weight > 1000:
             weight = 2000
-        for c_c, w, p_c, rate in self._postage_matrix:
-            if c_c == iso_country_code and w == weight and p_c == postage_class:
-                return rate
-
+        key = (iso_country_code, weight, postage_class)
+        return self._postage_matrix[key]
