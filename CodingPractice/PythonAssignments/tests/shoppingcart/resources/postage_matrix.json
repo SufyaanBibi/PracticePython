@@ -1,0 +1,52 @@
+{
+  "postage_matrix" : [
+    {
+      "country_iso_code" : "UK",
+      "weight" : "1kg",
+      "postage_class" : "1st Class",
+      "rate" : 3.45
+    },
+    {
+      "country_iso_code" : "UK",
+      "weight" : "1kg",
+      "postage_class" : "2st Class",
+      "rate" : 2.95
+    },
+    {
+      "country_iso_code" : "UK",
+      "weight" : "2kg",
+      "postage_class" : "1st Class",
+      "rate" : 5.50
+    },
+    {
+      "country_iso_code" : "UK",
+      "weight" : "2kg",
+      "postage_class" : "2nd Class",
+      "rate" : 2.95
+    },
+    {
+      "country_iso_code" : "USA",
+      "weight" : "1kg",
+      "postage_class" : "1st Class",
+      "rate" : 8.45
+    },
+    {
+      "country_iso_code" : "USA",
+      "weight" : "1kg",
+      "postage_class" : "2nd Class",
+      "rate" : 7.95
+    },
+    {
+      "country_iso_code" : "USA",
+      "weight" : "2kg",
+      "postage_class" : "1st Class",
+      "rate" : 15.50
+    },
+    {
+      "country_iso_code" : "USA",
+      "weight" : "2kg",
+      "postage_class" : "2nd Class",
+      "rate" : 12.95
+    }
+  ]
+}
