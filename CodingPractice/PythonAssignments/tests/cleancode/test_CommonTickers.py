@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.cleancode.CommonTickers import *
+from CodingPractice.PythonAssignments.cleancode.StockExchangeUtils import common_tickers
 
 
 class CommonTickersTests(unittest.TestCase):

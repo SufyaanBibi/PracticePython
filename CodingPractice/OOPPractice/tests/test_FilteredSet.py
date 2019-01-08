@@ -70,7 +70,6 @@ class TestWrappedSet(unittest.TestCase):
 
         self.assertEqual({5}, a.get())
 
-
     def test_out_of_bounds(self):
         def limit_boundries(e):
             return e >= 1 and e <= 10

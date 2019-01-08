@@ -11,7 +11,7 @@ class BankAccount:
 
     @staticmethod
     def quantize(deci):
-        return deci.quantize(BankAccount.pence, rounding= ROUND_HALF_UP)
+        return deci.quantize(BankAccount.pence, rounding=ROUND_HALF_UP)
 
     def __add__(self, ammount):
         new_balance = self._balance + Decimal(ammount)
