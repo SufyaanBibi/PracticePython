@@ -27,27 +27,33 @@ class OrderBo:
         self._order_dao = order_dao
         self._product_dao = product_dao
         self._cust_dao = cust_dao
-        self._postage_matrix = self._new_postage_matrix(postage_matrix)
+        self._postage_matrix = self.convert_postage_matrix(postage_matrix)
 
     @staticmethod
-    def _new_postage_matrix(postage_matrix):
-        postage_dict = {}
+    def convert_postage_matrix(postage_matrix):
+        result = []
         for country, weight, postage_class, price in postage_matrix:
             if weight == '1kg' and postage_class == '1st Class':
                 new_weight = 1000
                 new_postage_class = 1
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
             elif weight == '1kg' and postage_class == '2nd Class':
                 new_weight = 1000
                 new_postage_class = 2
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
             elif weight == '2kg' and postage_class == '1st Class':
                 new_weight = 2000
                 new_postage_class = 1
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
             elif weight == '2kg' and postage_class == '2nd Class':
                 new_weight = 2000
                 new_postage_class = 2
-            t = (country, new_weight, new_postage_class)
-            postage_dict[t] = price
-        return postage_dict
+                t = (country, new_weight, new_postage_class, price)
+                result.append(t)
+        return result
 
     pence = Decimal('.01')
 
@@ -137,5 +143,7 @@ class OrderBo:
             weight = 1000
         elif weight > 1000:
             weight = 2000
-        key = (iso_country_code, weight, postage_class)
-        return self._postage_matrix[key]
+        for c_c, w, p_c, rate in self._postage_matrix:
+            if c_c == iso_country_code and w == weight and p_c == postage_class:
+                return rate
+
