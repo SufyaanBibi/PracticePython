@@ -1,24 +1,51 @@
-'''def test_22_get_postage_rate(self):
-    expected = 3.45
-    actual = self._orderBo._get_postage_rate('UK', 1000, 1)
-    self.assertEqual(expected, actual)
+import unittest
+from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateJsonDao import *
 
 
-def test_23_weight_under_1000g(self):
-    expected = 3.45
-    actual = self._orderBo._get_postage_rate('UK', 900, 1)
-    self.assertEqual(expected, actual)
+class TestPostageJsonDao(unittest.TestCase):
 
-    def test_26_postage_matrix_dict(self):
-        expected = {('UK', 1000, 1): 3.45,
-                    ('UK', 1000, 2): 2.95,
-                    ('UK', 2000, 1): 5.5,
-                    ('UK', 2000, 2): 2.95,
-                    ('USA', 1000, 1): 8.45,
-                    ('USA', 1000, 2): 7.95,
-                    ('USA', 2000, 1): 15.5,
-                    ('USA', 2000, 2): 12.95
-                    }
-        self.assertEqual(expected, self._orderBo._make_dict_from_postage_matrix(postage_matrix))
+    def setUp(self):
+        import os
+        dirname = os.path.dirname(__file__)
+        fp = os.path.join(dirname, '../resources/postage_matrix.json')
+        self._postDao = PostageRateJsonDao(fp)
 
-'''
+    def test_00_get_postage_matrix(self):
+        expected = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+        actual = self._postDao.get_postage_rates()
+        self.assertEqual(expected, actual[0])
+        self.assertEqual(8, len(actual))
+
+    def test_01_get_postages_by_country_iso_code(self):
+        p1 = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+        p2 = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='2nd Class', rate=2.95)
+        p3 = PostageRateDto(country_iso_code='UK', weight='2kg', postage_class='1st Class', rate=5.50)
+        p4 = PostageRateDto(country_iso_code='UK', weight='2kg', postage_class='2nd Class', rate=2.95)
+        expected = [p1, p2, p3, p4]
+        actual = self._postDao.get_postage_rates_by_iso_country_code('UK')
+        self.assertEqual(expected, actual)
+
+    def test_02_get_postages_by_weight(self):
+        p1 = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+        p2 = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='2nd Class', rate=2.95)
+        p3 = PostageRateDto(country_iso_code='USA', weight='1kg', postage_class='1st Class', rate=8.45)
+        p4 = PostageRateDto(country_iso_code='USA', weight='1kg', postage_class='2nd Class', rate=7.95)
+        expected = [p1, p2, p3, p4]
+        actual = self._postDao.get_postage_rates_by_weight('1kg')
+        self.assertEqual(expected, actual)
+
+    def test_03_get_postages_by_postage_class(self):
+        p1 = PostageRateDto(country_iso_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+        p2 = PostageRateDto(country_iso_code='UK', weight='2kg', postage_class='1st Class', rate=5.50)
+        p3 = PostageRateDto(country_iso_code='USA', weight='1kg', postage_class='1st Class', rate=8.45)
+        p4 = PostageRateDto(country_iso_code='USA', weight='2kg', postage_class='1st Class', rate=15.50)
+        expected = [p1, p2, p3, p4]
+        actual = self._postDao.get_postage_rates_by_postage_class('1st Class')
+        self.assertEqual(expected, actual)
+
+    def test_04_get_postage_rate(self):
+        self.assertEqual(3.45, self._postDao.get_postage_rate(iso_country_code='UK', weight=1000, postage_class=1))
+
+
+if __name__ == '__main__':
+    unittest.main()
