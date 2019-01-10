@@ -18,3 +18,7 @@ class CustomerDao(ABC):
     @abstractmethod
     def get_customers_by_iso_country_code(self, iso_country_code):
         return
+
+    @abstractmethod
+    def create_customer(self, customerDto):
+        return

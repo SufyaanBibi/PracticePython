@@ -48,7 +48,7 @@ class TestOrderBo(unittest.TestCase):
     def test_03_order_id_does_not_exist(self):
         with self.assertRaises(OrderIdNonexistent) as e:
             self._orderBo.get_order_total_by_order_id(19, 20)
-        self.assertEqual('Order ID 19 does not exist.', e.exception.message)
+        self.assertEqual('Order ID 19 does not exist.', e.exception._message)
 
     def test_04_no_order_lines(self):
         self.assertEqual(0, self._orderBo.get_order_total_by_order_id(8, 20))
@@ -59,7 +59,7 @@ class TestOrderBo(unittest.TestCase):
     def test_06_VAT_is_negative(self):
         with self.assertRaises(VatNegative) as e:
             self._orderBo.get_order_total_by_order_id(8, -1)
-        self.assertEqual('In order ID 8 invalid VAT passed: -1', e.exception.message)
+        self.assertEqual('In order ID 8 invalid VAT passed: -1', e.exception._message)
 
     def test_07_get_order_total_by_cust_id(self):
         self.assertEqual(Decimal('1621.20'), self._orderBo.get_order_total_by_customer_id(103, 20))
@@ -76,7 +76,7 @@ class TestOrderBo(unittest.TestCase):
     def test_11_VAT_is_negative(self):
         with self.assertRaises(VatNegative) as e:
             self._orderBo.get_order_total_by_customer_id(103, -1)
-        self.assertEqual('In customer ID 103 invalid VAT passed: -1', e.exception.message)
+        self.assertEqual('In customer ID 103 invalid VAT passed: -1', e.exception._message)
 
     def test_12_get_orders_by_month(self):
         self.assertEqual([OrderDto(order_id=8, customer_id=120, order_timestamp='2018-06-25 10:55:10',
@@ -94,7 +94,7 @@ class TestOrderBo(unittest.TestCase):
     def test_14_invalid_month(self):
         with self.assertRaises(InvalidMonth) as e:
             self._orderBo.get_orders_by_month(45)
-        self.assertEqual('Month number 45 is invalid.', e.exception.message)
+        self.assertEqual('Month number 45 is invalid.', e.exception._message)
 
     def test_15_no_orders_month(self):
         self.assertEqual([], self._orderBo.get_orders_by_month(1))
@@ -111,12 +111,12 @@ class TestOrderBo(unittest.TestCase):
     def test_19_invalid_VAT(self):
         with self.assertRaises(VatNegative) as e:
             self._orderBo.get_order_total_by_month(11, -1)
-        self.assertEqual('VAT rate -1 is invalid.', e.exception.message)
+        self.assertEqual('VAT rate -1 is invalid.', e.exception._message)
 
     def test_20_invalid_month(self):
         with self.assertRaises(InvalidMonth) as e:
             self._orderBo.get_order_total_by_month(45, 20)
-        self.assertEqual('Month number 45 is invalid.', e.exception.message)
+        self.assertEqual('Month number 45 is invalid.', e.exception._message)
 
     def test_21_get_order_with_no_vatable_objects(self):
         self.assertEqual(Decimal('40.20'), self._orderBo.get_order_total_by_order_id(9, 20))
