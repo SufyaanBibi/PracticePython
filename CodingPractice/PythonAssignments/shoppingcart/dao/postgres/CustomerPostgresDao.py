@@ -18,7 +18,7 @@ class CustomerPostgresDao(CustomerDao):
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute('SELECT * FROM CUSTOMER;')
             customers = cursor.fetchall()
-            return [self._create_cust_dto_from_row(c) for c in customers]
+            return [self._create_cust_dto_from_row(row) for row in customers]
 
     def get_customer_by_id(self, customer_id):
         return
@@ -29,5 +29,5 @@ class CustomerPostgresDao(CustomerDao):
     def get_customers_by_iso_country_code(self, iso_country_code):
         return
 
-    def create_customer(self, customerDto):
+    def create_customer(self, customer_dto):
         return

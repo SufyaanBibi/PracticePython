@@ -2,10 +2,10 @@ import unittest
 from decimal import *
 from CodingPractice.PythonAssignments.shoppingcart.bus.OrderBo import OrderBo, OrderIdNonexistent, VatNegative, \
     InvalidMonth
-from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
-from CodingPractice.PythonAssignments.shoppingcart.dao.ProductJsonDao import *
-from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerJsonDao import *
-from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.OrderJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.ProductJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.CustomerJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.PostageRateJsonDao import *
 
 
 class TestOrderBo(unittest.TestCase):

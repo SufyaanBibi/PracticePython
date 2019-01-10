@@ -1,4 +1,4 @@
-from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductDao import *
 
