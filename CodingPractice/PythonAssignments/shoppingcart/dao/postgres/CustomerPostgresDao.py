@@ -37,7 +37,9 @@ class CustomerPostgresDao(CustomerDao):
         return self._fetch_customers_with_sql('SELECT * FROM customer;')
 
     def get_customer_by_id(self, customer_id):
-        return self._fetch_customers_with_sql(f'SELECT * FROM customer WHERE customer_id={customer_id};')
+        custs = self._fetch_customers_with_sql(f'SELECT * FROM customer WHERE customer_id={customer_id};')
+        if custs:
+            return custs[0]
 
     def get_customers_by_name(self, last_name, first_name):
         return self._fetch_customers_with_sql(

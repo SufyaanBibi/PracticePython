@@ -8,7 +8,7 @@ from CodingPractice.PythonAssignments.shoppingcart.dao.json.CustomerJsonDao impo
 from CodingPractice.PythonAssignments.shoppingcart.dao.json.PostageRateJsonDao import *
 
 
-class TestOrderBo(unittest.TestCase):
+class TestOrderBoWithJsonDaos(unittest.TestCase):
     
     def setUp(self):
         import os
