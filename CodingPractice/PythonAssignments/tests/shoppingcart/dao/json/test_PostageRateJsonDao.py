@@ -7,7 +7,7 @@ class TestPostageJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/postage_matrix.json')
+        fp = os.path.join(dirname, '../../resources/postage_matrix.json')
         self._postDao = PostageRateJsonDao(fp)
 
     def test_00_get_postage_matrix(self):

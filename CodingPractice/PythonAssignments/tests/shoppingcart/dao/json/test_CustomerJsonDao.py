@@ -7,7 +7,7 @@ class TestCustomerJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/customers.json')
+        fp = os.path.join(dirname, '../../resources/customers.json')
         self._custDao = CustomerJsonDao(fp)
 
     def test_00_get_customers(self):

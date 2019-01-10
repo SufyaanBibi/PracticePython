@@ -7,7 +7,7 @@ class TestOrderJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/orders.json')
+        fp = os.path.join(dirname, '../../resources/orders.json')
         self._orderDao = OrderJsonDao(fp)
 
     def test_00_get_orders(self):
