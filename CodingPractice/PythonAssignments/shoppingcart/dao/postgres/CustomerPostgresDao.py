@@ -30,10 +30,11 @@ class CustomerPostgresDao(CustomerDao):
         return self._fetch_customers_with_sql(f'SELECT * FROM customer WHERE customer_id={customer_id};')
 
     def get_customers_by_name(self, last_name, first_name):
-        return
+        return self._fetch_customers_with_sql(
+            "SELECT * FROM customer WHERE last_name='"+last_name+"' AND first_name='"+first_name+"';")
 
     def get_customers_by_iso_country_code(self, iso_country_code):
-        return
+        return self._fetch_customers_with_sql("SELECT * FROM customer WHERE iso_country_code='"+iso_country_code+"';")
 
     def create_customer(self, customer_dto):
         return
