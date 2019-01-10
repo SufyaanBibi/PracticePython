@@ -19,6 +19,9 @@ class CustomerDto:
                and self._birthday == other._birthday and self._email_address == other._email_address and \
                self._mail_shot_date == other._mail_shot_date and self._iso_country_code == other._iso_country_code
 
+    def get_customer_id(self):
+        return self._customer_id
+
     def get_first_name(self):
         return self._first_name
 
@@ -31,10 +34,7 @@ class CustomerDto:
     def get_age(self):
         return self._age
 
-    def get_customer_id(self):
-        return self._customer_id
-
-    def get_birth_date(self):
+    def get_birthday(self):
         return self._birthday
 
     def get_email_addr(self):

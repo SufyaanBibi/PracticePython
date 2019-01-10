@@ -75,8 +75,8 @@ class CustomerPostgresDaoTests(unittest.TestCase):
 
     def test_01_get_customers(self):
         expected = [CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
-                               birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
-                               mail_shot_date='11/25', iso_country_code='UK'),
+                                birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
+                                mail_shot_date='11/25', iso_country_code='UK'),
                     CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                 mail_shot_date='11/25', iso_country_code='UK')]
@@ -108,6 +108,23 @@ class CustomerPostgresDaoTests(unittest.TestCase):
 
         actual = self.dao.get_customers_by_iso_country_code('UK')
         self.assertEqual(expected, actual)
+
+    def test_05_create_customer(self):
+        cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                               birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                               mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.create_customer(cust)
+        actual = self.dao.get_customer_by_id(999)
+        self.assertEqual([cust], actual)
+
+    def test_06_no_customer_id(self):
+        self.assertEqual([], self.dao.get_customer_by_id(7))
+
+    def test_07_no_customer_by_name(self):
+        self.assertEqual([], self.dao.get_customers_by_name('Adrian', 'Fawn'))
+
+    def test_08_no_customer_by_iso_country_code(self):
+        self.assertEqual([], self.dao.get_customers_by_iso_country_code('SE'))
 
 
 if __name__ == '__main__':
