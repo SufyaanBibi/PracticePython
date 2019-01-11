@@ -26,3 +26,7 @@ class ProductDao(ABC):
     @abstractmethod
     def get_products_le_stock_qty(self, stock_qty):
         return
+
+    @abstractmethod
+    def create_product(self, productDto):
+        return

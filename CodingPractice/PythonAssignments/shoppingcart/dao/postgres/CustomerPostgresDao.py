@@ -49,14 +49,14 @@ class CustomerPostgresDao(CustomerDao):
         return self._fetch_customers_with_sql("SELECT * FROM customer WHERE iso_country_code='"+iso_country_code+"';")
 
     def create_customer(self, customer_dto):
-        cust_tuple = ( customer_dto.get_customer_id(),
-                       customer_dto.get_first_name(),
-                       customer_dto.get_last_name(),
-                       customer_dto.get_sex(),
-                       customer_dto.get_age(),
-                       customer_dto.get_birthday(),
-                       customer_dto.get_email_addr(),
-                       customer_dto.get_mail_shot_date(),
-                       customer_dto.get_iso_country_code())
+        cust_tuple = (customer_dto.get_customer_id(),
+                      customer_dto.get_first_name(),
+                      customer_dto.get_last_name(),
+                      customer_dto.get_sex(),
+                      customer_dto.get_age(),
+                      customer_dto.get_birthday(),
+                      customer_dto.get_email_addr(),
+                      customer_dto.get_mail_shot_date(),
+                      customer_dto.get_iso_country_code())
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute(self.INSERT_SQL, cust_tuple)
