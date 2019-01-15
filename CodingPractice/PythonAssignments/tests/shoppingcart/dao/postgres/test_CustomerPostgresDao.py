@@ -20,7 +20,7 @@ iso_country_code varchar(3)
 );
 '''
 
-insert_spooky_sql = '''
+insert_cust_sql = '''
 INSERT INTO  customer(customer_id, 
 first_name,
 last_name,
@@ -39,9 +39,9 @@ def handler(postgresql):
     conn = psycopg2.connect(**postgresql.dsn())
     cursor = conn.cursor()
     cursor.execute(cust_create_sql)
-    cursor.execute(insert_spooky_sql,
+    cursor.execute(insert_cust_sql,
                    (101, 'Spooky', 'Dogg', 'M', 10, '2008-04-02', 'spooky.dogg@burbage.rd.com', '11/25', 'UK'))
-    cursor.execute(insert_spooky_sql,
+    cursor.execute(insert_cust_sql,
                    (102, 'Charlie', 'Bone', 'M', 10, '2008-04-02', 'charlie.bone@burbage.rd.com', '11/25', 'UK'))
     cursor.close()
     conn.commit()
@@ -129,4 +129,3 @@ class CustomerPostgresDaoTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

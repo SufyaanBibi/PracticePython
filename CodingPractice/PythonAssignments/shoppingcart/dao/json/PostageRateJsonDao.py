@@ -10,7 +10,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader):
 
     @staticmethod
     def _create_postage_rate_dto(postage_matrix):
-        return PostageRateDto(postage_matrix["country_iso_code"], postage_matrix["weight"],
+        return PostageRateDto(postage_matrix["iso_country_code"], postage_matrix["weight"],
                               postage_matrix["postage_class"], postage_matrix["rate"])
 
     @staticmethod
@@ -24,7 +24,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader):
     def _make_postage_rate_dict(postage_matrix):
         postage_dict = {}
         for postage_rate_dto in postage_matrix:
-            country = postage_rate_dto.get_country_iso_code()
+            country = postage_rate_dto.get_iso_country_code()
             new_weight = postage_rate_dto.get_weight()
             new_postage_class = postage_rate_dto.get_postage_class()
             rate = postage_rate_dto.get_rate()
@@ -54,7 +54,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader):
 
     def get_postage_rates_by_iso_country_code(self, iso_country_code):
         postages_matrix = self.get_postage_rates()
-        return [postage for postage in postages_matrix if iso_country_code == postage.get_country_iso_code()]
+        return [postage for postage in postages_matrix if iso_country_code == postage.get_iso_country_code()]
 
     def get_postage_rates_by_weight(self, weight):
         postages_matrix = self.get_postage_rates()
