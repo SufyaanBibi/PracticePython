@@ -108,7 +108,7 @@ class ProductPostgresDaoTests(unittest.TestCase):
         self.assertEqual(None, self.dao.get_product_by_id(99))
 
     def test_07_no_product_by_name(self):
-        self.assertEqual([], self.dao.get_products_by_name('Adrian'))
+        self.assertEqual([], self.dao.get_products_by_name('Panpan'))
 
 
 if __name__ == '__main__':
