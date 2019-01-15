@@ -2,6 +2,9 @@ from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader impor
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
 
+class MethodNotImplementedException(Exception):
+    def __init__(self, message):
+        self._message = message
 
 class PostageRateJsonDao(PostageRateDao, JsonFileReader):
 
@@ -68,3 +71,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader):
             weight = 2000
         key = (iso_country_code, weight, postage_class)
         return self._postage_dict[key]
+
+    def create_postage_matrix(self, postageDto):
+        raise MethodNotImplementedException('create_postage_matrix called on PostageJsonDao')
+
