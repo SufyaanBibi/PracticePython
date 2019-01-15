@@ -3,22 +3,22 @@ from decimal import *
 
 class OrderIdNonexistent(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class CustomerIdNonexistent(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class VatNegative(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class InvalidMonth(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class OrderBo:

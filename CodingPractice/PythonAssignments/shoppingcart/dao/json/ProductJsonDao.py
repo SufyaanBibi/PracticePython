@@ -1,6 +1,11 @@
-from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductDao import *
+
+
+class MethodNotImplementedException(Exception):
+    def __init__(self, message):
+        self._message = message
 
 
 class ProductJsonDao(ProductDao, JsonFileReader):
@@ -42,3 +47,6 @@ class ProductJsonDao(ProductDao, JsonFileReader):
     def get_products_le_stock_qty(self, stock_qty):
         prods = self.get_products()
         return [prod for prod in prods if prod.get_stock_qty() <= stock_qty]
+
+    def create_product(self, product_dto):
+        raise MethodNotImplementedException('create_product called on ProductJsonDao')

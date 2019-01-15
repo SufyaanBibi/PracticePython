@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.dao.ProductJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.ProductJsonDao import *
 
 
 class TestProductJsonDao(unittest.TestCase):
@@ -7,7 +7,7 @@ class TestProductJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/products.json')
+        fp = os.path.join(dirname, '../../resources/products.json')
         self._prodDao = ProductJsonDao(fp)
 
     def test_00_get_products(self):

@@ -1,4 +1,4 @@
-from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
 
