@@ -24,5 +24,5 @@ class PostageRateDao(ABC):
         return
 
     @abstractmethod
-    def create_postage_matrix(self, postageDto):
+    def create_postage_rate(self, postageDto):
         return

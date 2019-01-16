@@ -14,7 +14,7 @@ class PostageRatePostgresDao(PostageRateDao):
                     weight,
                     postage_class,
                     rates)
-                    VALUES(@s, %s, %s, %s);'''
+                    VALUES(%s, %s, %s, %s);'''
 
     @staticmethod
     def _create_postage_rate_dto_from_row(row):
@@ -30,22 +30,35 @@ class PostageRatePostgresDao(PostageRateDao):
         return self._fetch_products_with_sql('SELECT * FROM postage;')
 
     def get_postage_rates_by_iso_country_code(self, iso_country_code):
-        return self._fetch_products_with_sql("SELECT * FROM postage WHERE iso_country_code='"+iso_country_code+"';")
+        postage = self._fetch_products_with_sql("SELECT * FROM postage WHERE iso_country_code='"+iso_country_code+"';")
+        if postage:
+            return postage[0]
 
     def get_postage_rates_by_weight(self, weight):
-        return self._fetch_products_with_sql(f"SELECT * FROM postage WHERE weight={weight};")
+        postage = self._fetch_products_with_sql(f"SELECT * FROM postage WHERE weight={weight};")
+        if postage:
+            return postage[0]
 
     def get_postage_rates_by_postage_class(self, postage_class):
-        return self._fetch_products_with_sql(f"SELECT * FROM postage WHERE postage_class={postage_class};")
+        postage = self._fetch_products_with_sql(f"SELECT * FROM postage WHERE postage_class={postage_class};")
+        if postage:
+            return postage[0]
 
     def get_postage_rate(self, iso_country_code, weight, postage_class):
-        return self._fetch_products_with_sql(
+        postage = self._fetch_products_with_sql(
             f"SELECT * FROM postage WHERE iso_country_code='{iso_country_code}' AND weight={weight} AND postage_class={postage_class};")
+        if postage:
+            return postage[0]
 
-    def create_postage_matrix(self, postage_dto):
+    def create_postage_rate(self, postage_dto):
+        weight = postage_dto.get_weight()
+        if weight < 1000:
+            weight = 1000
+        elif weight > 1000:
+            weight = 2000
         postage_tuple = (postage_dto.get_iso_country_code(),
-                         postage_dto.get_weight(),
+                         weight,
                          postage_dto.get_postage_class(),
                          float(postage_dto.get_rate()))
         with closing(self._postgres_conn.cursor()) as cursor:
-            cursor.execute((self.INSERT_SQL, postage_tuple))
+            cursor.execute(self.INSERT_SQL, postage_tuple)
