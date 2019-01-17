@@ -26,3 +26,10 @@ class PostageRateDao(ABC):
     @abstractmethod
     def create_postage_rate(self, postageDto):
         return
+
+    @staticmethod
+    def _convert_weight(w):
+        if w <= 1000:
+            return 1000
+        elif w > 1000:
+            return 2000

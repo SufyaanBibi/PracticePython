@@ -3,12 +3,15 @@ import pg8000
 
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
+from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDict import PostageRateDict
 
 
-class PostageRatePostgresDao(PostageRateDao):
+class PostageRatePostgresDao(PostageRateDao, PostageRateDict):
 
     def __init__(self, postgres_instance):
+        super().__init__()
         self._postgres_conn = pg8000.connect(**postgres_instance.dsn())
+        self._make_postage_rate_dict(self.get_postage_rates())
 
     INSERT_SQL = '''INSERT INTO postage(iso_country_code,
                     weight,
@@ -45,17 +48,11 @@ class PostageRatePostgresDao(PostageRateDao):
             return postage[0]
 
     def get_postage_rate(self, iso_country_code, weight, postage_class):
-        postage = self._fetch_products_with_sql(
-            f"SELECT * FROM postage WHERE iso_country_code='{iso_country_code}' AND weight={weight} AND postage_class={postage_class};")
-        if postage:
-            return postage[0]
+        key = (iso_country_code, self._convert_weight(weight), postage_class)
+        return self._postage_rate_dict[key]
 
     def create_postage_rate(self, postage_dto):
-        weight = postage_dto.get_weight()
-        if weight < 1000:
-            weight = 1000
-        elif weight > 1000:
-            weight = 2000
+        weight = self._convert_weight(postage_dto.get_weight())
         postage_tuple = (postage_dto.get_iso_country_code(),
                          weight,
                          postage_dto.get_postage_class(),

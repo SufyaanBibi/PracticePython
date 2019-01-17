@@ -72,7 +72,7 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_04_get_postage_rate(self):
-        expected = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
+        expected = 3.45
         actual = self.dao.get_postage_rate('UK', 1000, 1)
         self.assertEqual(expected, actual)
 
