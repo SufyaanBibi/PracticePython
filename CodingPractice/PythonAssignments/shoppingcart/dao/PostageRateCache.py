@@ -1,9 +1,9 @@
-class PostageRateDict:
+class PostageRateCache:
 
     def __init__(self):
         self._postage_rate_dict = {}
 
-    def _make_postage_rate_dict(self, postage_rate_dtos):
+    def _make_postage_rate_cache(self, postage_rate_dtos):
         for postage_rate_dto in postage_rate_dtos:
             country = postage_rate_dto.get_iso_country_code()
             new_weight = postage_rate_dto.get_weight()

@@ -7,14 +7,14 @@ from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import 
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.PostageRatePostgresDao import PostageRatePostgresDao
 
 postage_create_sql = '''
-CREATE TABLE postage(iso_country_code varchar(256),
+CREATE TABLE postage_rate(iso_country_code varchar(256),
 weight integer, 
 postage_class integer,
 rates float);
 '''
 
 insert_postage_sql = '''
-INSERT INTO postage(iso_country_code,
+INSERT INTO postage_rate(iso_country_code,
 weight,
 postage_class,
 rates)

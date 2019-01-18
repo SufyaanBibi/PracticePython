@@ -1,5 +1,5 @@
 from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
-from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDict import PostageRateDict
+from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateCache import PostageRateCache
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
 
@@ -9,7 +9,7 @@ class MethodNotImplementedException(Exception):
         self._message = message
 
 
-class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateDict):
+class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateCache):
 
     @staticmethod
     def _create_postage_rate_dto(postage_matrix):
@@ -26,7 +26,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateDict):
     def __init__(self, json_file_path):
         super().__init__()
         self._json_file_path = json_file_path
-        self._make_postage_rate_dict(self.get_postage_rates())
+        self._make_postage_rate_cache(self.get_postage_rates())
 
     def get_postage_rates(self):
         jf = PostageRateJsonDao._get_json(self._json_file_path)

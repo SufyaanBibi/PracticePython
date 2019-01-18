@@ -3,17 +3,17 @@ import pg8000
 
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
-from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDict import PostageRateDict
+from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateCache import PostageRateCache
 
 
-class PostageRatePostgresDao(PostageRateDao, PostageRateDict):
+class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
 
     def __init__(self, postgres_instance):
         super().__init__()
         self._postgres_conn = pg8000.connect(**postgres_instance.dsn())
-        self._make_postage_rate_dict(self.get_postage_rates())
+        self._make_postage_rate_cache(self.get_postage_rates())
 
-    INSERT_SQL = '''INSERT INTO postage(iso_country_code,
+    INSERT_SQL = '''INSERT INTO postage_rate(iso_country_code,
                     weight,
                     postage_class,
                     rates)
@@ -30,20 +30,20 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateDict):
             return [self._create_postage_rate_dto_from_row(row) for row in postages]
 
     def get_postage_rates(self):
-        return self._fetch_products_with_sql('SELECT * FROM postage;')
+        return self._fetch_products_with_sql('SELECT * FROM postage_rate;')
 
     def get_postage_rates_by_iso_country_code(self, iso_country_code):
-        postage = self._fetch_products_with_sql("SELECT * FROM postage WHERE iso_country_code='"+iso_country_code+"';")
+        postage = self._fetch_products_with_sql("SELECT * FROM postage_rate WHERE iso_country_code='"+iso_country_code+"';")
         if postage:
             return postage[0]
 
     def get_postage_rates_by_weight(self, weight):
-        postage = self._fetch_products_with_sql(f"SELECT * FROM postage WHERE weight={weight};")
+        postage = self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE weight={weight};")
         if postage:
             return postage[0]
 
     def get_postage_rates_by_postage_class(self, postage_class):
-        postage = self._fetch_products_with_sql(f"SELECT * FROM postage WHERE postage_class={postage_class};")
+        postage = self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE postage_class={postage_class};")
         if postage:
             return postage[0]
 
