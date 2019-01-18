@@ -1,7 +1,7 @@
 class PostageRateCache:
 
     def __init__(self):
-        self._postage_rate_dict = {}
+        self._postage_rate_cache = {}
 
     def _make_postage_rate_cache(self, postage_rate_dtos):
         for postage_rate_dto in postage_rate_dtos:
@@ -22,5 +22,5 @@ class PostageRateCache:
                 new_weight = 2000
                 new_postage_class = 2
             t = (country, new_weight, new_postage_class)
-            self._postage_rate_dict[t] = rate
+            self._postage_rate_cache[t] = rate
 

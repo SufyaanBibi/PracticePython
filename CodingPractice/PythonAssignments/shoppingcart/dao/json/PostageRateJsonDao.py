@@ -46,7 +46,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateCache):
 
     def get_postage_rate(self, iso_country_code, weight, postage_class):
         key = (iso_country_code, self._convert_weight(weight), postage_class)
-        return self._postage_rate_dict[key]
+        return self._postage_rate_cache[key]
 
     def create_postage_rate(self, postageDto):
         raise MethodNotImplementedException('create_postage_rate called on PostageJsonDao')

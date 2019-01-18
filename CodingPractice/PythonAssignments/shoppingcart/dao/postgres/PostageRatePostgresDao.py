@@ -49,7 +49,7 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
 
     def get_postage_rate(self, iso_country_code, weight, postage_class):
         key = (iso_country_code, self._convert_weight(weight), postage_class)
-        return self._postage_rate_dict[key]
+        return self._postage_rate_cache[key]
 
     def create_postage_rate(self, postage_dto):
         weight = self._convert_weight(postage_dto.get_weight())
