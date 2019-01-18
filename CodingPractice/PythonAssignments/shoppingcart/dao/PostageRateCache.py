@@ -9,18 +9,17 @@ class PostageRateCache:
             new_weight = postage_rate_dto.get_weight()
             new_postage_class = postage_rate_dto.get_postage_class()
             rate = postage_rate_dto.get_rate()
-            if postage_rate_dto.get_weight() == '1kg' and postage_rate_dto.get_postage_class() == '1st Class':
+
+            if postage_rate_dto.get_weight() == '1kg':
                 new_weight = 1000
-                new_postage_class = 1
-            elif postage_rate_dto.get_weight() == '1kg' and postage_rate_dto.get_postage_class() == '2nd Class':
-                new_weight = 1000
-                new_postage_class = 2
-            elif postage_rate_dto.get_weight() == '2kg' and postage_rate_dto.get_postage_class() == '1st Class':
+            elif postage_rate_dto.get_weight() == '2kg':
                 new_weight = 2000
+
+            if postage_rate_dto.get_postage_class() == '1st Class':
                 new_postage_class = 1
-            elif postage_rate_dto.get_weight() == '2kg' and postage_rate_dto.get_postage_class() == '2nd Class':
-                new_weight = 2000
+            elif postage_rate_dto.get_postage_class() == '2nd Class':
                 new_postage_class = 2
+
             t = (country, new_weight, new_postage_class)
             self._postage_rate_cache[t] = rate
 
