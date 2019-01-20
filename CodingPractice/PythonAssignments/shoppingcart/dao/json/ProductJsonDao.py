@@ -1,11 +1,7 @@
 from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductDao import *
-
-
-class MethodNotImplementedException(Exception):
-    def __init__(self, message):
-        self._message = message
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.MethodNotImplementedException import MethodNotImplementedException
 
 
 class ProductJsonDao(ProductDao, JsonFileReader):

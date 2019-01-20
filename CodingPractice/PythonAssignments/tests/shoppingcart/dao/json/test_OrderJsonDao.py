@@ -70,6 +70,11 @@ class TestOrderJsonDao(unittest.TestCase):
         e = self._orderDao.get_orders_by_customer_id(9000)
         self.assertEqual(None, e)
 
+    def test_08_MethodNotImplementedException_raised_on_create_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.create_order(None)
+        self.assertEqual('create_order called on OrderJsonDao', e.exception._message)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,8 @@
 from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.OrderDao import OrderDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import OrderDto, OrderLineDto
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.MethodNotImplementedException \
+    import MethodNotImplementedException
 
 
 class OrderJsonDao(OrderDao, JsonFileReader):
@@ -48,3 +50,6 @@ class OrderJsonDao(OrderDao, JsonFileReader):
         return [order for order in orders
                 for order_line in order.get_order_lines()
                 if product_id == order_line.get_product_id()]
+
+    def create_order(self, product_id):
+        raise MethodNotImplementedException('create_order called on OrderJsonDao')

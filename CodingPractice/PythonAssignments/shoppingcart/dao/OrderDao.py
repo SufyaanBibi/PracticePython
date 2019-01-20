@@ -18,3 +18,7 @@ class OrderDao(ABC):
     @abstractmethod
     def get_orders_by_product_id(self, product_id):
         return
+
+    @abstractmethod
+    def create_order(self, product_id):
+        return
