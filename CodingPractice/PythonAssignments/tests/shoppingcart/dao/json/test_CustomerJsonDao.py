@@ -58,7 +58,6 @@ class TestCustomerJsonDao(unittest.TestCase):
                                birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
                             mail_shot_date='11/25', iso_country_code='UK')
 
-        
         by_id = self._custDao.get_customer_by_id(101)
         self.assertEqual(expected, by_id)
 

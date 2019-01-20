@@ -2,11 +2,7 @@ from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader impor
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateCache import PostageRateCache
 from CodingPractice.PythonAssignments.shoppingcart.dao.PostageRateDao import PostageRateDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.PostageRateDto import PostageRateDto
-
-
-class MethodNotImplementedException(Exception):
-    def __init__(self, message):
-        self._message = message
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.MethodNotImplementedException import MethodNotImplementedException
 
 
 class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateCache):
