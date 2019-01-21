@@ -126,6 +126,24 @@ class CustomerPostgresDaoTests(unittest.TestCase):
     def test_08_no_customer_by_iso_country_code(self):
         self.assertEqual([], self.dao.get_customers_by_iso_country_code('SE'))
 
+    def test_09_delete_customer(self):
+        cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.create_customer(cust)
+        actual = self.dao.delete_customer(cust)
+        self.assertEqual(None, actual)
+
+    '''def test_10_update_customer(self):
+        cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.create_customer(cust)
+        update = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=24,
+                             birthday='1995-10-12', email_address='panpan@northernlights.com', mail_shot_date='09/08',
+                             iso_country_code='UK')
+        self.dao.update_customer()'''
+
 
 if __name__ == '__main__':
     unittest.main()

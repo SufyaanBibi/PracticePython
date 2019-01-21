@@ -60,3 +60,9 @@ class CustomerPostgresDao(CustomerDao):
                       customer_dto.get_iso_country_code())
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute(self.INSERT_SQL, cust_tuple)
+
+    def delete_customer(self, customerDto):
+        return
+
+    def update_customer(self, customerDto):
+        return
