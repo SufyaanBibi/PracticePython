@@ -40,3 +40,9 @@ class CustomerJsonDao(CustomerDao, JsonFileReader):
 
     def create_customer(self, customerDto):
         raise MethodNotImplementedException('create_customer called on CustomerJsonDao')
+
+    def delete_customer(self, customerDto):
+        raise MethodNotImplementedException('delete_customer called on CustomerJsonDao')
+
+    def update_customer(self, customerDto):
+        raise MethodNotImplementedException('update_customer called on CustomerJsonDao')

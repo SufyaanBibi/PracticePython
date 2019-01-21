@@ -126,6 +126,43 @@ class CustomerPostgresDaoTests(unittest.TestCase):
     def test_08_no_customer_by_iso_country_code(self):
         self.assertEqual([], self.dao.get_customers_by_iso_country_code('SE'))
 
+    def test_09_delete_customer(self):
+        cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.create_customer(cust)
+        self.dao.delete_customer(cust)
+        actual = self.dao.get_customer_by_id(999)
+        self.assertEqual(None, actual)
+
+    def test_10_update_customer(self):
+        cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.create_customer(cust)
+        expected = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=24,
+                             birthday='1995-10-12', email_address='panpan@northernlights.com', mail_shot_date='09/08',
+                             iso_country_code='UK')
+        self.dao.update_customer(expected)
+        actual = self.dao.get_customer_by_id(999)
+        self.assertEqual(expected, actual)
+
+    def test_11_delete_customer_that_does_not_exist(self):
+        cust = CustomerDto(customer_id=88, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.delete_customer(cust)
+        actual = self.dao.get_customer_by_id(88)
+        self.assertEqual(None, actual)
+
+    def test_12_update_customer_that_does_not_exist(self):
+        cust = CustomerDto(customer_id=90, first_name='Pangur', last_name='Ban', sex='M', age=23,
+                           birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
+                           mail_shot_date='09/08', iso_country_code='USA')
+        self.dao.update_customer(cust)
+        actual = self.dao.get_customer_by_id(90)
+        self.assertEqual(None, actual)
+
 
 if __name__ == '__main__':
     unittest.main()

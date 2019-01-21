@@ -10,7 +10,7 @@ class CustomerPostgresDao(CustomerDao):
     def __init__(self, postgres_instance):
         self._postgres_conn = pg8000.connect(**postgres_instance.dsn())
 
-    INSERT_SQL = '''INSERT INTO  customer(customer_id, 
+    INSERT_SQL = '''INSERT INTO customer(customer_id, 
                     first_name,
                     last_name,
                     sex,
@@ -60,3 +60,26 @@ class CustomerPostgresDao(CustomerDao):
                       customer_dto.get_iso_country_code())
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute(self.INSERT_SQL, cust_tuple)
+
+    def delete_customer(self, customerDto):
+        customer_id = customerDto.get_customer_id()
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"DELETE FROM customer WHERE customer_id={customer_id};")
+
+    def update_customer(self, customerDto):
+        customer_id = customerDto.get_customer_id()
+        first_name = customerDto.get_first_name()
+        last_name = customerDto.get_last_name()
+        sex = customerDto.get_sex()
+        age = customerDto.get_age()
+        birthday = customerDto.get_birthday()
+        email_addr = customerDto.get_email_addr()
+        mail_shot = customerDto.get_mail_shot_date()
+        iso_country_code = customerDto.get_iso_country_code()
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"UPDATE customer \
+                            SET first_name='{first_name}', last_name='{last_name}', sex='{sex}', age={age}, \
+                            birthday='{birthday}', email_address='{email_addr}', mail_shot_date='{mail_shot}', \
+                            iso_country_code='{iso_country_code}' \
+                            WHERE customer_id={customer_id};"
+                           )

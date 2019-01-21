@@ -22,3 +22,11 @@ class CustomerDao(ABC):
     @abstractmethod
     def create_customer(self, customerDto):
         return
+
+    @abstractmethod
+    def delete_customer(self, customerDto):
+        return
+
+    @abstractmethod
+    def update_customer(self, customerDto):
+        return
