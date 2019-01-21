@@ -62,12 +62,12 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_02_get_rates_by_weight(self):
-        expected = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
+        expected = [PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)]
         actual = self.dao.get_postage_rates_by_weight(1000)
         self.assertEqual(expected, actual)
 
     def test_03_get_rates_by_postage_class(self):
-        expected = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
+        expected = [PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)]
         actual = self.dao.get_postage_rates_by_postage_class(1)
         self.assertEqual(expected, actual)
 
@@ -87,10 +87,10 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
         self.assertEqual(None, self.dao.get_postage_rates_by_iso_country_code('TH'))
 
     def test_07_no_weight(self):
-        self.assertEqual(None, self.dao.get_postage_rates_by_weight(0))
+        self.assertEqual([], self.dao.get_postage_rates_by_weight(0))
 
     def test_08_no_postage_class(self):
-        self.assertEqual(None, self.dao.get_postage_rates_by_postage_class(8))
+        self.assertEqual([], self.dao.get_postage_rates_by_postage_class(8))
 
 
 if __name__ == '__main__':

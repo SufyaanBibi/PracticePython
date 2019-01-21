@@ -38,14 +38,10 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
             return postage[0]
 
     def get_postage_rates_by_weight(self, weight):
-        postage = self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE weight={weight};")
-        if postage:
-            return postage[0]
+        return self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE weight={weight};")
 
     def get_postage_rates_by_postage_class(self, postage_class):
-        postage = self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE postage_class={postage_class};")
-        if postage:
-            return postage[0]
+        return self._fetch_products_with_sql(f"SELECT * FROM postage_rate WHERE postage_class={postage_class};")
 
     def get_postage_rate(self, iso_country_code, weight, postage_class):
         key = (iso_country_code, self._convert_weight(weight), postage_class)
