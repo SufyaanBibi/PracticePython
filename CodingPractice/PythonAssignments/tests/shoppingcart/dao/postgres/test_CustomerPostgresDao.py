@@ -50,17 +50,17 @@ def handler(postgresql):
 
 class CustomerPostgresDaoTests(unittest.TestCase):
 
-    # This is called BEFORE each of the tests below are run
-    def setUp(self):
-        self.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
+    @classmethod
+    def setUpClass(cls):
+        cls.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
                                                                on_initialized=handler)
-        self.postgresql_instance = self.Postgresql()
-        self.dao = CustomerPostgresDao(self.postgresql_instance)
+        cls.postgresql_instance = cls.Postgresql()
+        cls.dao = CustomerPostgresDao(cls.postgresql_instance)
 
-    # This is called AFTER each of the tests below are run
-    def tearDown(self):
-        self.postgresql_instance.stop()
-        self.Postgresql.clear_cache()
+    @classmethod
+    def tearDownClass(cls):
+        cls.postgresql_instance.stop()
+        cls.Postgresql.clear_cache()
 
     def test_00_test_create_dto_from_row(self):
         expected = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
@@ -81,21 +81,21 @@ class CustomerPostgresDaoTests(unittest.TestCase):
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                 mail_shot_date='11/25', iso_country_code='UK')]
 
-        actual = self.dao.get_customers()
+        actual = type(self).dao.get_customers()
         self.assertEqual(expected, actual)
 
     def test_02_get_customer_by_id(self):
         expected = CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                 mail_shot_date='11/25', iso_country_code='UK')
-        actual = self.dao.get_customer_by_id(102)
+        actual = type(self).dao.get_customer_by_id(102)
         self.assertEqual(expected, actual)
 
     def test_03_get_customers_by_name(self):
         expected = [CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                mail_shot_date='11/25', iso_country_code='UK')]
-        actual = self.dao.get_customers_by_name('Bone', 'Charlie')
+        actual = type(self).dao.get_customers_by_name('Bone', 'Charlie')
         self.assertEqual(expected, actual)
 
     def test_04_get_customers_by_iso_country_code(self):
@@ -106,61 +106,61 @@ class CustomerPostgresDaoTests(unittest.TestCase):
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                 mail_shot_date='11/25', iso_country_code='UK')]
 
-        actual = self.dao.get_customers_by_iso_country_code('UK')
+        actual = type(self).dao.get_customers_by_iso_country_code('UK')
         self.assertEqual(expected, actual)
 
     def test_05_create_customer(self):
         cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
                                birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
                                mail_shot_date='09/08', iso_country_code='USA')
-        self.dao.create_customer(cust)
-        actual = self.dao.get_customer_by_id(999)
+        type(self).dao.create_customer(cust)
+        actual = type(self).dao.get_customer_by_id(999)
         self.assertEqual(cust, actual)
 
     def test_06_no_customer_id(self):
-        self.assertEqual(None, self.dao.get_customer_by_id(7))
+        self.assertEqual(None, type(self).dao.get_customer_by_id(7))
 
     def test_07_no_customer_by_name(self):
-        self.assertEqual([], self.dao.get_customers_by_name('Adrian', 'Fawn'))
+        self.assertEqual([], type(self).dao.get_customers_by_name('Adrian', 'Fawn'))
 
     def test_08_no_customer_by_iso_country_code(self):
-        self.assertEqual([], self.dao.get_customers_by_iso_country_code('SE'))
+        self.assertEqual([], type(self).dao.get_customers_by_iso_country_code('SE'))
 
     def test_09_delete_customer(self):
         cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
                            birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
                            mail_shot_date='09/08', iso_country_code='USA')
-        self.dao.create_customer(cust)
-        self.dao.delete_customer(cust)
-        actual = self.dao.get_customer_by_id(999)
+        type(self).dao.create_customer(cust)
+        type(self).dao.delete_customer(cust)
+        actual = type(self).dao.get_customer_by_id(999)
         self.assertEqual(None, actual)
 
     def test_10_update_customer(self):
         cust = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=23,
                            birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
                            mail_shot_date='09/08', iso_country_code='USA')
-        self.dao.create_customer(cust)
+        type(self).dao.create_customer(cust)
         expected = CustomerDto(customer_id=999, first_name='Pangur', last_name='Ban', sex='M', age=24,
                              birthday='1995-10-12', email_address='panpan@northernlights.com', mail_shot_date='09/08',
                              iso_country_code='UK')
-        self.dao.update_customer(expected)
-        actual = self.dao.get_customer_by_id(999)
+        type(self).dao.update_customer(expected)
+        actual = type(self).dao.get_customer_by_id(999)
         self.assertEqual(expected, actual)
 
     def test_11_delete_customer_that_does_not_exist(self):
         cust = CustomerDto(customer_id=88, first_name='Pangur', last_name='Ban', sex='M', age=23,
                            birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
                            mail_shot_date='09/08', iso_country_code='USA')
-        self.dao.delete_customer(cust)
-        actual = self.dao.get_customer_by_id(88)
+        type(self).dao.delete_customer(cust)
+        actual = type(self).dao.get_customer_by_id(88)
         self.assertEqual(None, actual)
 
     def test_12_update_customer_that_does_not_exist(self):
         cust = CustomerDto(customer_id=90, first_name='Pangur', last_name='Ban', sex='M', age=23,
                            birthday='1995-10-12', email_address='pan.ban@burbage.rd.com',
                            mail_shot_date='09/08', iso_country_code='USA')
-        self.dao.update_customer(cust)
-        actual = self.dao.get_customer_by_id(90)
+        type(self).dao.update_customer(cust)
+        actual = type(self).dao.get_customer_by_id(90)
         self.assertEqual(None, actual)
 
 

@@ -55,15 +55,17 @@ def handler(postgresql):
 
 class OrderPostgresDaoTests(unittest.TestCase):
 
-    def setUp(self):
-        self.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
+    @classmethod
+    def setUpClass(cls):
+        cls.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
                                                                on_initialized=handler)
-        self.postgresql_instance = self.Postgresql()
-        self.dao = OrderPostgresDao(self.postgresql_instance)
+        cls.postgresql_instance = cls.Postgresql()
+        cls.dao = OrderPostgresDao(cls.postgresql_instance)
 
-    def tearDown(self):
-        self.postgresql_instance.stop()
-        self.Postgresql.clear_cache()
+    @classmethod
+    def tearDownClass(cls):
+        cls.postgresql_instance.stop()
+        cls.Postgresql.clear_cache()
 
     def test_00_can_get_orders(self):
         expected = [OrderDto(100, 1, "2018-12-01 10:45:15", 1,
@@ -73,7 +75,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                              [OrderLineDto(101, 1, 50),
                               OrderLineDto(101, 2, 100)])
                     ]
-        actual = self.dao.get_orders()
+        actual = type(self).dao.get_orders()
         self.assertEqual(expected, actual)
 
     def test_01_can_get_order_by_id(self):
@@ -81,7 +83,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                              [OrderLineDto(101, 1, 50),
                               OrderLineDto(101, 2, 100)])
                     ]
-        actual = self.dao.get_order_by_order_id(101)
+        actual = type(self).dao.get_order_by_order_id(101)
         self.assertEqual(expected, actual)
 
     def test_02_can_get_orders_by_customer_id(self):
@@ -89,7 +91,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                              [OrderLineDto(101, 1, 50),
                               OrderLineDto(101, 2, 100)])
                     ]
-        actual = self.dao.get_orders_by_customer_id(2)
+        actual = type(self).dao.get_orders_by_customer_id(2)
         self.assertEqual(expected, actual)
 
     def test_03_get_orders_by_product_id(self):
@@ -98,23 +100,23 @@ class OrderPostgresDaoTests(unittest.TestCase):
                     OrderDto(101, 2, "2018-12-25 10:45:15", 1,
                               [OrderLineDto(101, 2, 100)])
                              ]
-        actual = self.dao.get_orders_by_product_id(2)
+        actual = type(self).dao.get_orders_by_product_id(2)
         self.assertEqual(expected, actual)
 
     def test_04_can_create_an_order(self):
         order = OrderDto(999, 1, "2018-12-01 10:45:15", 1,
                              [OrderLineDto(999, 1, 50),
                               OrderLineDto(999, 2, 100)])
-        self.dao.create_order(order)
+        type(self).dao.create_order(order)
 
-        actual = self.dao.get_order_by_order_id( 999 )
+        actual = type(self).dao.get_order_by_order_id( 999 )
         self.assertEqual([order], actual)
 
     def test_05_create_an_order_fails(self):
         order = OrderDto(None, 1, "2018-12-01 10:45:15", 1, [])
 
         with self.assertRaises(Exception) as e:
-            self.dao.create_order(order)
+            type(self).dao.create_order(order)
 
     def test_06_ROLLBACK_has_worked_after_create_order_fails(self):
         order = OrderDto(1000, 1, "2018-12-01 10:45:15", 1,
@@ -122,9 +124,9 @@ class OrderPostgresDaoTests(unittest.TestCase):
                                 OrderLineDto(1000, 2, 100)])
 
         with self.assertRaises(Exception) as e:
-            self.dao.create_order(order)
+            type(self).dao.create_order(order)
 
-        actual = self.dao.get_order_by_order_id(1000)
+        actual = type(self).dao.get_order_by_order_id(1000)
         self.assertEqual([], actual)
 
 

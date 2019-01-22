@@ -42,15 +42,17 @@ def handler(postgresql):
 
 class ProductPostgresDaoTests(unittest.TestCase):
 
-    def setUp(self):
-        self.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
+    @classmethod
+    def setUpClass(cls):
+        cls.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
                                                                on_initialized=handler)
-        self.postgresql_instance = self.Postgresql()
-        self.dao = ProductPostgresDao(self.postgresql_instance)
+        cls.postgresql_instance = cls.Postgresql()
+        cls.dao = ProductPostgresDao(cls.postgresql_instance)
 
-    def tearDown(self):
-        self.postgresql_instance.stop()
-        self.Postgresql.clear_cache()
+    @classmethod
+    def tearDownClass(cls):
+        cls.postgresql_instance.stop()
+        cls.Postgresql.clear_cache()
 
     def test_00_create_dto_from_row(self):
         expected = ProductDto(product_id=1, name="StandardWidget", price=5.1, weight=100, stock_qty=10000,
@@ -65,19 +67,19 @@ class ProductPostgresDaoTests(unittest.TestCase):
     def test_01_get_product_by_id(self):
         expected = ProductDto(product_id=1, name="StandardWidget", price=5.1, weight=100, stock_qty=10000,
                               vatable=True)
-        actual = self.dao.get_product_by_id(1)
+        actual = type(self).dao.get_product_by_id(1)
         self.assertEqual(expected, actual)
 
     def test_02_get_product_by_name(self):
         expected = [ProductDto(product_id=1, name="StandardWidget", price=5.1, weight=100, stock_qty=10000,
                               vatable=True)]
-        actual = self.dao.get_products_by_name("StandardWidget")
+        actual = type(self).dao.get_products_by_name("StandardWidget")
         self.assertEqual(expected, actual)
 
     def test_03_get_product_by_less_than_or_equal_to_price(self):
         expected = [ProductDto(product_id=1, name="StandardWidget", price=5.1, weight=100, stock_qty=10000,
                                vatable=True)]
-        actual = self.dao.get_products_le_price(5.1)
+        actual = type(self).dao.get_products_le_price(5.1)
         self.assertEqual(expected, actual)
 
     def test_04_get_product_by_greater_than_or_equal_to_price(self):
@@ -86,7 +88,7 @@ class ProductPostgresDaoTests(unittest.TestCase):
         p2 = ProductDto(product_id=2, name="ShinyWidget", price=35.1, weight=10, stock_qty=100,
                                vatable=False)
         expected = [p1, p2]
-        actual = self.dao.get_products_ge_price(5.1)
+        actual = type(self).dao.get_products_ge_price(5.1)
         self.assertEqual(expected, actual)
 
     def test_05_get_product_by_le_stock_qty(self):
@@ -95,20 +97,20 @@ class ProductPostgresDaoTests(unittest.TestCase):
         p2 = ProductDto(product_id=2, name="ShinyWidget", price=35.1, weight=10, stock_qty=100,
                         vatable=False)
         expected = [p1, p2]
-        actual = self.dao.get_products_le_stock_qty(10000)
+        actual = type(self).dao.get_products_le_stock_qty(10000)
         self.assertEqual(expected, actual)
 
     def test_06_create_product(self):
         prod = ProductDto(product_id=666, name="Panpans", price=78, weight=12, stock_qty=13, vatable=True)
-        self.dao.create_product(prod)
-        actual = self.dao.get_product_by_id(666)
+        type(self).dao.create_product(prod)
+        actual = type(self).dao.get_product_by_id(666)
         self.assertEqual(prod, actual)
 
     def test_06_no_product_id(self):
-        self.assertEqual(None, self.dao.get_product_by_id(99))
+        self.assertEqual(None, type(self).dao.get_product_by_id(99))
 
     def test_07_no_product_by_name(self):
-        self.assertEqual([], self.dao.get_products_by_name('Panpan'))
+        self.assertEqual([], type(self).dao.get_products_by_name('Panpan'))
 
 
 if __name__ == '__main__':
