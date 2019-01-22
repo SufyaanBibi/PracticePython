@@ -33,3 +33,11 @@ class PostageRateDao(ABC):
             return 1000
         elif w > 1000:
             return 2000
+
+    @staticmethod
+    def delete_postage_rate(self, postageDto):
+        return
+
+    @staticmethod
+    def update_postage_rate(self, postageDto):
+        return

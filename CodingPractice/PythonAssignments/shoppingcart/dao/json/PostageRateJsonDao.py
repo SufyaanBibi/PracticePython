@@ -45,5 +45,10 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateCache):
         return self._postage_rate_cache[key]
 
     def create_postage_rate(self, postageDto):
-        raise MethodNotImplementedException('create_postage_rate called on PostageJsonDao')
+        raise MethodNotImplementedException('create_postage_rate called on PostageRateJsonDao')
 
+    def delete_postage_rate(self, postageDto):
+        raise MethodNotImplementedException('delete_postage_rate called on PostageRateJsonDao')
+
+    def update_postage_rate(self, postageDto):
+        raise MethodNotImplementedException('update_postage_rate called on PostageRateJsonDao')

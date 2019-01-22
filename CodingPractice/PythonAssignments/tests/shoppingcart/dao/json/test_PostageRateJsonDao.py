@@ -46,6 +46,30 @@ class TestPostageJsonDao(unittest.TestCase):
     def test_04_get_postage_rate(self):
         self.assertEqual(3.45, self._postDao.get_postage_rate(iso_country_code='UK', weight=1000, postage_class=1))
 
+    def test_05_MethodNotImplementedException_raised_on_create_postage_rate(self):
+
+        p1 = PostageRateDto(iso_country_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._postDao.create_postage_rate(p1)
+        self.assertEqual('create_postage_rate called on PostageRateJsonDao', e.exception._message)
+
+    def test_06_MethodNotImplementedException_raised_on_delete_postage_rate(self):
+
+        p1 = PostageRateDto(iso_country_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._postDao.delete_postage_rate(p1)
+        self.assertEqual('delete_postage_rate called on PostageRateJsonDao', e.exception._message)
+
+    def test_07_MethodNotImplementedException_raised_on_update_postage_rate(self):
+
+        p1 = PostageRateDto(iso_country_code='UK', weight='1kg', postage_class='1st Class', rate=3.45)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._postDao.update_postage_rate(p1)
+        self.assertEqual('update_postage_rate called on PostageRateJsonDao', e.exception._message)
+
 
 if __name__ == '__main__':
     unittest.main()
