@@ -37,16 +37,17 @@ def handler(postgresql):
 
 class PostageRatePostgresDaoTests(unittest.TestCase):
 
-    def setUp(self):
-        self.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
+    @classmethod
+    def setUpClass(cls):
+        cls.Postgresql = testing.postgresql.PostgresqlFactory(cache_initialized_db=True,
                                                                on_initialized=handler)
-        self.postgresql_instance = self.Postgresql()
-        self.dao = PostageRatePostgresDao(self.postgresql_instance)
+        cls.postgresql_instance = cls.Postgresql()
+        cls.dao = PostageRatePostgresDao(cls.postgresql_instance)
 
-    # This is called AFTER each of the tests below are run
-    def tearDown(self):
-        self.postgresql_instance.stop()
-        self.Postgresql.clear_cache()
+    @classmethod
+    def tearDownClass(cls):
+        cls.postgresql_instance.stop()
+        cls.Postgresql.clear_cache()
 
     def test_00_create_dto_from_row(self):
         expected = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
@@ -58,39 +59,39 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
 
     def test_01_get_rates_iso_country_code(self):
         expected = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
-        actual = self.dao.get_postage_rates_by_iso_country_code('UK')
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('UK')
         self.assertEqual(expected, actual)
 
     def test_02_get_rates_by_weight(self):
         expected = [PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)]
-        actual = self.dao.get_postage_rates_by_weight(1000)
+        actual = type(self).dao.get_postage_rates_by_weight(1000)
         self.assertEqual(expected, actual)
 
     def test_03_get_rates_by_postage_class(self):
         expected = [PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)]
-        actual = self.dao.get_postage_rates_by_postage_class(1)
+        actual = type(self).dao.get_postage_rates_by_postage_class(1)
         self.assertEqual(expected, actual)
 
     def test_04_get_postage_rate(self):
         expected = 3.45
-        actual = self.dao.get_postage_rate('UK', 1000, 1)
+        actual = type(self).dao.get_postage_rate('UK', 1000, 1)
         self.assertEqual(expected, actual)
 
     def test_05_create_postage_dto_with_weight_between_1000_and_2000(self):
         postage_dto = PostageRateDto(iso_country_code='SE', weight=1234, postage_class=2, rate=2.34)
         expected = PostageRateDto(iso_country_code='SE', weight=2000, postage_class=2, rate=2.34)
-        self.dao.create_postage_rate(postage_dto)
-        actual = self.dao.get_postage_rates_by_iso_country_code('SE')
+        type(self).dao.create_postage_rate(postage_dto)
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('SE')
         self.assertEqual(expected, actual)
 
     def test_06_no_iso_country_code(self):
-        self.assertEqual(None, self.dao.get_postage_rates_by_iso_country_code('TH'))
+        self.assertEqual(None, type(self).dao.get_postage_rates_by_iso_country_code('TH'))
 
     def test_07_no_weight(self):
-        self.assertEqual([], self.dao.get_postage_rates_by_weight(0))
+        self.assertEqual([], type(self).dao.get_postage_rates_by_weight(0))
 
     def test_08_no_postage_class(self):
-        self.assertEqual([], self.dao.get_postage_rates_by_postage_class(8))
+        self.assertEqual([], type(self).dao.get_postage_rates_by_postage_class(8))
 
 
 if __name__ == '__main__':
