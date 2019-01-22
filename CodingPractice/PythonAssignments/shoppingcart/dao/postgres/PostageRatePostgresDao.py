@@ -16,7 +16,7 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
     INSERT_SQL = '''INSERT INTO postage_rate(iso_country_code,
                     weight,
                     postage_class,
-                    rates)
+                    rate)
                     VALUES(%s, %s, %s, %s);'''
 
     @staticmethod
@@ -55,3 +55,22 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
                          float(postage_dto.get_rate()))
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute(self.INSERT_SQL, postage_tuple)
+
+    def delete_postage_rate(self, postageDto):
+        weight = self._convert_weight(postageDto.get_weight())
+        iso_country_code = postageDto.get_iso_country_code()
+        postage_class = postageDto.get_postage_class()
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"DELETE FROM postage_rate \
+                             WHERE iso_country_code='{iso_country_code}' AND weight={weight} AND postage_class={postage_class};")
+
+    def update_postage_rate(self, postageDto):
+        iso_country_code = postageDto.get_iso_country_code()
+        weight = self._convert_weight(postageDto.get_weight())
+        postage_class = postageDto.get_postage_class()
+        rate = postageDto.get_rate()
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"UPDATE postage_rate \
+                             SET rate={rate} \
+                             WHERE iso_country_code='{iso_country_code}' AND weight={weight} AND\
+                             postage_class={postage_class};")

@@ -10,14 +10,14 @@ postage_create_sql = '''
 CREATE TABLE postage_rate(iso_country_code varchar(256),
 weight integer, 
 postage_class integer,
-rates float);
+rate float);
 '''
 
 insert_postage_sql = '''
 INSERT INTO postage_rate(iso_country_code,
 weight,
 postage_class,
-rates)
+rate)
 VALUES(%s, %s, %s, %s);
 '''
 
@@ -92,6 +92,33 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
 
     def test_08_no_postage_class(self):
         self.assertEqual([], type(self).dao.get_postage_rates_by_postage_class(8))
+
+    def test_09_delete_postage_rate(self):
+        post = PostageRateDto(iso_country_code='W', weight=1234, postage_class=2, rate=2.34)
+        type(self).dao.create_postage_rate(post)
+        type(self).dao.delete_postage_rate(post)
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('W')
+        self.assertEqual(None, actual)
+
+    def test_10_update_postage_rate(self):
+        post = PostageRateDto(iso_country_code='SE', weight=1234, postage_class=2, rate=2.34)
+        type(self).dao.create_postage_rate(post)
+        expected = PostageRateDto(iso_country_code='SE', weight=2000, postage_class=2, rate=12.34)
+        type(self).dao.update_postage_rate(expected)
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('SE')
+        self.assertEqual(expected, actual)
+
+    def test_11_delete_postage_rate_that_does_not_exist(self):
+        post = PostageRateDto(iso_country_code='SE', weight=1234, postage_class=2, rate=2.34)
+        type(self).dao.delete_postage_rate(post)
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('SE')
+        self.assertEqual(None, actual)
+
+    def test_12_update_postage_rate_that_does_not_exist(self):
+        post = PostageRateDto(iso_country_code='SE', weight=1234, postage_class=2, rate=2.34)
+        type(self).dao.update_postage_rate(post)
+        actual = type(self).dao.get_postage_rates_by_iso_country_code('SE')
+        self.assertEqual(None, actual)
 
 
 if __name__ == '__main__':
