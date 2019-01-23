@@ -40,7 +40,7 @@ class PostageRateJsonDao(PostageRateDao, JsonFileReader, PostageRateCache):
         postages_matrix = self.get_postage_rates()
         return [postage for postage in postages_matrix if postage_class == postage.get_postage_class()]
 
-    def get_postage_rate(self, iso_country_code, weight, postage_class):
+    def get_appropriate_postage_rate(self, iso_country_code, weight, postage_class):
         key = (iso_country_code, self._convert_weight(weight), postage_class)
         return self._postage_rate_cache[key]
 

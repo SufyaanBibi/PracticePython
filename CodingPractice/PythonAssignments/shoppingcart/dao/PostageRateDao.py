@@ -20,7 +20,7 @@ class PostageRateDao(ABC):
         return
 
     @abstractmethod
-    def get_postage_rate(self, iso_country_code, weight, postage_class):
+    def get_appropriate_postage_rate(self, iso_country_code, weight, postage_class):
         return
 
     @abstractmethod
