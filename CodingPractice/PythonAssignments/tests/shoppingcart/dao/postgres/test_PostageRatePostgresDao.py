@@ -85,13 +85,12 @@ class PostageRatePostgresDaoTests(unittest.TestCase):
         actual = type(self).dao.get_postage_rates_by_postage_class(1)
         self.assertEqual([expected], actual)
 
-    @unittest.skip("We know it fails. Will fix when we fix the caching issue.")
     def test_04_get_appropriate_postage_rate(self):
         p1 = PostageRateDto(iso_country_code='UK', weight=1000, postage_class=1, rate=3.45)
         type(self).dao.create_postage_rate(p1)
         expected = 3.45
         actual = type(self).dao.get_appropriate_postage_rate('UK', 1000, 1)
-        self.assertEqual([expected], actual)
+        self.assertEqual(expected, actual)
 
     def test_05_create_postage_rate(self):
         postage_dto = PostageRateDto(iso_country_code='SE', weight=2000, postage_class=2, rate=2.34)

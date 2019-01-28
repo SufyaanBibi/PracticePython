@@ -58,6 +58,8 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
             with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(self.INSERT_SQL, postage_tuple)
             self._COMMIT()
+            self._clear_cache()
+            self._make_postage_rate_cache(self.get_postage_rates())
         except Exception as e:
             self._ROLLBACK()
             raise e
@@ -74,6 +76,8 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
                                   WHERE iso_country_code='{iso_country_code}' AND weight={weight} AND postage_class={postage_class};")
 
             self._COMMIT()
+            self._clear_cache()
+            self._make_postage_rate_cache(self.get_postage_rates())
         except Exception as e:
             self._ROLLBACK()
             raise e
@@ -93,6 +97,8 @@ class PostageRatePostgresDao(PostageRateDao, PostageRateCache):
                                  postage_class={postage_class};")
 
             self._COMMIT()
+            self._clear_cache()
+            self._make_postage_rate_cache(self.get_postage_rates())
         except Exception as e:
             self._ROLLBACK()
             raise e
