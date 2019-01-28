@@ -43,8 +43,8 @@ class TestPostageJsonDao(unittest.TestCase):
         actual = self._postDao.get_postage_rates_by_postage_class('1st Class')
         self.assertEqual(expected, actual)
 
-    def test_04_get_postage_rate(self):
-        self.assertEqual(3.45, self._postDao.get_postage_rate(iso_country_code='UK', weight=1000, postage_class=1))
+    def test_04_get_appropriate_postage_rate(self):
+        self.assertEqual(3.45, self._postDao.get_appropriate_postage_rate(iso_country_code='UK', weight=1000, postage_class=1))
 
     def test_05_MethodNotImplementedException_raised_on_create_postage_rate(self):
 

@@ -100,7 +100,7 @@ class OrderBo:
         cust = self._cust_dao.get_customer_by_id(c_id)
         iso_code = cust.get_iso_country_code()
         order_lines = order.get_order_lines()
-        return self._postage_rate_dao.get_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
+        return self._postage_rate_dao.get_appropriate_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
 
     def _get_order_weight(self, order_lines):
         weight = 0
