@@ -23,3 +23,5 @@ class PostageRateCache:
             t = (country, new_weight, new_postage_class)
             self._postage_rate_cache[t] = rate
 
+    def _clear_cache(self):
+        self._postage_rate_cache.clear()
