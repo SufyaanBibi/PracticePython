@@ -46,3 +46,9 @@ class ProductJsonDao(ProductDao, JsonFileReader):
 
     def create_product(self, product_dto):
         raise MethodNotImplementedException('create_product called on ProductJsonDao')
+
+    def delete_product(self, productDto):
+        raise MethodNotImplementedException('delete_product called on ProductJsonDao')
+
+    def update_product(self, productDto):
+        raise MethodNotImplementedException('update_product called on ProductJsonDao')

@@ -61,3 +61,23 @@ class ProductPostgresDao(ProductDao):
                       v)
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute(self.INSERT_SQL, prod_tuple)
+
+    def delete_product(self, productDto):
+        product_id = productDto.get_id()
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"DELETE FROM product WHERE product_id={product_id};")
+
+    def update_product(self, productDto):
+        v = 0
+        if productDto.is_vatable():
+            v = 1
+        product_id = productDto.get_id()
+        name = productDto.get_name()
+        price = productDto.get_price()
+        weight = productDto.get_weight()
+        stock_qty = productDto.get_stock_qty()
+        vatable = v
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"UPDATE product \
+                            SET product_id={product_id}, name='{name}', price={price}, weight={weight}, \
+                            stock_qty={stock_qty}, vatable={vatable} WHERE product_id={product_id};")
