@@ -52,19 +52,25 @@ class OrderPostgresDao(OrderDao):
         return [self._create_order_dto(og) for og in grouped]
 
     def get_order_by_order_id(self, order_id):
-        sql = f'SELECT * FROM orders JOIN order_line ON orders.order_id = order_line.order_id WHERE orders.order_id={order_id};'
+        sql = f'SELECT * FROM orders \
+                JOIN order_line ON orders.order_id = order_line.order_id \
+                WHERE orders.order_id={order_id};'
         all_order_rows = self._fetch_orders_with_sql(sql)
         grouped = groupby(all_order_rows, key=self._order_as_key)
         return [self._create_order_dto(og) for og in grouped]
 
     def get_orders_by_customer_id(self, customer_id):
-        sql = f'SELECT * FROM orders JOIN order_line ON orders.order_id = order_line.order_id WHERE orders.customer_id={customer_id};'
+        sql = f'SELECT * FROM orders \
+                JOIN order_line ON orders.order_id = order_line.order_id \
+                WHERE orders.customer_id={customer_id};'
         all_order_rows = self._fetch_orders_with_sql(sql)
         grouped = groupby(all_order_rows, key=self._order_as_key)
         return [self._create_order_dto(og) for og in grouped]
 
     def get_orders_by_product_id(self, product_id):
-        sql = f'SELECT * FROM orders JOIN order_line ON orders.order_id = order_line.order_id WHERE order_line.product_id={product_id};'
+        sql = f'SELECT * FROM orders \
+                JOIN order_line ON orders.order_id = order_line.order_id \
+                WHERE order_line.product_id={product_id};'
         all_order_rows = self._fetch_orders_with_sql(sql)
         grouped = groupby(all_order_rows, key=self._order_as_key)
         return [self._create_order_dto(og) for og in grouped]
@@ -72,20 +78,22 @@ class OrderPostgresDao(OrderDao):
     def create_order(self, order_dto):
         try:
             self._BEGIN()
-
-            for ol in order_dto.get_order_lines():
-                with closing(self._postgres_conn.cursor()) as cursor:
-                    cursor.execute(self._INSERT_ORDER_LINE_SQL, (ol.get_order_id(), ol.get_product_id(), ol.get_qty()))
-
-            with closing(self._postgres_conn.cursor()) as cursor:
-                cursor.execute(self._INSERT_ORDER_SQL, (order_dto.get_order_id(), order_dto.get_customer_id(),
-                                                        order_dto.get_order_timestamp(), order_dto.get_postage() ))
-
+            self._save_order_lines(order_dto)
+            self._save_order(order_dto)
             self._COMMIT()
-
         except Exception as e:
             self._ROLLBACK()
             raise e
+
+    def _save_order(self, order_dto):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(self._INSERT_ORDER_SQL, (order_dto.get_order_id(), order_dto.get_customer_id(),
+                                                    order_dto.get_order_timestamp(), order_dto.get_postage()))
+
+    def _save_order_lines(self, order_dto):
+        for ol in order_dto.get_order_lines():
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(self._INSERT_ORDER_LINE_SQL, (ol.get_order_id(), ol.get_product_id(), ol.get_qty()))
 
     def _BEGIN(self):
         with closing(self._postgres_conn.cursor()) as cursor:
