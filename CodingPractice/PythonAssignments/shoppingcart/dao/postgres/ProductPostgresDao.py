@@ -49,7 +49,7 @@ class ProductPostgresDao(ProductDao):
     def get_products_le_stock_qty(self, stock_qty):
         return self._fetch_products_with_sql(f"SELECT * FROM product WHERE stock_qty<={stock_qty};")
 
-    def vatable(self, productDto):
+    def convert_vatable_to_int(self, productDto):
         v = 0
         if productDto.is_vatable():
             v = 1
