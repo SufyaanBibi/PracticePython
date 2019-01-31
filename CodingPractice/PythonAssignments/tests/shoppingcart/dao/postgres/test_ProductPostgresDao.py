@@ -7,7 +7,7 @@ from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import Prod
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.ProductPostgresDao import ProductPostgresDao
 
 prod_create_sql = '''
-CREATE TABLE product(product_id integer,
+CREATE TABLE product(product_id integer NOT NULL,
 name varchar(256),
 price float,
 weight float,
@@ -143,6 +143,16 @@ class ProductPostgresDaoTests(unittest.TestCase):
         type(self).dao.update_product(prod)
         actual = type(self).dao.get_product_by_id(139)
         self.assertEqual(None, actual)
+
+    def test_12_ROLLBACK(self):
+        prod = ProductDto(product_id=None, name="Steve", price=13.1, weight=1203, stock_qty=1300,
+                          vatable=True)
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.create_product(prod)
+
+        actual = type(self).dao.get_products_by_name("Steve")
+        self.assertEqual([], actual)
 
 
 if __name__ == '__main__':

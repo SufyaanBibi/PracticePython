@@ -8,7 +8,7 @@ from CodingPractice.PythonAssignments.shoppingcart.domain.CustomerDto import Cus
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.CustomerPostgresDao import CustomerPostgresDao
 
 cust_create_sql = '''
-CREATE TABLE customer(customer_id integer, 
+CREATE TABLE customer(customer_id integer NOT NULL, 
 first_name varchar(256),
 last_name varchar(256),
 sex varchar(1),
@@ -162,6 +162,17 @@ class CustomerPostgresDaoTests(unittest.TestCase):
         type(self).dao.update_customer(cust)
         actual = type(self).dao.get_customer_by_id(90)
         self.assertEqual(None, actual)
+
+    def test_13_ROLLBACK(self):
+        cust = CustomerDto(customer_id=None, first_name='Julia', last_name='Bibi', sex='F', age=56,
+                           birthday='1962-5-5', email_address='julia.bibi@burbage.rd.com',
+                           mail_shot_date='12/08', iso_country_code='UK')
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.create_customer(cust)
+
+        actual = type(self).dao.get_customers_by_name('Julia', 'Bibi')
+        self.assertEqual([], actual)
 
 
 if __name__ == '__main__':
