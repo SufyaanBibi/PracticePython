@@ -48,7 +48,7 @@ class ProductPostgresDao(ProductDao):
 
     def get_products_le_stock_qty(self, stock_qty):
         return self._fetch_products_with_sql(f"SELECT * FROM product WHERE stock_qty<={stock_qty};")
-    
+
     @staticmethod
     def _convert_vatable_to_int(productDto):
         v = 0
@@ -57,7 +57,7 @@ class ProductPostgresDao(ProductDao):
         return v
 
     def create_product(self, productDto):
-        v = self.vatable(productDto)
+        v = self._convert_vatable_to_int(productDto)
         prod_tuple = (productDto.get_id(),
                       productDto.get_name(),
                       float(productDto.get_price()),
@@ -85,7 +85,7 @@ class ProductPostgresDao(ProductDao):
             raise e
 
     def update_product(self, productDto):
-        v = self.vatable(productDto)
+        v = self._convert_vatable_to_int(productDto)
         product_id = productDto.get_id()
         name = productDto.get_name()
         price = productDto.get_price()
