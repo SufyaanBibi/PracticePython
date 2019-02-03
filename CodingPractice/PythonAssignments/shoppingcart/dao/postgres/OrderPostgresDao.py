@@ -99,22 +99,24 @@ class OrderPostgresDao(OrderDao):
         order_id = order_dto.get_order_id()
         try:
             self._BEGIN()
-            with closing(self._postgres_conn.cursor()) as cursor:
-                cursor.execute(f"DELETE FROM orders \
-                                WHERE order_id={order_id};")
-
-            with closing(self._postgres_conn.cursor()) as cursor:
-                cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
-
+            self._delete_orders_and_order_lines(order_id)
             self._COMMIT()
         except Exception as e:
             self._ROLLBACK()
             raise e
 
+    def _delete_orders_and_order_lines(self, order_id):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"DELETE FROM orders \
+                            WHERE order_id={order_id};")
+
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
+
     def update_order(self, order_dto, new_order_dto):
         try:
             self._BEGIN()
-            self.delete_order(order_dto)
+            self._delete_orders_and_order_lines(order_dto.get_order_id())
             self.create_order(new_order_dto)
             self._COMMIT()
         except Exception as e:

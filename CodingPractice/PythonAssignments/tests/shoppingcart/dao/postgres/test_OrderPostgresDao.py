@@ -148,23 +148,35 @@ class OrderPostgresDaoTests(unittest.TestCase):
         type(self).dao.create_order(order)
         type(self).dao.update_order(order, updated_order)
         actual = type(self).dao.get_order_by_order_id(777)
-        self.assertEqual(updated_order, actual)
+        self.assertEqual([updated_order], actual)
 
-    def test_09_ROLLBACK_works_after_delete_order_fails(self):
-        order = OrderDto(87, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(87, 1, 50),
-                          OrderLineDto(87, 2, 100)])
-
-        with self.assertRaises(Exception) as e:
-            type(self).dao.delete_order(order)
-
-    def test_10_ROLLBACK_works_after_update_order_fails(self):
-        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(777, 1, 50),
-                          OrderLineDto(777, 2, 100)])
+    def test_09_ROLLBACK_works_after_update_order_fails(self):
+        order = OrderDto(77, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(77, 1, 50),
+                          OrderLineDto(77, 2, 100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.update_order(order)
+
+        actual = type(self).dao.get_order_by_order_id(77)
+        self.assertEqual([], actual)
+
+    def test_10_ROLLBACK_occurs_when_delete_fails_in_update_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto(777, 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+        type(self).dao.create_order(order)
+
+        order2 = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto('abc', 1, 50),
+                          OrderLineDto(777, 2, 100)])
+
+        type(self).dao.update_order(order, updated_order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([updated_order], actual)
 
 
 if __name__ == '__main__':
