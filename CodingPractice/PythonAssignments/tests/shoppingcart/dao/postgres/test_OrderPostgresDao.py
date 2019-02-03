@@ -174,9 +174,11 @@ class OrderPostgresDaoTests(unittest.TestCase):
                          [OrderLineDto('abc', 1, 50),
                           OrderLineDto(777, 2, 100)])
 
-        type(self).dao.update_order(order, updated_order)
+        type(self).dao.update_order(order2, updated_order)
         actual = type(self).dao.get_order_by_order_id(777)
         self.assertEqual([updated_order], actual)
+
+
 
 
 if __name__ == '__main__':
