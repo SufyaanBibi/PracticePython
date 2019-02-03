@@ -95,6 +95,32 @@ class OrderPostgresDao(OrderDao):
             with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(self._INSERT_ORDER_LINE_SQL, (ol.get_order_id(), ol.get_product_id(), ol.get_qty()))
 
+    def delete_order(self, order_dto):
+        order_id = order_dto.get_order_id()
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"DELETE FROM orders \
+                                WHERE order_id={order_id};")
+
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
+
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
+    def update_order(self, order_dto, new_order_dto):
+        try:
+            self._BEGIN()
+            self.delete_order(order_dto)
+            self.create_order(new_order_dto)
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
     def _BEGIN(self):
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute("BEGIN;")
@@ -106,4 +132,3 @@ class OrderPostgresDao(OrderDao):
     def _ROLLBACK(self):
         with closing(self._postgres_conn.cursor()) as cursor:
             cursor.execute("ROLLBACK;")
-

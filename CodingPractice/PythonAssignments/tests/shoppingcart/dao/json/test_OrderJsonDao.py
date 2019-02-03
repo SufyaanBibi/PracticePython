@@ -75,6 +75,16 @@ class TestOrderJsonDao(unittest.TestCase):
             self._orderDao.create_order(None)
         self.assertEqual('create_order called on OrderJsonDao', e.exception._message)
 
+    def test_09_MethodNotImplementedException_raised_on_delete_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.delete_order(None)
+        self.assertEqual('delete_order called on OrderJsonDao', e.exception._message)
+
+    def test_10_MethodNotImplementedException_raised_on_update_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.update_order(None, None)
+        self.assertEqual('update_order called on OrderJsonDao', e.exception._message)
+
 
 if __name__ == '__main__':
     unittest.main()

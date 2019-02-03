@@ -51,5 +51,11 @@ class OrderJsonDao(OrderDao, JsonFileReader):
                 for order_line in order.get_order_lines()
                 if product_id == order_line.get_product_id()]
 
-    def create_order(self, product_id):
+    def create_order(self, order_dto):
         raise MethodNotImplementedException('create_order called on OrderJsonDao')
+
+    def delete_order(self, order_dto):
+        raise MethodNotImplementedException('delete_order called on OrderJsonDao')
+
+    def update_order(self, order_dto, new_order_dto):
+        raise MethodNotImplementedException('update_order called on OrderJsonDao')

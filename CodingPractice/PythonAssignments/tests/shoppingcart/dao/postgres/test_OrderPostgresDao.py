@@ -120,14 +120,51 @@ class OrderPostgresDaoTests(unittest.TestCase):
 
     def test_06_ROLLBACK_has_worked_after_create_order_fails(self):
         order = OrderDto(1000, 1, "2018-12-01 10:45:15", 1,
-                                [OrderLineDto(None, 1, 50),
-                                OrderLineDto(1000, 2, 100)])
+                         [OrderLineDto(None, 1, 50),
+                          OrderLineDto(1000, 2, 100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.create_order(order)
 
         actual = type(self).dao.get_order_by_order_id(1000)
         self.assertEqual([], actual)
+
+    def test_07_delete_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        type(self).dao.create_order(order)
+        type(self).dao.delete_order(order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([], actual)
+
+    def test_08_update_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto(777, 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+        type(self).dao.create_order(order)
+        type(self).dao.update_order(order, updated_order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual(updated_order, actual)
+
+    def test_09_ROLLBACK_works_after_delete_order_fails(self):
+        order = OrderDto(87, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(87, 1, 50),
+                          OrderLineDto(87, 2, 100)])
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.delete_order(order)
+
+    def test_10_ROLLBACK_works_after_update_order_fails(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.update_order(order)
 
 
 if __name__ == '__main__':
