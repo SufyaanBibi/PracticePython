@@ -2,6 +2,8 @@ import unittest
 
 import testing.postgresql
 import psycopg2
+import pg8000
+from contextlib import closing
 
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.OrderPostgresDao import OrderPostgresDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import OrderDto, OrderLineDto
@@ -41,13 +43,6 @@ def handler(postgresql):
     cursor = conn.cursor()
     cursor.execute(create_order_sql)
     cursor.execute(create_order_line_sql)
-    cursor.execute(insert_order_line_sql, (100, 1, 50))
-    cursor.execute(insert_order_line_sql, (100, 2, 100))
-    cursor.execute(insert_order_sql, (100, 1, "2018-12-01 10:45:15", 1) )
-
-    cursor.execute(insert_order_line_sql, (101, 1, 50))
-    cursor.execute(insert_order_line_sql, (101, 2, 100))
-    cursor.execute(insert_order_sql, (101, 2, "2018-12-25 10:45:15", 1))
     cursor.close()
     conn.commit()
     conn.close()
@@ -67,41 +62,47 @@ class OrderPostgresDaoTests(unittest.TestCase):
         cls.postgresql_instance.stop()
         cls.Postgresql.clear_cache()
 
+    def setUp(self):
+        pg = type(self).postgresql_instance
+        connection = pg8000.connect(**pg.dsn())
+
+        with closing(connection.cursor()) as cursor:
+            cursor.execute("BEGIN;")
+            cursor.execute("DELETE FROM orders;")
+            cursor.execute("DELETE FROM order_line;")
+            cursor.execute("COMMIT;")
+        connection.close()
+
     def test_00_can_get_orders(self):
-        expected = [OrderDto(100, 1, "2018-12-01 10:45:15", 1,
-                              [OrderLineDto(100, 1, 50),
-                               OrderLineDto(100, 2, 100)]),
-                    OrderDto(101, 2, "2018-12-25 10:45:15", 1,
-                             [OrderLineDto(101, 1, 50),
-                              OrderLineDto(101, 2, 100)])
-                    ]
+        expected = OrderDto(100, 1, "2018-12-01 10:45:15", 1,
+                             [OrderLineDto(100, 1, 50),
+                              OrderLineDto(100, 2, 100)])
+        type(self).dao.create_order(expected)
         actual = type(self).dao.get_orders()
-        self.assertEqual(expected, actual)
+        self.assertEqual([expected], actual)
 
     def test_01_can_get_order_by_id(self):
-        expected = [OrderDto(101, 2, "2018-12-25 10:45:15", 1,
+        expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
                              [OrderLineDto(101, 1, 50),
                               OrderLineDto(101, 2, 100)])
-                    ]
+        type(self).dao.create_order(expected)
         actual = type(self).dao.get_order_by_order_id(101)
-        self.assertEqual(expected, actual)
+        self.assertEqual([expected], actual)
 
     def test_02_can_get_orders_by_customer_id(self):
-        expected = [OrderDto(101, 2, "2018-12-25 10:45:15", 1,
+        expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
                              [OrderLineDto(101, 1, 50),
                               OrderLineDto(101, 2, 100)])
-                    ]
+        type(self).dao.create_order(expected)
         actual = type(self).dao.get_orders_by_customer_id(2)
-        self.assertEqual(expected, actual)
+        self.assertEqual([expected], actual)
 
     def test_03_get_orders_by_product_id(self):
-        expected = [OrderDto(100, 1, "2018-12-01 10:45:15", 1,
-                               [OrderLineDto(100, 2, 100)]),
-                    OrderDto(101, 2, "2018-12-25 10:45:15", 1,
-                              [OrderLineDto(101, 2, 100)])
-                             ]
+        expected = OrderDto(100, 1, "2018-12-01 10:45:15", 1,
+                               [OrderLineDto(100, 2, 100)])
+        type(self).dao.create_order(expected)
         actual = type(self).dao.get_orders_by_product_id(2)
-        self.assertEqual(expected, actual)
+        self.assertEqual([expected], actual)
 
     def test_04_can_create_an_order(self):
         order = OrderDto(999, 1, "2018-12-01 10:45:15", 1,
@@ -120,14 +121,81 @@ class OrderPostgresDaoTests(unittest.TestCase):
 
     def test_06_ROLLBACK_has_worked_after_create_order_fails(self):
         order = OrderDto(1000, 1, "2018-12-01 10:45:15", 1,
-                                [OrderLineDto(None, 1, 50),
-                                OrderLineDto(1000, 2, 100)])
+                         [OrderLineDto(None, 1, 50),
+                          OrderLineDto(1000, 2, 100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.create_order(order)
 
         actual = type(self).dao.get_order_by_order_id(1000)
         self.assertEqual([], actual)
+
+    def test_07_delete_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        type(self).dao.create_order(order)
+        type(self).dao.delete_order(order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([], actual)
+
+    def test_08_update_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto(777, 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+        type(self).dao.create_order(order)
+        type(self).dao.update_order(order, updated_order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([updated_order], actual)
+
+    def test_09_ROLLBACK_works_after_update_order_fails(self):
+        order = OrderDto(77, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(77, 1, 50),
+                          OrderLineDto(77, 2, 100)])
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.update_order(order)
+
+        actual = type(self).dao.get_order_by_order_id(77)
+        self.assertEqual([], actual)
+
+    def test_10_ROLLBACK_occurs_when_delete_fails_in_update_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+
+        type(self).dao.create_order(order)
+
+        order2 = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto('abc', 1, 50),
+                          OrderLineDto(777, 2, 100)])
+
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto(777, 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+
+        type(self).dao.update_order(order2, updated_order)
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([updated_order], actual)
+
+    def test_11_ROLLBACK_occurs_when_create_fails_in_update_order(self):
+        order = OrderDto(654, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(654, 1, 50),
+                          OrderLineDto(654, 2, 100)])
+        type(self).dao.create_order(order)
+
+        updated_order = OrderDto(654, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto('bcv', 1, 10),
+                                  OrderLineDto(654, 2, 45)])
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.update_order(order, updated_order)
+
+        actual = type(self).dao.get_order_by_order_id(654)
+        self.assertEqual([order], actual)
 
 
 if __name__ == '__main__':

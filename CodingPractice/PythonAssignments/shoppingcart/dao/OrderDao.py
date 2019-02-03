@@ -20,5 +20,13 @@ class OrderDao(ABC):
         return
 
     @abstractmethod
-    def create_order(self, product_id):
+    def create_order(self, order_dto):
+        return
+
+    @abstractmethod
+    def delete_order(self, order_dto):
+        return
+
+    @abstractmethod
+    def update_order(self, order_dto, new_order_dto):
         return
