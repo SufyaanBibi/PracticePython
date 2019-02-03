@@ -165,20 +165,40 @@ class OrderPostgresDaoTests(unittest.TestCase):
         order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
                          [OrderLineDto(777, 1, 50),
                           OrderLineDto(777, 2, 100)])
-        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
-                                 [OrderLineDto(777, 1, 10),
-                                  OrderLineDto(777, 2, 45)])
+
         type(self).dao.create_order(order)
 
         order2 = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
                          [OrderLineDto('abc', 1, 50),
                           OrderLineDto(777, 2, 100)])
 
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto(777, 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+
         type(self).dao.update_order(order2, updated_order)
         actual = type(self).dao.get_order_by_order_id(777)
         self.assertEqual([updated_order], actual)
 
+    def test_11_ROLLBACK_occurs_when_create_fails_in_update_order(self):
+        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(777, 1, 50),
+                          OrderLineDto(777, 2, 100)])
+        type(self).dao.create_order(order)
 
+        order2 = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
+                          [OrderLineDto('abc', 1, 50),
+                           OrderLineDto(777, 2, 100)])
+
+        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
+                                 [OrderLineDto('bcv', 1, 10),
+                                  OrderLineDto(777, 2, 45)])
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.update_order(order2, updated_order)
+
+        actual = type(self).dao.get_order_by_order_id(777)
+        self.assertEqual([order], actual)
 
 
 if __name__ == '__main__':
