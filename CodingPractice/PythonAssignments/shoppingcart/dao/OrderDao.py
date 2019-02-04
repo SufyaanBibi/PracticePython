@@ -28,5 +28,5 @@ class OrderDao(ABC):
         return
 
     @abstractmethod
-    def update_order(self, order_dto, new_order_dto):
+    def update_order(self, order_dto):
         return
