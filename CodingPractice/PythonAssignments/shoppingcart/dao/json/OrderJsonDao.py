@@ -57,5 +57,5 @@ class OrderJsonDao(OrderDao, JsonFileReader):
     def delete_order(self, order_dto):
         raise MethodNotImplementedException('delete_order called on OrderJsonDao')
 
-    def update_order(self, order_dto, new_order_dto):
+    def update_order(self, order_dto):
         raise MethodNotImplementedException('update_order called on OrderJsonDao')

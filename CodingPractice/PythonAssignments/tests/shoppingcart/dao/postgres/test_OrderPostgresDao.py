@@ -147,19 +147,19 @@ class OrderPostgresDaoTests(unittest.TestCase):
                                  [OrderLineDto(777, 1, 10),
                                   OrderLineDto(777, 2, 45)])
         type(self).dao.create_order(order)
-        type(self).dao.update_order(order, updated_order)
+        type(self).dao.update_order(updated_order)
         actual = type(self).dao.get_order_by_order_id(777)
         self.assertEqual([updated_order], actual)
 
     def test_09_ROLLBACK_works_after_update_order_fails(self):
-        order = OrderDto(77, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(77, 1, 50),
-                          OrderLineDto(77, 2, 100)])
+        order = OrderDto(65, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto('abc', 1, 50),
+                          OrderLineDto(65, 2, 100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.update_order(order)
 
-        actual = type(self).dao.get_order_by_order_id(77)
+        actual = type(self).dao.get_order_by_order_id(65)
         self.assertEqual([], actual)
 
     def test_10_ROLLBACK_occurs_when_delete_fails_in_update_order(self):
@@ -177,7 +177,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                                  [OrderLineDto(777, 1, 10),
                                   OrderLineDto(777, 2, 45)])
 
-        type(self).dao.update_order(order2, updated_order)
+        type(self).dao.update_order(updated_order)
         actual = type(self).dao.get_order_by_order_id(777)
         self.assertEqual([updated_order], actual)
 
@@ -192,7 +192,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                                   OrderLineDto(654, 2, 45)])
 
         with self.assertRaises(Exception) as e:
-            type(self).dao.update_order(order, updated_order)
+            type(self).dao.update_order(updated_order)
 
         actual = type(self).dao.get_order_by_order_id(654)
         self.assertEqual([order], actual)

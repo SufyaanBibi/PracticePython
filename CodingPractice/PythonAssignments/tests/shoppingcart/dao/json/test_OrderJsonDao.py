@@ -82,7 +82,7 @@ class TestOrderJsonDao(unittest.TestCase):
 
     def test_10_MethodNotImplementedException_raised_on_update_order(self):
         with self.assertRaises(MethodNotImplementedException) as e:
-            self._orderDao.update_order(None, None)
+            self._orderDao.update_order(None)
         self.assertEqual('update_order called on OrderJsonDao', e.exception._message)
 
 
