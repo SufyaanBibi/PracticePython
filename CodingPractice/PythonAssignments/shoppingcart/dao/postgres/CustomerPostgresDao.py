@@ -58,13 +58,26 @@ class CustomerPostgresDao(CustomerDao):
                       customer_dto.get_email_addr(),
                       customer_dto.get_mail_shot_date(),
                       customer_dto.get_iso_country_code())
-        with closing(self._postgres_conn.cursor()) as cursor:
-            cursor.execute(self.INSERT_SQL, cust_tuple)
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(self.INSERT_SQL, cust_tuple)
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
 
     def delete_customer(self, customerDto):
         customer_id = customerDto.get_customer_id()
-        with closing(self._postgres_conn.cursor()) as cursor:
-            cursor.execute(f"DELETE FROM customer WHERE customer_id={customer_id};")
+
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"DELETE FROM customer WHERE customer_id={customer_id};")
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
 
     def update_customer(self, customerDto):
         customer_id = customerDto.get_customer_id()
@@ -76,10 +89,29 @@ class CustomerPostgresDao(CustomerDao):
         email_addr = customerDto.get_email_addr()
         mail_shot = customerDto.get_mail_shot_date()
         iso_country_code = customerDto.get_iso_country_code()
+
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"UPDATE customer \
+                                SET first_name='{first_name}', last_name='{last_name}', sex='{sex}', age={age}, \
+                                birthday='{birthday}', email_address='{email_addr}', mail_shot_date='{mail_shot}', \
+                                iso_country_code='{iso_country_code}' \
+                                WHERE customer_id={customer_id};"
+                               )
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
+    def _BEGIN(self):
         with closing(self._postgres_conn.cursor()) as cursor:
-            cursor.execute(f"UPDATE customer \
-                            SET first_name='{first_name}', last_name='{last_name}', sex='{sex}', age={age}, \
-                            birthday='{birthday}', email_address='{email_addr}', mail_shot_date='{mail_shot}', \
-                            iso_country_code='{iso_country_code}' \
-                            WHERE customer_id={customer_id};"
-                           )
+            cursor.execute("BEGIN;")
+
+    def _COMMIT(self):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute("COMMIT;")
+
+    def _ROLLBACK(self):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute("ROLLBACK;")

@@ -30,3 +30,11 @@ class ProductDao(ABC):
     @abstractmethod
     def create_product(self, productDto):
         return
+
+    @abstractmethod
+    def delete_product(self, productDto):
+        return
+
+    @abstractmethod
+    def update_product(self, productDto):
+        return

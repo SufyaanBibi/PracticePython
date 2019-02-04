@@ -52,6 +52,27 @@ class TestProductJsonDao(unittest.TestCase):
         actual = self._prodDao.get_products_le_stock_qty(50)
         self.assertEqual(expected, actual)
 
+    def test_05_MethodNotImplementedException_raised_on_create_product(self):
+        prod1 = ProductDto(product_id=99, name="Wrow", price=3445, weight=987, stock_qty=133, vatable=True)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._prodDao.create_product(prod1)
+        self.assertEqual('create_product called on ProductJsonDao', e.exception._message)
+
+    def test_06_MethodNotImplementedException_raised_on_delete_product(self):
+        prod1 = ProductDto(product_id=99, name="Wrow", price=3445, weight=987, stock_qty=133, vatable=True)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._prodDao.delete_product(prod1)
+        self.assertEqual('delete_product called on ProductJsonDao', e.exception._message)
+
+    def test_07_MethodNotImplementedException_raised_on_update_product(self):
+        prod1 = ProductDto(product_id=99, name="Wrow", price=3445, weight=987, stock_qty=133, vatable=True)
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._prodDao.update_product(prod1)
+        self.assertEqual('update_product called on ProductJsonDao', e.exception._message)
+
 
 if __name__ == '__main__':
     unittest.main()

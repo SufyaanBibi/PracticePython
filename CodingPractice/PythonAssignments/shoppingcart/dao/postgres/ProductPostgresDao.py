@@ -49,15 +49,68 @@ class ProductPostgresDao(ProductDao):
     def get_products_le_stock_qty(self, stock_qty):
         return self._fetch_products_with_sql(f"SELECT * FROM product WHERE stock_qty<={stock_qty};")
 
-    def create_product(self, product_dto):
-        v = 0
-        if product_dto.is_vatable():
-            v = 1
-        prod_tuple = (product_dto.get_id(),
-                      product_dto.get_name(),
-                      float(product_dto.get_price()),
-                      float(product_dto.get_weight()),
-                      product_dto.get_stock_qty(),
+    @staticmethod
+    def _bool_to_int(b):
+        if b:
+            return 1
+        else:
+            return 0
+
+    def create_product(self, productDto):
+        v = self._bool_to_int(productDto.is_vatable())
+        prod_tuple = (productDto.get_id(),
+                      productDto.get_name(),
+                      float(productDto.get_price()),
+                      float(productDto.get_weight()),
+                      productDto.get_stock_qty(),
                       v)
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(self.INSERT_SQL, prod_tuple)
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
+    def delete_product(self, productDto):
+        product_id = productDto.get_id()
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"DELETE FROM product WHERE product_id={product_id};")
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
+    def update_product(self, productDto):
+        v = self._bool_to_int(productDto.is_vatable())
+        product_id = productDto.get_id()
+        name = productDto.get_name()
+        price = productDto.get_price()
+        weight = productDto.get_weight()
+        stock_qty = productDto.get_stock_qty()
+        vatable = v
+        try:
+            self._BEGIN()
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"UPDATE product \
+                                SET product_id={product_id}, name='{name}', price={price}, weight={weight}, \
+                                stock_qty={stock_qty}, vatable={vatable} WHERE product_id={product_id};")
+            self._COMMIT()
+        except Exception as e:
+            self._ROLLBACK()
+            raise e
+
+    def _BEGIN(self):
         with closing(self._postgres_conn.cursor()) as cursor:
-            cursor.execute(self.INSERT_SQL, prod_tuple)
+            cursor.execute("BEGIN;")
+
+    def _COMMIT(self):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute("COMMIT;")
+
+    def _ROLLBACK(self):
+        with closing(self._postgres_conn.cursor()) as cursor:
+            cursor.execute("ROLLBACK;")

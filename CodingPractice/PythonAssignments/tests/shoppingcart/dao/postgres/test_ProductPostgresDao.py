@@ -7,7 +7,7 @@ from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import Prod
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.ProductPostgresDao import ProductPostgresDao
 
 prod_create_sql = '''
-CREATE TABLE product(product_id integer,
+CREATE TABLE product(product_id integer NOT NULL,
 name varchar(256),
 price float,
 weight float,
@@ -111,6 +111,48 @@ class ProductPostgresDaoTests(unittest.TestCase):
 
     def test_07_no_product_by_name(self):
         self.assertEqual([], type(self).dao.get_products_by_name('Panpan'))
+
+    def test_08_delete_product(self):
+        prod = ProductDto(product_id=999, name="StWid", price=15.1, weight=120, stock_qty=100,
+                        vatable=True)
+        type(self).dao.create_product(prod)
+        type(self).dao.delete_product(prod)
+        actual = type(self).dao.get_product_by_id(999)
+        self.assertEqual(None, actual)
+
+    def test_09_update_product(self):
+        prod = ProductDto(product_id=999, name="StWid", price=15.1, weight=120, stock_qty=100,
+                          vatable=True)
+        type(self).dao.create_product(prod)
+        expected = ProductDto(product_id=999, name="StandWid", price=7.1, weight=120, stock_qty=10,
+                          vatable=True)
+        type(self).dao.update_product(expected)
+        actual = type(self).dao.get_product_by_id(999)
+        self.assertEqual(expected, actual)
+
+    def test_10_delete_product_that_does_not_exist(self):
+        prod = ProductDto(product_id=139, name="St", price=13.1, weight=1203, stock_qty=1300,
+                          vatable=True)
+        type(self).dao.delete_product(prod)
+        actual = type(self).dao.get_product_by_id(139)
+        self.assertEqual(None, actual)
+
+    def test_11_update_product_that_does_not_exist(self):
+        prod = ProductDto(product_id=139, name="St", price=13.1, weight=1203, stock_qty=1300,
+                          vatable=True)
+        type(self).dao.update_product(prod)
+        actual = type(self).dao.get_product_by_id(139)
+        self.assertEqual(None, actual)
+
+    def test_12_ROLLBACK(self):
+        prod = ProductDto(product_id=None, name="Steve", price=13.1, weight=1203, stock_qty=1300,
+                          vatable=True)
+
+        with self.assertRaises(Exception) as e:
+            type(self).dao.create_product(prod)
+
+        actual = type(self).dao.get_products_by_name("Steve")
+        self.assertEqual([], actual)
 
 
 if __name__ == '__main__':
