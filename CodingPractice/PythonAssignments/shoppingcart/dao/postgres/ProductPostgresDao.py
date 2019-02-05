@@ -21,8 +21,7 @@ class ProductPostgresDao(ProductDao):
 
     @staticmethod
     def _create_product_dto_from_row(row):
-        v = row[5]>0
-        return ProductDto(product_id=row[0], name=row[1], price=row[2], weight=row[3], stock_qty=row[4], vatable=v)
+        return ProductDto(product_id=row[0], name=row[1], price=row[2], weight=row[3], stock_qty=row[4], vatable=row[5])
 
     def _fetch_products_with_sql(self, sql):
         with closing(self._postgres_conn.cursor()) as cursor:
@@ -49,6 +48,13 @@ class ProductPostgresDao(ProductDao):
 
     def get_products_le_stock_qty(self, stock_qty):
         return self._fetch_products_with_sql(f"SELECT * FROM product WHERE stock_qty<={stock_qty};")
+
+    @staticmethod
+    def _int_to_bool(i):
+        if i == 0:
+            return False
+        else:
+            return True
 
     @staticmethod
     def _bool_to_int(b):
