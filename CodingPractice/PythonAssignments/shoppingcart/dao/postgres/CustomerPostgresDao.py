@@ -48,6 +48,8 @@ class CustomerPostgresDao(CustomerDao):
     def get_customers_by_iso_country_code(self, iso_country_code):
         return self._fetch_customers_with_sql("SELECT * FROM customer WHERE iso_country_code='"+iso_country_code+"';")
 
+    #I need to change the way in which the customer_id is generated.
+
     def create_customer(self, customer_dto):
         cust_tuple = (customer_dto.get_customer_id(),
                       customer_dto.get_first_name(),
@@ -66,7 +68,7 @@ class CustomerPostgresDao(CustomerDao):
         except Exception as e:
             self._ROLLBACK()
             raise e
-        return customer_dto.get_customer_id()
+        print(customer_dto.get_customer_id())
 
     def delete_customer(self, customerDto):
         customer_id = customerDto.get_customer_id()

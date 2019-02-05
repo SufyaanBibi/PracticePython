@@ -191,7 +191,7 @@ class CustomerPostgresDaoTests(unittest.TestCase):
         cust = CustomerDto(customer_id=1, first_name='Tom', last_name='Bull', sex='M', age=25,
                            birthday='1993-10-12', email_address='tom.bull@hotmail.com',
                            mail_shot_date='04/09', iso_country_code='UK')
-        cust_2 = CustomerDto(customer_id=10, first_name='Wren', last_name='Smith', sex='F', age=43,
+        cust_2 = CustomerDto(customer_id=2, first_name='Wren', last_name='Smith', sex='F', age=43,
                              birthday='1913-11-12', email_address='wren.smith@hotmail.com',
                              mail_shot_date='04/10', iso_country_code='USA')
         type(self).dao.create_customer(cust)
