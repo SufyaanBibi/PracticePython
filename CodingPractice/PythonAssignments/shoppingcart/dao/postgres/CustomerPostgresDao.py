@@ -66,6 +66,7 @@ class CustomerPostgresDao(CustomerDao):
         except Exception as e:
             self._ROLLBACK()
             raise e
+        return customer_dto.get_customer_id()
 
     def delete_customer(self, customerDto):
         customer_id = customerDto.get_customer_id()

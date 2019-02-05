@@ -7,7 +7,7 @@ from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import Prod
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.ProductPostgresDao import ProductPostgresDao
 
 prod_create_sql = '''
-CREATE TABLE product(product_id integer NOT NULL,
+CREATE TABLE product(product_id SERIAL,
 name varchar(256),
 price float,
 weight float,

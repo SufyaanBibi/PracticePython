@@ -1,14 +1,15 @@
 import unittest
-
+import pg8000
 import testing.postgresql
 import psycopg2
+from contextlib import closing
 
 
 from CodingPractice.PythonAssignments.shoppingcart.domain.CustomerDto import CustomerDto
 from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.CustomerPostgresDao import CustomerPostgresDao
 
 cust_create_sql = '''
-CREATE TABLE customer(customer_id integer NOT NULL, 
+CREATE TABLE customer(customer_id SERIAL PRIMARY KEY, 
 first_name varchar(256),
 last_name varchar(256),
 sex varchar(1),
@@ -39,10 +40,6 @@ def handler(postgresql):
     conn = psycopg2.connect(**postgresql.dsn())
     cursor = conn.cursor()
     cursor.execute(cust_create_sql)
-    cursor.execute(insert_cust_sql,
-                   (101, 'Spooky', 'Dogg', 'M', 10, '2008-04-02', 'spooky.dogg@burbage.rd.com', '11/25', 'UK'))
-    cursor.execute(insert_cust_sql,
-                   (102, 'Charlie', 'Bone', 'M', 10, '2008-04-02', 'charlie.bone@burbage.rd.com', '11/25', 'UK'))
     cursor.close()
     conn.commit()
     conn.close()
@@ -62,6 +59,16 @@ class CustomerPostgresDaoTests(unittest.TestCase):
         cls.postgresql_instance.stop()
         cls.Postgresql.clear_cache()
 
+    def setUp(self):
+        pg = type(self).postgresql_instance
+        connection = pg8000.connect(**pg.dsn())
+
+        with closing(connection.cursor()) as cursor:
+            cursor.execute("BEGIN;")
+            cursor.execute("DELETE FROM customer;")
+            cursor.execute("COMMIT;")
+        connection.close()
+
     def test_00_test_create_dto_from_row(self):
         expected = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
                                birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
@@ -74,13 +81,15 @@ class CustomerPostgresDaoTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_01_get_customers(self):
-        expected = [CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
+        cust = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
                                 birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
-                                mail_shot_date='11/25', iso_country_code='UK'),
-                    CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
+                                mail_shot_date='11/25', iso_country_code='UK')
+        cust_2 = CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
-                                mail_shot_date='11/25', iso_country_code='UK')]
-
+                                mail_shot_date='11/25', iso_country_code='UK')
+        type(self).dao.create_customer(cust)
+        type(self).dao.create_customer(cust_2)
+        expected = [cust, cust_2]
         actual = type(self).dao.get_customers()
         self.assertEqual(expected, actual)
 
@@ -88,24 +97,28 @@ class CustomerPostgresDaoTests(unittest.TestCase):
         expected = CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                 birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
                                 mail_shot_date='11/25', iso_country_code='UK')
+        type(self).dao.create_customer(expected)
         actual = type(self).dao.get_customer_by_id(102)
         self.assertEqual(expected, actual)
 
     def test_03_get_customers_by_name(self):
-        expected = [CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
+        expected = CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
                                birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
-                               mail_shot_date='11/25', iso_country_code='UK')]
+                               mail_shot_date='11/25', iso_country_code='UK')
+        type(self).dao.create_customer(expected)
         actual = type(self).dao.get_customers_by_name('Bone', 'Charlie')
-        self.assertEqual(expected, actual)
+        self.assertEqual([expected], actual)
 
     def test_04_get_customers_by_iso_country_code(self):
-        expected = [CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
-                                birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
-                                mail_shot_date='11/25', iso_country_code='UK'),
-                    CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
-                                birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
-                                mail_shot_date='11/25', iso_country_code='UK')]
-
+        cust = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age=10,
+                           birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
+                           mail_shot_date='11/25', iso_country_code='UK')
+        cust_2 = CustomerDto(customer_id=102, first_name='Charlie', last_name='Bone', sex='M', age=10,
+                             birthday='2008-04-02', email_address='charlie.bone@burbage.rd.com',
+                             mail_shot_date='11/25', iso_country_code='UK')
+        type(self).dao.create_customer(cust)
+        type(self).dao.create_customer(cust_2)
+        expected = [cust, cust_2]
         actual = type(self).dao.get_customers_by_iso_country_code('UK')
         self.assertEqual(expected, actual)
 
@@ -173,6 +186,22 @@ class CustomerPostgresDaoTests(unittest.TestCase):
 
         actual = type(self).dao.get_customers_by_name('Julia', 'Bibi')
         self.assertEqual([], actual)
+
+    def test_14_check_SERIAL_works(self):
+        cust = CustomerDto(customer_id=1, first_name='Tom', last_name='Bull', sex='M', age=25,
+                           birthday='1993-10-12', email_address='tom.bull@hotmail.com',
+                           mail_shot_date='04/09', iso_country_code='UK')
+        cust_2 = CustomerDto(customer_id=10, first_name='Wren', last_name='Smith', sex='F', age=43,
+                             birthday='1913-11-12', email_address='wren.smith@hotmail.com',
+                             mail_shot_date='04/10', iso_country_code='USA')
+        type(self).dao.create_customer(cust)
+        type(self).dao.create_customer(cust_2)
+
+        expected = CustomerDto(customer_id=2, first_name='Wren', last_name='Smith', sex='F', age=43,
+                               birthday='1913-11-12', email_address='wren.smith@hotmail.com',
+                               mail_shot_date='04/10', iso_country_code='USA')
+        actual = type(self).dao.get_customer_by_id(2)
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
