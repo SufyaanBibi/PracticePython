@@ -26,7 +26,7 @@ class ProductJsonDao(ProductDao, JsonFileReader):
 
     def get_product_by_id(self, product_id):
         prods = self.get_products()
-        return [prod for prod in prods if product_id == prod.get_id()][0]
+        return [prod for prod in prods if product_id == prod.get_product_id()][0]
 
     def get_products_by_name(self, product_name):
         prods = self.get_products()

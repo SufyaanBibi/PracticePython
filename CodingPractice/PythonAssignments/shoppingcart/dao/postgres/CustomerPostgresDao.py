@@ -10,7 +10,7 @@ class CustomerPostgresDao(CustomerDao):
     def __init__(self, postgres_instance):
         self._postgres_conn = pg8000.connect(**postgres_instance.dsn())
 
-    INSERT_SQL = '''INSERT INTO customer(customer_id, 
+    INSERT_SQL = '''INSERT INTO customer(
                     first_name,
                     last_name,
                     sex,
@@ -19,7 +19,8 @@ class CustomerPostgresDao(CustomerDao):
                     email_address,
                     mail_shot_date,
                     iso_country_code)
-                    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+                    VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
+                    RETURNING customer_id;'''
         
     @staticmethod
     def _create_cust_dto_from_row(row):
@@ -48,11 +49,8 @@ class CustomerPostgresDao(CustomerDao):
     def get_customers_by_iso_country_code(self, iso_country_code):
         return self._fetch_customers_with_sql("SELECT * FROM customer WHERE iso_country_code='"+iso_country_code+"';")
 
-    #I need to change the way in which the customer_id is generated.
-
     def create_customer(self, customer_dto):
-        cust_tuple = (customer_dto.get_customer_id(),
-                      customer_dto.get_first_name(),
+        cust_tuple = (customer_dto.get_first_name(),
                       customer_dto.get_last_name(),
                       customer_dto.get_sex(),
                       customer_dto.get_age(),
@@ -64,11 +62,12 @@ class CustomerPostgresDao(CustomerDao):
             self._BEGIN()
             with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(self.INSERT_SQL, cust_tuple)
+                c_id = cursor.fetchall()[0][0]
             self._COMMIT()
+            return self.get_customer_by_id(c_id)
         except Exception as e:
             self._ROLLBACK()
             raise e
-        print(customer_dto.get_customer_id())
 
     def delete_customer(self, customerDto):
         customer_id = customerDto.get_customer_id()
