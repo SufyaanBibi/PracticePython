@@ -155,6 +155,11 @@ class ProductPostgresDaoTests(unittest.TestCase):
         actual = type(self).dao.get_products_by_name("Steve")
         self.assertEqual([], actual)
 
+    def test_13_is_vatable_is_bool(self):
+        prod = ProductDto(product_id=None, name="Panpans", price=78, weight=12, stock_qty=13, vatable=True)
+        new_prod_in_db = type(self).dao.create_product(prod)
+        self.assertTrue(new_prod_in_db.is_vatable)
+
 
 if __name__ == '__main__':
     unittest.main()
