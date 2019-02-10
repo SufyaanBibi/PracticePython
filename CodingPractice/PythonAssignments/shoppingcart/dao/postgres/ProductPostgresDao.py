@@ -10,13 +10,14 @@ class ProductPostgresDao(ProductDao):
     def __init__(self, postgres_instance):
         self._postgres_conn = pg8000.connect(**postgres_instance.dsn())
 
-    INSERT_SQL = '''INSERT INTO product(product_id,
+    INSERT_SQL = '''INSERT INTO product(
                     name,
                     price,
                     weight,
                     stock_qty,
                     vatable)
-                    VALUES(%s, %s, %s, %s, %s, %s);'''
+                    VALUES(%s, %s, %s, %s, %s)
+                    RETURNING product_id;'''
 
     @staticmethod
     def _create_product_dto_from_row(row):
@@ -58,8 +59,7 @@ class ProductPostgresDao(ProductDao):
 
     def create_product(self, productDto):
         v = self._bool_to_int(productDto.is_vatable())
-        prod_tuple = (productDto.get_id(),
-                      productDto.get_name(),
+        prod_tuple = (productDto.get_name(),
                       float(productDto.get_price()),
                       float(productDto.get_weight()),
                       productDto.get_stock_qty(),
@@ -68,13 +68,15 @@ class ProductPostgresDao(ProductDao):
             self._BEGIN()
             with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(self.INSERT_SQL, prod_tuple)
+                p_id = cursor.fetchall()[0][0]
             self._COMMIT()
+            return self.get_product_by_id(p_id)
         except Exception as e:
             self._ROLLBACK()
             raise e
 
     def delete_product(self, productDto):
-        product_id = productDto.get_id()
+        product_id = productDto.get_product_id()
         try:
             self._BEGIN()
             with closing(self._postgres_conn.cursor()) as cursor:
@@ -86,7 +88,7 @@ class ProductPostgresDao(ProductDao):
 
     def update_product(self, productDto):
         v = self._bool_to_int(productDto.is_vatable())
-        product_id = productDto.get_id()
+        product_id = productDto.get_product_id()
         name = productDto.get_name()
         price = productDto.get_price()
         weight = productDto.get_weight()

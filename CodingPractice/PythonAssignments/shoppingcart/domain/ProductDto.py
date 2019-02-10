@@ -14,7 +14,7 @@ class ProductDto:
                and self._weight == other._weight and self._stock_qty == other._stock_qty \
                and self._vatable == other._vatable
 
-    def get_id(self):
+    def get_product_id(self):
         return self._product_id
 
     def get_name(self):
