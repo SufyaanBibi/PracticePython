@@ -9,8 +9,9 @@ from CodingPractice.PythonAssignments.shoppingcart.dao.postgres.OrderPostgresDao
 from CodingPractice.PythonAssignments.shoppingcart.domain.OrderDto import OrderDto, OrderLineDto
 
 create_order_sql = '''
-CREATE TABLE orders(order_id integer NOT NULL,
-customer_id integer,
+CREATE TABLE orders(
+order_id SERIAL,
+customer_id integer NOT NULL,
 order_timestamp varchar(256),
 postage integer);
 '''
@@ -74,12 +75,12 @@ class OrderPostgresDaoTests(unittest.TestCase):
         connection.close()
 
     def test_00_can_get_orders(self):
-        expected = OrderDto(100, 1, "2018-12-01 10:45:15", 1,
-                             [OrderLineDto(100, 1, 50),
-                              OrderLineDto(100, 2, 100)])
-        type(self).dao.create_order(expected)
+        new_order = OrderDto(None, 1, "2018-12-01 10:45:15", 1,
+                             [OrderLineDto(None, 1, 50),
+                              OrderLineDto(None, 2, 100)])
+        db_order = type(self).dao.create_order(new_order)
         actual = type(self).dao.get_orders()
-        self.assertEqual([expected], actual)
+        self.assertEqual(db_order, actual[0])
 
     def test_01_can_get_order_by_id(self):
         expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
