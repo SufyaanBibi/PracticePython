@@ -75,20 +75,20 @@ class OrderPostgresDaoTests(unittest.TestCase):
         connection.close()
 
     def test_00_can_get_orders(self):
-        new_order = OrderDto(None, 1, "2018-12-01 10:45:15", 1,
-                             [OrderLineDto(None, 1, 50),
-                              OrderLineDto(None, 2, 100)])
+        new_order = OrderDto(order_id=None, customer_id=1, order_timestamp="2018-12-01 10:45:15", postage=1,
+                             order_lines=[OrderLineDto(order_id=None, product_id=1, qty=50),
+                              OrderLineDto(order_id=None, product_id=2, qty=100)])
         db_order = type(self).dao.create_order(new_order)
         actual = type(self).dao.get_orders()
         self.assertEqual(db_order, actual[0])
 
-    def test_01_can_get_order_by_id(self):
-        expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
-                             [OrderLineDto(101, 1, 50),
-                              OrderLineDto(101, 2, 100)])
-        type(self).dao.create_order(expected)
-        actual = type(self).dao.get_order_by_order_id(101)
-        self.assertEqual([expected], actual)
+    def test_01_can_create_orders(self):
+        order = OrderDto(order_id=None, customer_id=2, order_timestamp="2019-03-20 12:25:09", postage=1,
+                         order_lines=[OrderLineDto(order_id=None, product_id=2, qty=15)])
+        new_order_in_db = type(self).dao.create_order(order)
+        self.assertEqual(order.get_customer_id(), new_order_in_db.get_customer_id())
+        self.assertEqual(order.get_postage(), new_order_in_db.get_postage())
+        self.assertEqual(order.get_order_timestamp(), new_order_in_db.get_order_timestamp())
 
     def test_02_can_get_orders_by_customer_id(self):
         expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
