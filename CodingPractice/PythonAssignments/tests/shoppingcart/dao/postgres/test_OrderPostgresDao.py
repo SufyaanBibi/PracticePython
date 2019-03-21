@@ -77,7 +77,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
     def test_00_can_get_orders(self):
         new_order = OrderDto(order_id=None, customer_id=1, order_timestamp="2018-12-01 10:45:15", postage=1,
                              order_lines=[OrderLineDto(order_id=None, product_id=1, qty=50),
-                              OrderLineDto(order_id=None, product_id=2, qty=100)])
+                                          OrderLineDto(order_id=None, product_id=2, qty=100)])
         db_order = type(self).dao.create_order(new_order)
         actual = type(self).dao.get_orders()
         self.assertEqual(db_order, actual[0])
@@ -91,112 +91,69 @@ class OrderPostgresDaoTests(unittest.TestCase):
         self.assertEqual(order.get_order_timestamp(), new_order_in_db.get_order_timestamp())
 
     def test_02_can_get_orders_by_customer_id(self):
-        expected = OrderDto(101, 2, "2018-12-25 10:45:15", 1,
-                             [OrderLineDto(101, 1, 50),
-                              OrderLineDto(101, 2, 100)])
-        type(self).dao.create_order(expected)
+        new_order = OrderDto(order_id=None, customer_id=2, order_timestamp="2018-12-25 10:45:15", postage=1,
+                             order_lines=[OrderLineDto(order_id=None, product_id=1, qty=50),
+                                          OrderLineDto(order_id=None, product_id=2, qty=100)])
+        new_order_in_db = type(self).dao.create_order(new_order)
         actual = type(self).dao.get_orders_by_customer_id(2)
-        self.assertEqual([expected], actual)
+        self.assertEqual([new_order_in_db], actual)
 
     def test_03_get_orders_by_product_id(self):
-        expected = OrderDto(100, 1, "2018-12-01 10:45:15", 1,
-                               [OrderLineDto(100, 2, 100)])
-        type(self).dao.create_order(expected)
+        new_order = OrderDto(order_id=None, customer_id=1, order_timestamp="2018-12-01 10:45:15", postage=1,
+                               order_lines=[OrderLineDto(100, 2, 100)])
+        new_order_in_db = type(self).dao.create_order(new_order)
         actual = type(self).dao.get_orders_by_product_id(2)
-        self.assertEqual([expected], actual)
-
-    def test_04_can_create_an_order(self):
-        order = OrderDto(999, 1, "2018-12-01 10:45:15", 1,
-                             [OrderLineDto(999, 1, 50),
-                              OrderLineDto(999, 2, 100)])
-        type(self).dao.create_order(order)
-
-        actual = type(self).dao.get_order_by_order_id( 999 )
-        self.assertEqual([order], actual)
+        self.assertEqual([new_order_in_db], actual)
 
     def test_05_create_an_order_fails(self):
-        order = OrderDto(None, 1, "2018-12-01 10:45:15", 1, [])
+        order = OrderDto(order_id=None, customer_id=1, order_timestamp="2018-12-01 10:45:15", postage=1, order_lines=[])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.create_order(order)
 
     def test_06_ROLLBACK_has_worked_after_create_order_fails(self):
-        order = OrderDto(1000, 1, "2018-12-01 10:45:15", 1,
-                         [OrderLineDto(None, 1, 50),
-                          OrderLineDto(1000, 2, 100)])
+        order = OrderDto(order_id=None, customer_id=1, order_timestamp="2018-12-01 10:45:15", postage=1,
+                         order_lines=[OrderLineDto(order_id=None, product_id='Abd', qty=50),
+                                      OrderLineDto(order_id=None, product_id=2, qty=100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.create_order(order)
 
-        actual = type(self).dao.get_order_by_order_id(1000)
+        actual = type(self).dao.get_orders()
         self.assertEqual([], actual)
 
     def test_07_delete_order(self):
-        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(777, 1, 50),
-                          OrderLineDto(777, 2, 100)])
-        type(self).dao.create_order(order)
-        type(self).dao.delete_order(order)
-        actual = type(self).dao.get_order_by_order_id(777)
+        order = OrderDto(order_id=None, customer_id=2, order_timestamp="2019-12-01 10:15:23", postage=1,
+                         order_lines=[OrderLineDto(order_id=None, product_id=1, qty=50),
+                                      OrderLineDto(order_id=None, product_id=2, qty=100)])
+        new_order_in_db = type(self).dao.create_order(order)
+        type(self).dao.delete_order(new_order_in_db)
+        actual = type(self).dao.get_orders_by_customer_id(2)
         self.assertEqual([], actual)
 
     def test_08_update_order(self):
-        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(777, 1, 50),
-                          OrderLineDto(777, 2, 100)])
-        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
-                                 [OrderLineDto(777, 1, 10),
-                                  OrderLineDto(777, 2, 45)])
-        type(self).dao.create_order(order)
+        order = OrderDto(order_id=None, customer_id=2, order_timestamp="2019-12-01 10:15:23", postage=1,
+                         order_lines=[OrderLineDto(order_id=None, product_id=1, qty=50),
+                                      OrderLineDto(order_id=None, product_id=2, qty=100)])
+        order_in_db = type(self).dao.create_order(order)
+        updated_order = OrderDto(order_id=order_in_db.get_order_id(), customer_id=2, order_timestamp="2019-13-01 10:15:23", postage=1,
+                                 order_lines=[OrderLineDto(order_id=order_in_db.get_order_id(), product_id=1, qty=10),
+                                              OrderLineDto(order_id=order_in_db.get_order_id(), product_id=2, qty=45)])
         type(self).dao.update_order(updated_order)
-        actual = type(self).dao.get_order_by_order_id(777)
-        self.assertEqual([updated_order], actual)
+        actual = type(self).dao.get_orders_by_customer_id(2)
+        orders = type(self).dao.get_orders()
+        self.assertEqual(updated_order, actual[0])
 
     def test_09_ROLLBACK_works_after_update_order_fails(self):
-        order = OrderDto(65, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto('abc', 1, 50),
-                          OrderLineDto(65, 2, 100)])
+        order = OrderDto(None, 2, "2019-12-01 10:15:23", 1,
+                         [OrderLineDto(None, 'ABC', 50),
+                          OrderLineDto(None, 2, 100)])
 
         with self.assertRaises(Exception) as e:
             type(self).dao.update_order(order)
 
-        actual = type(self).dao.get_order_by_order_id(65)
+        actual = type(self).dao.get_orders_by_customer_id(2)
         self.assertEqual([], actual)
-
-    def test_10_ROLLBACK_occurs_when_delete_fails_in_update_order(self):
-        order = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(777, 1, 50),
-                          OrderLineDto(777, 2, 100)])
-
-        type(self).dao.create_order(order)
-
-        order2 = OrderDto(777, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto('abc', 1, 50),
-                          OrderLineDto(777, 2, 100)])
-
-        updated_order = OrderDto(777, 2, "2019-13-01 10:15:23", 1,
-                                 [OrderLineDto(777, 1, 10),
-                                  OrderLineDto(777, 2, 45)])
-
-        type(self).dao.update_order(updated_order)
-        actual = type(self).dao.get_order_by_order_id(777)
-        self.assertEqual([updated_order], actual)
-
-    def test_11_ROLLBACK_occurs_when_create_fails_in_update_order(self):
-        order = OrderDto(654, 2, "2019-12-01 10:15:23", 1,
-                         [OrderLineDto(654, 1, 50),
-                          OrderLineDto(654, 2, 100)])
-        type(self).dao.create_order(order)
-
-        updated_order = OrderDto(654, 2, "2019-13-01 10:15:23", 1,
-                                 [OrderLineDto('bcv', 1, 10),
-                                  OrderLineDto(654, 2, 45)])
-
-        with self.assertRaises(Exception) as e:
-            type(self).dao.update_order(updated_order)
-
-        actual = type(self).dao.get_order_by_order_id(654)
-        self.assertEqual([order], actual)
 
 
 if __name__ == '__main__':

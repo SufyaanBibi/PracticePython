@@ -63,7 +63,7 @@ class OrderPostgresDao(OrderDao):
     def get_orders_by_customer_id(self, customer_id):
         sql = f'SELECT * FROM orders \
                 JOIN order_line ON orders.order_id = order_line.order_id \
-                WHERE order.customer_id={customer_id};'
+                WHERE orders.customer_id={customer_id};'
         all_order_rows = self._fetch_orders_with_sql(sql)
         grouped = groupby(all_order_rows, key=self._order_as_key)
         return [self._create_order_dto(og) for og in grouped]
@@ -113,10 +113,22 @@ class OrderPostgresDao(OrderDao):
             cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
 
     def update_order(self, order_dto):
+        order_id = order_dto.get_order_id()
+        customer_id = order_dto.get_customer_id()
+        order_timestamp = order_dto.get_order_timestamp()
+        postage = order_dto.get_postage()
         try:
             self._BEGIN()
-            self._delete_orders_and_order_lines(order_dto.get_order_id())
-            self.create_order(order_dto)
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"UPDATE orders \
+                                 SET order_id={order_id}, customer_id={customer_id}, \
+                                 order_timestamp='{order_timestamp}', postage={postage} \
+                                 WHERE order_id={order_id};")
+            with closing(self._postgres_conn.cursor()) as cursor:
+                cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
+            for ol in order_dto.get_order_lines():
+                with closing(self._postgres_conn.cursor()) as cursor:
+                    cursor.execute(self._INSERT_ORDER_LINE_SQL, (order_id, ol.get_product_id(), ol.get_qty()))
             self._COMMIT()
         except Exception as e:
             self._ROLLBACK()
