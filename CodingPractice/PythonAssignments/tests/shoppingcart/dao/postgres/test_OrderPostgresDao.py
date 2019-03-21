@@ -141,8 +141,7 @@ class OrderPostgresDaoTests(unittest.TestCase):
                                               OrderLineDto(order_id=order_in_db.get_order_id(), product_id=2, qty=45)])
         type(self).dao.update_order(updated_order)
         actual = type(self).dao.get_orders_by_customer_id(2)
-        orders = type(self).dao.get_orders()
-        self.assertEqual(updated_order, actual[0])
+        self.assertEqual([updated_order], actual)
 
     def test_09_ROLLBACK_works_after_update_order_fails(self):
         order = OrderDto(None, 2, "2019-12-01 10:15:23", 1,
