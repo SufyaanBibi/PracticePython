@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.dao.OrderJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.OrderJsonDao import *
 
 
 class TestOrderJsonDao(unittest.TestCase):
@@ -7,7 +7,7 @@ class TestOrderJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/orders.json')
+        fp = os.path.join(dirname, '../../resources/orders.json')
         self._orderDao = OrderJsonDao(fp)
 
     def test_00_get_orders(self):
@@ -69,6 +69,21 @@ class TestOrderJsonDao(unittest.TestCase):
     def test_07_customer_id_does_not_exist(self):
         e = self._orderDao.get_orders_by_customer_id(9000)
         self.assertEqual(None, e)
+
+    def test_08_MethodNotImplementedException_raised_on_create_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.create_order(None)
+        self.assertEqual('create_order called on OrderJsonDao', e.exception._message)
+
+    def test_09_MethodNotImplementedException_raised_on_delete_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.delete_order(None)
+        self.assertEqual('delete_order called on OrderJsonDao', e.exception._message)
+
+    def test_10_MethodNotImplementedException_raised_on_update_order(self):
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._orderDao.update_order(None)
+        self.assertEqual('update_order called on OrderJsonDao', e.exception._message)
 
 
 if __name__ == '__main__':

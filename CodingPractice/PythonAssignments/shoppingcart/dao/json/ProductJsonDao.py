@@ -1,6 +1,7 @@
-from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.domain.ProductDto import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.ProductDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.MethodNotImplementedException import MethodNotImplementedException
 
 
 class ProductJsonDao(ProductDao, JsonFileReader):
@@ -25,7 +26,7 @@ class ProductJsonDao(ProductDao, JsonFileReader):
 
     def get_product_by_id(self, product_id):
         prods = self.get_products()
-        return [prod for prod in prods if product_id == prod.get_id()][0]
+        return [prod for prod in prods if product_id == prod.get_product_id()][0]
 
     def get_products_by_name(self, product_name):
         prods = self.get_products()
@@ -42,3 +43,12 @@ class ProductJsonDao(ProductDao, JsonFileReader):
     def get_products_le_stock_qty(self, stock_qty):
         prods = self.get_products()
         return [prod for prod in prods if prod.get_stock_qty() <= stock_qty]
+
+    def create_product(self, product_dto):
+        raise MethodNotImplementedException('create_product called on ProductJsonDao')
+
+    def delete_product(self, productDto):
+        raise MethodNotImplementedException('delete_product called on ProductJsonDao')
+
+    def update_product(self, productDto):
+        raise MethodNotImplementedException('update_product called on ProductJsonDao')

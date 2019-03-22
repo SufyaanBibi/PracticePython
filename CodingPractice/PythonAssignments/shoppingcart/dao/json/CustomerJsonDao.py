@@ -1,6 +1,7 @@
-from CodingPractice.PythonAssignments.shoppingcart.dao.JsonFileReader import JsonFileReader
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.JsonFileReader import JsonFileReader
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDao import *
 from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerDetailsDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.MethodNotImplementedException import MethodNotImplementedException
 
 
 class CustomerJsonDao(CustomerDao, JsonFileReader):
@@ -36,3 +37,12 @@ class CustomerJsonDao(CustomerDao, JsonFileReader):
     def get_customers_by_iso_country_code(self, iso_country_code):
         custs = self.get_customers()
         return [cust for cust in custs if iso_country_code == cust.get_iso_country_code()]
+
+    def create_customer(self, customerDto):
+        raise MethodNotImplementedException('create_customer called on CustomerJsonDao')
+
+    def delete_customer(self, customerDto):
+        raise MethodNotImplementedException('delete_customer called on CustomerJsonDao')
+
+    def update_customer(self, customerDto):
+        raise MethodNotImplementedException('update_customer called on CustomerJsonDao')

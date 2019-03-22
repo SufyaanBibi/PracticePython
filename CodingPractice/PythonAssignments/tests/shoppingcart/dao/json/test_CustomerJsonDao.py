@@ -1,5 +1,5 @@
 import unittest
-from CodingPractice.PythonAssignments.shoppingcart.dao.CustomerJsonDao import *
+from CodingPractice.PythonAssignments.shoppingcart.dao.json.CustomerJsonDao import *
 
 
 class TestCustomerJsonDao(unittest.TestCase):
@@ -7,7 +7,7 @@ class TestCustomerJsonDao(unittest.TestCase):
     def setUp(self):
         import os
         dirname = os.path.dirname(__file__)
-        fp = os.path.join(dirname, '../resources/customers.json')
+        fp = os.path.join(dirname, '../../resources/customers.json')
         self._custDao = CustomerJsonDao(fp)
 
     def test_00_get_customers(self):
@@ -58,7 +58,6 @@ class TestCustomerJsonDao(unittest.TestCase):
                                birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
                             mail_shot_date='11/25', iso_country_code='UK')
 
-        
         by_id = self._custDao.get_customer_by_id(101)
         self.assertEqual(expected, by_id)
 
@@ -77,6 +76,36 @@ class TestCustomerJsonDao(unittest.TestCase):
         self.assertEqual(expec, actual)
         by_id = self._custDao.get_customer_by_id(101)
         self.assertEqual(expected, by_id)
+
+    def test_05_MethodNotImplementedException_raised_on_create_customer(self):
+
+        c1 = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age='10',
+                         birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
+                         mail_shot_date='11/25', iso_country_code='UK')
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._custDao.create_customer(c1)
+        self.assertEqual('create_customer called on CustomerJsonDao', e.exception._message)
+
+    def test_06_MethodNotImplementedException_raised_on_delete_customer(self):
+
+        c1 = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age='10',
+                         birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
+                         mail_shot_date='11/25', iso_country_code='UK')
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._custDao.delete_customer(c1)
+        self.assertEqual('delete_customer called on CustomerJsonDao', e.exception._message)
+
+    def test_07_MethodNotImplementedException_raised_on_update_customer(self):
+
+        c1 = CustomerDto(customer_id=101, first_name='Spooky', last_name='Dogg', sex='M', age='10',
+                         birthday='2008-04-02', email_address='spooky.dogg@burbage.rd.com',
+                         mail_shot_date='11/25', iso_country_code='UK')
+
+        with self.assertRaises(MethodNotImplementedException) as e:
+            self._custDao.update_customer(c1)
+        self.assertEqual('update_customer called on CustomerJsonDao', e.exception._message)
 
 
 if __name__ == '__main__':

@@ -3,51 +3,31 @@ from decimal import *
 
 class OrderIdNonexistent(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class CustomerIdNonexistent(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class VatNegative(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class InvalidMonth(Exception):
     def __init__(self, message):
-        self.message = message
+        self._message = message
 
 
 class OrderBo:
 
-    def __init__(self, order_dao, product_dao, cust_dao, postage_matrix):
+    def __init__(self, order_dao, product_dao, cust_dao, postage_rate_dao):
         self._order_dao = order_dao
         self._product_dao = product_dao
         self._cust_dao = cust_dao
-        self._postage_matrix = self._make_dict_from_postage_matrix(postage_matrix)
-
-    @staticmethod
-    def _make_dict_from_postage_matrix(postage_matrix):
-        postage_dict = {}
-        for country, weight, postage_class, price in postage_matrix:
-            if weight == '1kg' and postage_class == '1st Class':
-                new_weight = 1000
-                new_postage_class = 1
-            elif weight == '1kg' and postage_class == '2nd Class':
-                new_weight = 1000
-                new_postage_class = 2
-            elif weight == '2kg' and postage_class == '1st Class':
-                new_weight = 2000
-                new_postage_class = 1
-            elif weight == '2kg' and postage_class == '2nd Class':
-                new_weight = 2000
-                new_postage_class = 2
-            t = (country, new_weight, new_postage_class)
-            postage_dict[t] = price
-        return postage_dict
+        self._postage_rate_dao = postage_rate_dao
 
     pence = Decimal('.01')
 
@@ -120,7 +100,7 @@ class OrderBo:
         cust = self._cust_dao.get_customer_by_id(c_id)
         iso_code = cust.get_iso_country_code()
         order_lines = order.get_order_lines()
-        return self._get_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
+        return self._postage_rate_dao.get_appropriate_postage_rate(iso_code, self._get_order_weight(order_lines), postage)
 
     def _get_order_weight(self, order_lines):
         weight = 0
@@ -131,11 +111,3 @@ class OrderBo:
             product_weight = product.get_weight()
             weight += product_weight * qty
         return weight
-
-    def _get_postage_rate(self, iso_country_code, weight, postage_class):
-        if weight < 1000:
-            weight = 1000
-        elif weight > 1000:
-            weight = 2000
-        key = (iso_country_code, weight, postage_class)
-        return self._postage_matrix[key]
