@@ -85,8 +85,7 @@ class OrderPostgresDao(OrderDao):
             with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(self._INSERT_ORDER_SQL, order_tuple)
                 o_id = cursor.fetchall()[0][0]
-            for ol in order_dto.get_order_lines():
-                with closing(self._postgres_conn.cursor()) as cursor:
+                for ol in order_dto.get_order_lines():
                     cursor.execute(self._INSERT_ORDER_LINE_SQL, (o_id, ol.get_product_id(), ol.get_qty()))
             self._COMMIT()
             return self.get_order_by_order_id(o_id)
@@ -124,11 +123,9 @@ class OrderPostgresDao(OrderDao):
                                  SET order_id={order_id}, customer_id={customer_id}, \
                                  order_timestamp='{order_timestamp}', postage={postage} \
                                  WHERE order_id={order_id};")
-            with closing(self._postgres_conn.cursor()) as cursor:
                 cursor.execute(f"DELETE FROM order_line WHERE order_id={order_id};")
-            for ol in order_dto.get_order_lines():
-                with closing(self._postgres_conn.cursor()) as cursor:
-                    cursor.execute(self._INSERT_ORDER_LINE_SQL, (order_id, ol.get_product_id(), ol.get_qty()))
+                for ol in order_dto.get_order_lines():
+                        cursor.execute(self._INSERT_ORDER_LINE_SQL, (order_id, ol.get_product_id(), ol.get_qty()))
             self._COMMIT()
         except Exception as e:
             self._ROLLBACK()
