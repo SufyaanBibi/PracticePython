@@ -21,10 +21,7 @@ class ProductPostgresDao(ProductDao):
 
     @staticmethod
     def _int_to_bool(i):
-        if i == 0:
-            return False
-        else:
-            return True
+        return i != 0
 
     @staticmethod
     def _bool_to_int(b):

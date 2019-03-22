@@ -159,6 +159,19 @@ class ProductPostgresDaoTests(unittest.TestCase):
         prod = ProductDto(product_id=None, name="Panpans", price=78, weight=12, stock_qty=13, vatable=True)
         new_prod_in_db = type(self).dao.create_product(prod)
         self.assertTrue(new_prod_in_db.is_vatable)
+    
+    def test_14_int_to_bool_true(self):
+        self.assertTrue(ProductPostgresDao._int_to_bool(1))
+
+    def test_15_int_to_bool_false(self):
+        self.assertFalse(ProductPostgresDao._int_to_bool(0))
+
+    def test_16_bool_to_int_true(self):
+        self.assertEqual(1, ProductPostgresDao._bool_to_int(True))
+
+    def test_17_bool_to_int_false(self):
+        self.assertEqual(0, ProductPostgresDao._bool_to_int(False))
+
 
 
 if __name__ == '__main__':
